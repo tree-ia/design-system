@@ -1,6 +1,6 @@
 {
   "name": "@tree-ia/dashboard-ui",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Shared UI component library for Tree IA dashboards",
   "type": "module",
   "main": "./dist/index.mjs",
