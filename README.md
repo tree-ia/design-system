@@ -40,15 +40,30 @@ npm install @tree-ia/design-system
 
 ## Setup
 
-### 1. Importar o CSS
+### 1. Configurar o Tailwind CSS (obrigatorio)
 
-No layout raiz do seu projeto (ex: `layout.tsx` ou `_app.tsx`):
+Os componentes usam classes do Tailwind CSS. Como a lib nao pre-compila o CSS do Tailwind (seguindo o [padrao oficial para libs Tailwind v4](https://github.com/tailwindlabs/tailwindcss/discussions/18545)), voce precisa adicionar **duas linhas** no CSS principal do seu projeto (ex: `globals.css`):
+
+```css
+@import "tailwindcss";
+
+/* Aponta o Tailwind para o dist da lib, gerando as utility classes dos componentes */
+@source "../../node_modules/@tree-ia/design-system/dist";
+```
+
+> **Por que `@source`?** O Tailwind v4 ignora `node_modules` por padrao. A diretiva `@source` faz ele escanear o JS compilado da lib e gerar apenas as classes usadas pelos componentes, usando o tema do **seu** projeto. Essa e a mesma abordagem usada por libs como [HeroUI](https://www.heroui.com/docs/guide/tailwind-v4).
+
+### 2. Importar o CSS de animacoes
+
+No layout raiz (ex: `layout.tsx` ou `_app.tsx`):
 
 ```tsx
 import "@tree-ia/design-system/styles.css";
 ```
 
-### 2. Configurar o dark mode (Tailwind v4)
+Este arquivo contem apenas keyframes e classes de animacao (spinners, toasts, transicoes). Nao inclui Tailwind, portanto nao conflita com o seu tema.
+
+### 3. Configurar o dark mode (Tailwind v4)
 
 A lib usa a classe `.dark` no `<html>` para dark mode. Adicione ao seu CSS:
 
@@ -56,7 +71,7 @@ A lib usa a classe `.dark` no `<html>` para dark mode. Adicione ao seu CSS:
 @custom-variant dark (&:where(.dark, .dark *));
 ```
 
-### 3. Envolver com o DashboardProvider
+### 4. Envolver com o DashboardProvider
 
 ```tsx
 import { DashboardProvider } from "@tree-ia/design-system";
@@ -680,7 +695,7 @@ Retorna o `DashboardConfig` completo (com deep merge dos defaults).
 
 ## CSS Utilities
 
-A lib exporta `styles.css` com classes de animacao utilitarias:
+O `styles.css` contem apenas keyframes e classes de animacao — **nenhum CSS do Tailwind**. As utility classes do Tailwind sao geradas pelo seu projeto via `@source` (veja [Setup](#setup)).
 
 ```tsx
 import "@tree-ia/design-system/styles.css";

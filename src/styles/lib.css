@@ -1,6 +1,1 @@
-@import "tailwindcss/utilities" layer(utilities);
 @import "./base.css";
-
-@source "../../dist/index.mjs";
-
-@custom-variant dark (&:where(.dark, .dark *));
