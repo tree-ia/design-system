@@ -1,0 +1,268 @@
+/* @tree-ia/dashboard-ui — Base Styles */
+
+/*
+ * Dark mode: Esta lib usa a classe .dark no HTML para dark mode.
+ * Adicione ao CSS do seu projeto (Tailwind v4):
+ *   @custom-variant dark (&:where(.dark, .dark *));
+ */
+
+/* Keyframes */
+@keyframes dashboard-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dashboard-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes dashboard-slide-down {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes dashboard-slide-up {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes dashboard-slide-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes dashboard-slide-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes dashboard-bounce-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes dashboard-bounce-dot {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+@keyframes dashboard-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes dashboard-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dashboard-expand {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
+
+@keyframes dashboard-collapse {
+  from {
+    opacity: 1;
+    max-height: 1000px;
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+  }
+}
+
+/* Animation utility classes */
+.dashboard-animate-fade-in {
+  animation: dashboard-fade-in 0.3s ease-out;
+}
+
+.dashboard-animate-fade-out {
+  animation: dashboard-fade-out 0.3s ease-out;
+}
+
+.dashboard-animate-slide-down {
+  animation: dashboard-slide-down 0.2s ease-out;
+}
+
+.dashboard-animate-slide-up {
+  animation: dashboard-slide-up 0.2s ease-out;
+}
+
+.dashboard-animate-slide-left {
+  animation: dashboard-slide-left 0.3s ease-out;
+}
+
+.dashboard-animate-slide-right {
+  animation: dashboard-slide-right 0.3s ease-in;
+}
+
+.dashboard-animate-bounce-dot {
+  animation: dashboard-bounce-dot 1.4s ease-in-out infinite;
+}
+
+.dashboard-animate-shimmer {
+  animation: dashboard-shimmer 2s ease-in-out infinite;
+}
+
+.dashboard-animate-expand {
+  animation: dashboard-expand 0.3s ease-out forwards;
+  overflow: hidden;
+}
+
+.dashboard-animate-collapse {
+  animation: dashboard-collapse 0.2s ease-in forwards;
+  overflow: hidden;
+}
+
+/* Spinner */
+.dashboard-spinner {
+  animation: dashboard-spinner 0.75s linear infinite;
+  border: 2px solid transparent;
+  border-top-color: var(--dashboard-primary, #37a501);
+  border-radius: 50%;
+}
+
+.dashboard-spinner-border {
+  animation: dashboard-spinner 0.75s linear infinite;
+  border: 2px solid #e5e7eb;
+  border-top-color: var(--dashboard-primary, #37a501);
+  border-radius: 50%;
+}
+
+.dashboard-spinner-sm {
+  width: 16px;
+  height: 16px;
+}
+.dashboard-spinner-md {
+  width: 32px;
+  height: 32px;
+}
+.dashboard-spinner-lg {
+  width: 48px;
+  height: 48px;
+}
+
+/* Toast responsive animations */
+@keyframes dashboard-toast-enter-mobile {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes dashboard-toast-exit-mobile {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes dashboard-toast-enter-desktop {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes dashboard-toast-exit-desktop {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes dashboard-toast-progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.dashboard-toast-enter {
+  animation: dashboard-toast-enter-mobile 0.3s ease-out;
+}
+
+.dashboard-toast-exit {
+  animation: dashboard-toast-exit-mobile 0.2s ease-in forwards;
+}
+
+@media (min-width: 640px) {
+  .dashboard-toast-enter {
+    animation: dashboard-toast-enter-desktop 0.3s ease-out;
+  }
+
+  .dashboard-toast-exit {
+    animation: dashboard-toast-exit-desktop 0.2s ease-in forwards;
+  }
+}
