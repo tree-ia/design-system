@@ -1,4 +1,4 @@
-# @tree-ia/dashboard-ui
+# @tree-ia/design-system
 
 Biblioteca de componentes React compartilhada para os dashboards da Tree IA (EaiGarcom, EaiPrefeito, MeuConstrutor, etc.). Todos os componentes sao temaveis via CSS custom properties, construidos com Tailwind CSS v4 e publicados no GitHub Packages.
 
@@ -23,7 +23,7 @@ npm login --registry=https://npm.pkg.github.com
 ### 3. Instalar
 
 ```bash
-npm install @tree-ia/dashboard-ui
+npm install @tree-ia/design-system
 ```
 
 ### Peer dependencies
@@ -45,7 +45,7 @@ npm install @tree-ia/dashboard-ui
 No layout raiz do seu projeto (ex: `layout.tsx` ou `_app.tsx`):
 
 ```tsx
-import "@tree-ia/dashboard-ui/styles.css";
+import "@tree-ia/design-system/styles.css";
 ```
 
 ### 2. Configurar o dark mode (Tailwind v4)
@@ -59,7 +59,7 @@ A lib usa a classe `.dark` no `<html>` para dark mode. Adicione ao seu CSS:
 ### 3. Envolver com o DashboardProvider
 
 ```tsx
-import { DashboardProvider } from "@tree-ia/dashboard-ui";
+import { DashboardProvider } from "@tree-ia/design-system";
 
 const config = {
   name: "MeuProjeto",
@@ -132,7 +132,7 @@ const eaiGarcom = {
 ### Button
 
 ```tsx
-import { Button } from "@tree-ia/dashboard-ui";
+import { Button } from "@tree-ia/design-system";
 
 <Button variant="primary" size="md" onClick={handleClick}>
   Salvar
@@ -160,7 +160,7 @@ Herda todos os atributos nativos de `<button>`.
 ### Input
 
 ```tsx
-import { Input } from "@tree-ia/dashboard-ui";
+import { Input } from "@tree-ia/design-system";
 
 <Input
   label="Email"
@@ -187,7 +187,7 @@ Herda todos os atributos nativos de `<input>`. Aceita `ref` via `forwardRef`.
 ### Dropdown
 
 ```tsx
-import { Dropdown } from "@tree-ia/dashboard-ui";
+import { Dropdown } from "@tree-ia/design-system";
 
 const options = [
   { value: "sp", label: "Sao Paulo" },
@@ -225,7 +225,7 @@ O menu abre via portal no `document.body` (z-index 9999) e fecha ao clicar fora,
 ### Table
 
 ```tsx
-import { Table } from "@tree-ia/dashboard-ui";
+import { Table } from "@tree-ia/design-system";
 
 const columns = [
   { key: "name", header: "Nome", render: (item) => item.name },
@@ -266,7 +266,7 @@ Exporta tambem: `TableHeader`, `TableBody`, `TableSkeleton`, `TableEmpty`.
 ### Modal
 
 ```tsx
-import { Modal } from "@tree-ia/dashboard-ui";
+import { Modal } from "@tree-ia/design-system";
 
 <Modal
   isOpen={open}
@@ -299,7 +299,7 @@ import { Modal } from "@tree-ia/dashboard-ui";
 ### Card
 
 ```tsx
-import { Card } from "@tree-ia/dashboard-ui";
+import { Card } from "@tree-ia/design-system";
 
 <Card
   title="Vendas do Mes"
@@ -325,7 +325,7 @@ import { Card } from "@tree-ia/dashboard-ui";
 ### Tabs
 
 ```tsx
-import { Tabs } from "@tree-ia/dashboard-ui";
+import { Tabs } from "@tree-ia/design-system";
 
 const tabs = [
   { id: "all", label: "Todos", count: 42 },
@@ -349,7 +349,7 @@ Cada `Tab`: `{ id, label, count?, icon? }`.
 ### DateRangePicker
 
 ```tsx
-import { DateRangePicker } from "@tree-ia/dashboard-ui";
+import { DateRangePicker } from "@tree-ia/design-system";
 
 <DateRangePicker
   value={dateRange}
@@ -369,7 +369,7 @@ import { DateRangePicker } from "@tree-ia/dashboard-ui";
 ### Title
 
 ```tsx
-import { Title } from "@tree-ia/dashboard-ui";
+import { Title } from "@tree-ia/design-system";
 
 <Title level={1}>Dashboard</Title>
 <Title level={3} size="sm" weight="medium" align="center">Subtitulo</Title>
@@ -388,7 +388,7 @@ import { Title } from "@tree-ia/dashboard-ui";
 ### ToggleSwitch
 
 ```tsx
-import { ToggleSwitch } from "@tree-ia/dashboard-ui";
+import { ToggleSwitch } from "@tree-ia/design-system";
 
 <ToggleSwitch
   enabled={notifications}
@@ -411,7 +411,7 @@ import { ToggleSwitch } from "@tree-ia/dashboard-ui";
 ### BadgeStatus
 
 ```tsx
-import { BadgeStatus } from "@tree-ia/dashboard-ui";
+import { BadgeStatus } from "@tree-ia/design-system";
 
 <BadgeStatus label="Ativo" variant="success" />
 <BadgeStatus label="Pendente" variant="warning" size="sm" />
@@ -431,7 +431,7 @@ import { BadgeStatus } from "@tree-ia/dashboard-ui";
 ### Toast
 
 ```tsx
-import { Toast } from "@tree-ia/dashboard-ui";
+import { Toast } from "@tree-ia/design-system";
 
 <Toast
   title="Salvo com sucesso"
@@ -458,7 +458,7 @@ Geralmente nao se usa `Toast` diretamente — use `useNotifications()`.
 ### Loading
 
 ```tsx
-import { Loading } from "@tree-ia/dashboard-ui";
+import { Loading } from "@tree-ia/design-system";
 
 <Loading size="lg" text="Carregando..." />
 <Loading variant="border" color="#ff521d" />
@@ -479,7 +479,7 @@ import { Loading } from "@tree-ia/dashboard-ui";
 ### Pagination
 
 ```tsx
-import { Pagination } from "@tree-ia/dashboard-ui";
+import { Pagination } from "@tree-ia/design-system";
 
 <Pagination
   currentPage={page}
@@ -506,7 +506,7 @@ import { Pagination } from "@tree-ia/dashboard-ui";
 ### FormField
 
 ```tsx
-import { FormField } from "@tree-ia/dashboard-ui";
+import { FormField } from "@tree-ia/design-system";
 
 <FormField
   label="Nome"
@@ -533,7 +533,7 @@ import { FormField } from "@tree-ia/dashboard-ui";
 ### Sidebar
 
 ```tsx
-import { Sidebar } from "@tree-ia/dashboard-ui";
+import { Sidebar } from "@tree-ia/design-system";
 import { Home, Users, Settings } from "lucide-react";
 import Link from "next/link"; // ou qualquer framework
 
@@ -577,7 +577,7 @@ Desktop: sidebar fixa a esquerda (280px / 109px colapsada). Mobile: header fixo 
 ### ThemeSwitcher
 
 ```tsx
-import { ThemeSwitcher } from "@tree-ia/dashboard-ui";
+import { ThemeSwitcher } from "@tree-ia/design-system";
 
 <ThemeSwitcher />
 ```
@@ -591,7 +591,7 @@ Botao que alterna entre light e dark mode. Usa `useTheme()` internamente. Deve e
 ### useTheme
 
 ```tsx
-import { useTheme } from "@tree-ia/dashboard-ui";
+import { useTheme } from "@tree-ia/design-system";
 
 function MyComponent() {
   const { theme, setTheme, resolvedTheme } = useTheme();
@@ -617,7 +617,7 @@ function MyComponent() {
 ### useNotifications
 
 ```tsx
-import { useNotifications } from "@tree-ia/dashboard-ui";
+import { useNotifications } from "@tree-ia/design-system";
 
 function MyComponent() {
   const { addNotification } = useNotifications();
@@ -645,7 +645,7 @@ function MyComponent() {
 ### useLoading
 
 ```tsx
-import { useLoading } from "@tree-ia/dashboard-ui";
+import { useLoading } from "@tree-ia/design-system";
 
 function MyComponent() {
   const { showLoading, hideLoading } = useLoading();
@@ -665,7 +665,7 @@ Mostra um overlay fullscreen com spinner. Util para operacoes que bloqueiam toda
 ### useConfig
 
 ```tsx
-import { useConfig } from "@tree-ia/dashboard-ui";
+import { useConfig } from "@tree-ia/design-system";
 
 function MyComponent() {
   const config = useConfig();
@@ -683,7 +683,7 @@ Retorna o `DashboardConfig` completo (com deep merge dos defaults).
 A lib exporta `styles.css` com classes de animacao utilitarias:
 
 ```tsx
-import "@tree-ia/dashboard-ui/styles.css";
+import "@tree-ia/design-system/styles.css";
 ```
 
 | Classe | Descricao |
@@ -735,7 +735,7 @@ const config = {
 Para criar configs programaticamente com type safety:
 
 ```tsx
-import { createConfig } from "@tree-ia/dashboard-ui";
+import { createConfig } from "@tree-ia/design-system";
 
 const config = createConfig({
   name: "MeuApp",
