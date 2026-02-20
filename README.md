@@ -1,26 +1,21 @@
 # @tree-ia/design-system
 
-Biblioteca de componentes React compartilhada para os dashboards da Tree IA (EaiGarcom, EaiPrefeito, MeuConstrutor, etc.). Todos os componentes sao temaveis via CSS custom properties, construidos com Tailwind CSS v4 e publicados no GitHub Packages.
+Biblioteca de componentes React compartilhada para os dashboards da Tree IA (EaíGarçom, EaíPrefeito, MeuConstrutor, etc.). Todos os componentes são temáveis via CSS custom properties, construídos com Tailwind CSS v4 e publicados no GitHub Packages.
 
-## Instalacao
+## Instalação
 
 ### 1. Configurar o registry
 
-Crie um `.npmrc` na raiz do projeto consumidor:
+Crie um `.npmrc` na raiz do projeto consumidor com o registry e o token de autenticação:
 
 ```
 @tree-ia:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=SEU_GITHUB_TOKEN
 ```
 
-### 2. Autenticar (repositorios privados)
+Substitua `SEU_GITHUB_TOKEN` por um Personal Access Token (classic) com o scope `read:packages`.
 
-```bash
-npm login --registry=https://npm.pkg.github.com
-# Username: seu-usuario-github
-# Password: Personal Access Token com scope read:packages
-```
-
-### 3. Instalar
+### 2. Instalar
 
 ```bash
 npm install @tree-ia/design-system
@@ -40,9 +35,9 @@ npm install @tree-ia/design-system
 
 ## Setup
 
-### 1. Configurar o Tailwind CSS (obrigatorio)
+### 1. Configurar o Tailwind CSS (obrigatório)
 
-Os componentes usam classes do Tailwind CSS. Como a lib nao pre-compila o CSS do Tailwind (seguindo o [padrao oficial para libs Tailwind v4](https://github.com/tailwindlabs/tailwindcss/discussions/18545)), voce precisa adicionar **duas linhas** no CSS principal do seu projeto (ex: `globals.css`):
+Os componentes usam classes do Tailwind CSS. Como a lib não pré-compila o CSS do Tailwind (seguindo o [padrão oficial para libs Tailwind v4](https://github.com/tailwindlabs/tailwindcss/discussions/18545)), você precisa adicionar **duas linhas** no CSS principal do seu projeto (ex: `globals.css`):
 
 ```css
 @import "tailwindcss";
@@ -51,9 +46,9 @@ Os componentes usam classes do Tailwind CSS. Como a lib nao pre-compila o CSS do
 @source "../../node_modules/@tree-ia/design-system/dist";
 ```
 
-> **Por que `@source`?** O Tailwind v4 ignora `node_modules` por padrao. A diretiva `@source` faz ele escanear o JS compilado da lib e gerar apenas as classes usadas pelos componentes, usando o tema do **seu** projeto. Essa e a mesma abordagem usada por libs como [HeroUI](https://www.heroui.com/docs/guide/tailwind-v4).
+> **Por que `@source`?** O Tailwind v4 ignora `node_modules` por padrão. A diretiva `@source` faz ele escanear o JS compilado da lib e gerar apenas as classes usadas pelos componentes, usando o tema do **seu** projeto. Essa é a mesma abordagem usada por libs como [HeroUI](https://www.heroui.com/docs/guide/tailwind-v4).
 
-### 2. Importar o CSS de animacoes
+### 2. Importar o CSS de animações
 
 No layout raiz (ex: `layout.tsx` ou `_app.tsx`):
 
@@ -61,7 +56,7 @@ No layout raiz (ex: `layout.tsx` ou `_app.tsx`):
 import "@tree-ia/design-system/styles.css";
 ```
 
-Este arquivo contem apenas keyframes e classes de animacao (spinners, toasts, transicoes). Nao inclui Tailwind, portanto nao conflita com o seu tema.
+Este arquivo contém apenas keyframes e classes de animação (spinners, toasts, transições). Não inclui Tailwind, portanto não conflita com o seu tema.
 
 ### 3. Configurar o dark mode (Tailwind v4)
 
@@ -101,20 +96,20 @@ Pronto! Todos os componentes agora respondem ao seu tema.
 
 ## Tema e Cores
 
-O `DashboardProvider` injeta CSS custom properties no `:root`. Todos os componentes referenciam essas variaveis. Voce pode passar apenas as cores que quiser sobrescrever — o resto usa os defaults.
+O `DashboardProvider` injeta CSS custom properties no `:root`. Todos os componentes referenciam essas variáveis. Você pode passar apenas as cores que quiser sobrescrever — o resto usa os defaults.
 
 ### ThemeColors
 
 | Propriedade | CSS Variable | Default | Uso |
 |---|---|---|---|
-| `primary` | `--dashboard-primary` | `#37A501` | Botoes, links ativos, switches, foco |
-| `secondary` | `--dashboard-secondary` | `#f0f0f0` | Cor de apoio (disponivel para o consumidor) |
-| `background` | `--dashboard-background` | `#F2F2F2` | Fundo da pagina, sidebar |
+| `primary` | `--dashboard-primary` | `#37A501` | Botões, links ativos, switches, foco |
+| `secondary` | `--dashboard-secondary` | `#f0f0f0` | Cor de apoio (disponível para o consumidor) |
+| `background` | `--dashboard-background` | `#F2F2F2` | Fundo da página, sidebar |
 | `surface` | `--dashboard-surface` | `#FFFFFF` | Fundo de cards, modais, inputs, tabelas |
-| `textPrimary` | `--dashboard-text-primary` | `#2d2d2d` | Textos principais, titulos |
-| `textSecondary` | `--dashboard-text-secondary` | `#6b7280` | Textos secundarios, borders, placeholders |
+| `textPrimary` | `--dashboard-text-primary` | `#2d2d2d` | Textos principais, títulos |
+| `textSecondary` | `--dashboard-text-secondary` | `#6b7280` | Textos secundários, borders, placeholders |
 | `statusSuccess` | `--dashboard-status-success` | `#10B981` | Toasts e badges de sucesso |
-| `statusDanger` | `--dashboard-status-danger` | `#EF4444` | Erros, botao danger, validacao |
+| `statusDanger` | `--dashboard-status-danger` | `#EF4444` | Erros, botão danger, validação |
 | `statusWarning` | `--dashboard-status-warning` | `#F59E0B` | Toasts e badges de aviso |
 | `statusInfo` | `--dashboard-status-info` | `#3B82F6` | Toasts e badges informativos |
 | `statusNeutral` | `--dashboard-status-neutral` | `#6B7280` | Badges neutros |
@@ -160,13 +155,13 @@ import { Button } from "@tree-ia/design-system";
 <Button variant="ghost" icon={<Trash size={16} />} />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
 | `variant` | `"primary" \| "secondary" \| "danger" \| "ghost"` | `"primary"` | Estilo visual |
 | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Tamanho |
 | `isLoading` | `boolean` | `false` | Mostra spinner e desabilita |
-| `icon` | `ReactNode` | - | Icone. Se sem children, renderiza como botao icone |
-| `iconPosition` | `"left" \| "right"` | `"left"` | Posicao do icone |
+| `icon` | `ReactNode` | - | Ícone. Se sem children, renderiza como botão ícone |
+| `iconPosition` | `"left" \| "right"` | `"left"` | Posição do ícone |
 
 Herda todos os atributos nativos de `<button>`.
 
@@ -181,7 +176,7 @@ import { Input } from "@tree-ia/design-system";
   label="Email"
   type="email"
   placeholder="seu@email.com"
-  error="Email invalido"
+  error="Email inválido"
 />
 
 <Input placeholder="Buscar...">
@@ -189,11 +184,11 @@ import { Input } from "@tree-ia/design-system";
 </Input>
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
 | `label` | `string` | - | Label acima do input |
 | `error` | `string` | - | Mensagem de erro abaixo (borda vermelha) |
-| `children` | `ReactNode` | - | Elemento posicionado a direita dentro do input |
+| `children` | `ReactNode` | - | Elemento posicionado à direita dentro do input |
 
 Herda todos os atributos nativos de `<input>`. Aceita `ref` via `forwardRef`.
 
@@ -205,7 +200,7 @@ Herda todos os atributos nativos de `<input>`. Aceita `ref` via `forwardRef`.
 import { Dropdown } from "@tree-ia/design-system";
 
 const options = [
-  { value: "sp", label: "Sao Paulo" },
+  { value: "sp", label: "São Paulo" },
   { value: "rj", label: "Rio de Janeiro" },
 ];
 
@@ -218,19 +213,19 @@ const options = [
 />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `options` | `DropdownOption[]` | obrigatorio | Opcoes do dropdown |
+| `options` | `DropdownOption[]` | obrigatório | Opções do dropdown |
 | `value` | `string` | - | Valor selecionado |
-| `onChange` | `(value: string) => void` | obrigatorio | Callback de selecao |
+| `onChange` | `(value: string) => void` | obrigatório | Callback de seleção |
 | `label` | `string` | - | Label acima |
-| `placeholder` | `string` | `"Selecione uma opcao"` | Texto quando vazio |
+| `placeholder` | `string` | `"Selecione uma opção"` | Texto quando vazio |
 | `variant` | `"default" \| "underline" \| "simple" \| "compact"` | `"default"` | Estilo visual |
 | `size` | `"small" \| "medium" \| "large"` | `"medium"` | Tamanho |
 | `error` | `string` | - | Mensagem de erro |
 | `disabled` | `boolean` | `false` | Desabilita |
 | `fullWidth` | `boolean` | `false` | Ocupa 100% da largura |
-| `icon` | `ReactNode` | - | Icone a esquerda |
+| `icon` | `ReactNode` | - | Ícone à esquerda |
 | `isActive` | `boolean` | `false` | Destaca com borda primary |
 
 O menu abre via portal no `document.body` (z-index 9999) e fecha ao clicar fora, scroll ou resize.
@@ -259,22 +254,22 @@ const columns = [
   keyExtractor={(user) => user.id}
   onRowClick={(user) => router.push(`/users/${user.id}`)}
   isLoading={loading}
-  emptyMessage="Nenhum usuario encontrado"
+  emptyMessage="Nenhum usuário encontrado"
 />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `columns` | `TableColumn<T>[]` | obrigatorio | Definicao das colunas |
-| `data` | `T[]` | obrigatorio | Array de dados |
-| `keyExtractor` | `(item: T) => string` | obrigatorio | Chave unica por linha |
+| `columns` | `TableColumn<T>[]` | obrigatório | Definição das colunas |
+| `data` | `T[]` | obrigatório | Array de dados |
+| `keyExtractor` | `(item: T) => string` | obrigatório | Chave única por linha |
 | `onRowClick` | `(item: T) => void` | - | Callback ao clicar na linha |
 | `isLoading` | `boolean` | `false` | Mostra skeleton de loading |
 | `emptyMessage` | `string` | `"Nenhum registro encontrado"` | Mensagem quando vazio |
-| `loadingComponent` | `ReactNode` | - | Substitui o skeleton padrao |
-| `emptyComponent` | `ReactNode` | - | Substitui o empty state padrao |
+| `loadingComponent` | `ReactNode` | - | Substitui o skeleton padrão |
+| `emptyComponent` | `ReactNode` | - | Substitui o empty state padrão |
 
-Exporta tambem: `TableHeader`, `TableBody`, `TableSkeleton`, `TableEmpty`.
+Exporta também: `TableHeader`, `TableBody`, `TableSkeleton`, `TableEmpty`.
 
 ---
 
@@ -286,7 +281,7 @@ import { Modal } from "@tree-ia/design-system";
 <Modal
   isOpen={open}
   onClose={() => setOpen(false)}
-  title="Confirmar exclusao"
+  title="Confirmar exclusão"
   showFooter
   saveButtonText="Excluir"
   saveButtonVariant="danger"
@@ -296,16 +291,16 @@ import { Modal } from "@tree-ia/design-system";
 </Modal>
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `isOpen` | `boolean` | obrigatorio | Controle de visibilidade |
-| `onClose` | `() => void` | obrigatorio | Callback de fechamento |
-| `title` | `string` | `""` | Titulo no header |
-| `showFooter` | `boolean` | `false` | Mostra footer com botoes |
-| `saveButtonText` | `string` | `"Salvar"` | Texto do botao principal |
-| `cancelButtonText` | `string` | `"Cancelar"` | Texto do botao cancelar |
-| `size` | `"small" \| "medium" \| "large" \| "largeXl" \| "extraLarge"` | `"medium"` | Largura maxima |
-| `saveButtonVariant` | `"primary" \| "secondary" \| "danger" \| "ghost"` | `"primary"` | Variante do botao salvar |
+| `isOpen` | `boolean` | obrigatório | Controle de visibilidade |
+| `onClose` | `() => void` | obrigatório | Callback de fechamento |
+| `title` | `string` | `""` | Título no header |
+| `showFooter` | `boolean` | `false` | Mostra footer com botões |
+| `saveButtonText` | `string` | `"Salvar"` | Texto do botão principal |
+| `cancelButtonText` | `string` | `"Cancelar"` | Texto do botão cancelar |
+| `size` | `"small" \| "medium" \| "large" \| "largeXl" \| "extraLarge"` | `"medium"` | Largura máxima |
+| `saveButtonVariant` | `"primary" \| "secondary" \| "danger" \| "ghost"` | `"primary"` | Variante do botão salvar |
 | `closeOnEscape` | `boolean` | `true` | Fecha com Escape |
 | `closeOnOverlayClick` | `boolean` | `true` | Fecha ao clicar fora |
 
@@ -317,8 +312,8 @@ import { Modal } from "@tree-ia/design-system";
 import { Card } from "@tree-ia/design-system";
 
 <Card
-  title="Vendas do Mes"
-  subtitle="Atualizado ha 5 minutos"
+  title="Vendas do Mês"
+  subtitle="Atualizado há 5 minutos"
   icon={<BarChart size={20} />}
   headerActions={<Button variant="ghost" size="sm">Ver mais</Button>}
   showDivider
@@ -327,13 +322,13 @@ import { Card } from "@tree-ia/design-system";
 </Card>
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `title` | `string` | - | Titulo no header |
-| `subtitle` | `string` | - | Subtitulo abaixo do titulo |
-| `icon` | `ReactNode` | - | Icone ao lado do titulo |
-| `headerActions` | `ReactNode` | - | Acoes alinhadas a direita no header |
-| `showDivider` | `boolean` | `false` | Linha divisoria abaixo do header |
+| `title` | `string` | - | Título no header |
+| `subtitle` | `string` | - | Subtítulo abaixo do título |
+| `icon` | `ReactNode` | - | Ícone ao lado do título |
+| `headerActions` | `ReactNode` | - | Ações alinhadas à direita no header |
+| `showDivider` | `boolean` | `false` | Linha divisória abaixo do header |
 
 ---
 
@@ -351,11 +346,11 @@ const tabs = [
 <Tabs tabs={tabs} activeTab={tab} onChange={setTab} />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `tabs` | `Tab[]` | obrigatorio | Array de tabs |
-| `activeTab` | `string` | obrigatorio | ID da tab ativa |
-| `onChange` | `(tabId: string) => void` | obrigatorio | Callback de troca |
+| `tabs` | `Tab[]` | obrigatório | Array de tabs |
+| `activeTab` | `string` | obrigatório | ID da tab ativa |
+| `onChange` | `(tabId: string) => void` | obrigatório | Callback de troca |
 
 Cada `Tab`: `{ id, label, count?, icon? }`.
 
@@ -373,10 +368,10 @@ import { DateRangePicker } from "@tree-ia/design-system";
 />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `value` | `{ start: Date \| null, end: Date \| null }` | obrigatorio | Periodo selecionado |
-| `onChange` | `(range: DateRange) => void` | obrigatorio | Callback |
+| `value` | `{ start: Date \| null, end: Date \| null }` | obrigatório | Período selecionado |
+| `onChange` | `(range: DateRange) => void` | obrigatório | Callback |
 | `locale` | `"pt" \| "en"` | `"pt"` | Idioma |
 
 ---
@@ -387,10 +382,10 @@ import { DateRangePicker } from "@tree-ia/design-system";
 import { Title } from "@tree-ia/design-system";
 
 <Title level={1}>Dashboard</Title>
-<Title level={3} size="sm" weight="medium" align="center">Subtitulo</Title>
+<Title level={3} size="sm" weight="medium" align="center">Subtítulo</Title>
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
 | `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | Tag HTML (h1-h6) |
 | `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl"` | auto por level | Tamanho visual |
@@ -408,15 +403,15 @@ import { ToggleSwitch } from "@tree-ia/design-system";
 <ToggleSwitch
   enabled={notifications}
   onChange={setNotifications}
-  label="Notificacoes"
+  label="Notificações"
   size="md"
 />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `enabled` | `boolean` | obrigatorio | Estado on/off |
-| `onChange` | `(enabled: boolean) => void` | obrigatorio | Callback |
+| `enabled` | `boolean` | obrigatório | Estado on/off |
+| `onChange` | `(enabled: boolean) => void` | obrigatório | Callback |
 | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Tamanho |
 | `label` | `string` | - | Label e aria-label |
 | `disabled` | `boolean` | `false` | Desabilita |
@@ -433,9 +428,9 @@ import { BadgeStatus } from "@tree-ia/design-system";
 <BadgeStatus label="Custom" color="#7c3aed" bgColor="#7c3aed20" />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `label` | `string` | obrigatorio | Texto do badge |
+| `label` | `string` | obrigatório | Texto do badge |
 | `variant` | `"success" \| "warning" \| "danger" \| "info" \| "neutral"` | `"neutral"` | Variante de cor |
 | `color` | `string` | - | Cor do texto (sobrescreve variante) |
 | `bgColor` | `string` | - | Cor de fundo (sobrescreve variante) |
@@ -450,23 +445,23 @@ import { Toast } from "@tree-ia/design-system";
 
 <Toast
   title="Salvo com sucesso"
-  subtitle="As alteracoes foram aplicadas"
+  subtitle="As alterações foram aplicadas"
   type="success"
   duration={4000}
   onClose={() => {}}
 />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `title` | `string` | obrigatorio | Titulo |
-| `type` | `"success" \| "error" \| "warning" \| "info"` | `"success"` | Tipo (cor + icone) |
-| `subtitle` | `string` | - | Subtitulo |
-| `duration` | `number` | `4000` | Duracao em ms (0 = sem auto-close) |
+| `title` | `string` | obrigatório | Título |
+| `type` | `"success" \| "error" \| "warning" \| "info"` | `"success"` | Tipo (cor + ícone) |
+| `subtitle` | `string` | - | Subtítulo |
+| `duration` | `number` | `4000` | Duração em ms (0 = sem auto-close) |
 | `showProgress` | `boolean` | `true` | Barra de progresso |
-| `onClose` | `() => void` | obrigatorio | Callback de fechamento |
+| `onClose` | `() => void` | obrigatório | Callback de fechamento |
 
-Geralmente nao se usa `Toast` diretamente — use `useNotifications()`.
+Geralmente não se usa `Toast` diretamente — use `useNotifications()`.
 
 ---
 
@@ -480,7 +475,7 @@ import { Loading } from "@tree-ia/design-system";
 <Loading fullscreen text="Processando..." />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
 | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Tamanho (16/32/48px) |
 | `variant` | `"spinner" \| "border"` | `"spinner"` | Estilo do spinner |
@@ -506,14 +501,14 @@ import { Pagination } from "@tree-ia/design-system";
 />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `currentPage` | `number` | obrigatorio | Pagina atual (1-indexed) |
-| `totalPages` | `number` | obrigatorio | Total de paginas |
-| `totalItems` | `number` | obrigatorio | Total de itens |
-| `itemsPerPage` | `number` | obrigatorio | Itens por pagina |
-| `onPageChange` | `(page: number) => void` | obrigatorio | Callback de navegacao |
-| `onItemsPerPageChange` | `(n: number) => void` | - | Callback de itens/pagina (omitir oculta) |
+| `currentPage` | `number` | obrigatório | Página atual (1-indexed) |
+| `totalPages` | `number` | obrigatório | Total de páginas |
+| `totalItems` | `number` | obrigatório | Total de itens |
+| `itemsPerPage` | `number` | obrigatório | Itens por página |
+| `onPageChange` | `(page: number) => void` | obrigatório | Callback de navegação |
+| `onItemsPerPageChange` | `(n: number) => void` | - | Callback de itens/página (omitir oculta) |
 | `compact` | `boolean` | `false` | Modo compacto |
 
 ---
@@ -533,14 +528,14 @@ import { FormField } from "@tree-ia/design-system";
 />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `label` | `string` | obrigatorio | Label do campo |
-| `name` | `string` | obrigatorio | name/id do input |
-| `value` | `string` | obrigatorio | Valor controlado |
-| `onChange` | `(value: string) => void` | obrigatorio | Callback (ja extrai o valor) |
+| `label` | `string` | obrigatório | Label do campo |
+| `name` | `string` | obrigatório | name/id do input |
+| `value` | `string` | obrigatório | Valor controlado |
+| `onChange` | `(value: string) => void` | obrigatório | Callback (já extrai o valor) |
 | `type` | `"text" \| "email" \| "password" \| "number" \| "tel"` | `"text"` | Tipo do input |
-| `error` | `string` | - | Erro de validacao |
+| `error` | `string` | - | Erro de validação |
 | `required` | `boolean` | `false` | Mostra asterisco vermelho |
 
 ---
@@ -553,8 +548,8 @@ import { Home, Users, Settings } from "lucide-react";
 import Link from "next/link"; // ou qualquer framework
 
 const menuItems = [
-  { id: "home", label: "Inicio", href: "/", icon: Home },
-  { id: "users", label: "Usuarios", href: "/users", icon: Users },
+  { id: "home", label: "Início", href: "/", icon: Home },
+  { id: "users", label: "Usuários", href: "/users", icon: Users },
   { id: "settings", label: "Config", href: "/settings", icon: Settings },
 ];
 
@@ -566,26 +561,26 @@ const menuItems = [
   linkComponent={Link}
   isCollapsed={collapsed}
   onToggleCollapse={() => setCollapsed(!collapsed)}
-  user={{ name: "Joao", email: "joao@email.com", subtitle: "Admin" }}
+  user={{ name: "João", email: "joao@email.com", subtitle: "Admin" }}
   onLogout={handleLogout}
 />
 ```
 
-| Prop | Tipo | Default | Descricao |
+| Prop | Tipo | Default | Descrição |
 |---|---|---|---|
-| `menuItems` | `SidebarMenuItem[]` | obrigatorio | Itens de navegacao |
-| `logo` | `ReactNode` | obrigatorio | Logo expandido |
-| `currentPath` | `string` | obrigatorio | Path atual para destaque |
+| `menuItems` | `SidebarMenuItem[]` | obrigatório | Itens de navegação |
+| `logo` | `ReactNode` | obrigatório | Logo expandido |
+| `currentPath` | `string` | obrigatório | Path atual para destaque |
 | `collapsedLogo` | `ReactNode` | - | Logo modo colapsado |
 | `linkComponent` | `ComponentType` | `<a>` | Componente de link (ex: Next.js Link) |
 | `isCollapsed` | `boolean` | `false` | Modo colapsado |
-| `onToggleCollapse` | `() => void` | - | Callback toggle (omitir oculta botao) |
-| `user` | `SidebarUser` | - | Info do usuario no footer |
-| `onUserClick` | `() => void` | - | Callback ao clicar no usuario |
-| `onLogout` | `() => void` | - | Callback logout (omitir oculta botao) |
-| `logoutLabel` | `string` | `"Sair"` | Texto do botao logout |
+| `onToggleCollapse` | `() => void` | - | Callback toggle (omitir oculta botão) |
+| `user` | `SidebarUser` | - | Info do usuário no footer |
+| `onUserClick` | `() => void` | - | Callback ao clicar no usuário |
+| `onLogout` | `() => void` | - | Callback logout (omitir oculta botão) |
+| `logoutLabel` | `string` | `"Sair"` | Texto do botão logout |
 
-Desktop: sidebar fixa a esquerda (280px / 109px colapsada). Mobile: header fixo no topo com menu dropdown.
+Desktop: sidebar fixa à esquerda (280px / 109px colapsada). Mobile: header fixo no topo com menu dropdown.
 
 ---
 
@@ -597,7 +592,7 @@ import { ThemeSwitcher } from "@tree-ia/design-system";
 <ThemeSwitcher />
 ```
 
-Botao que alterna entre light e dark mode. Usa `useTheme()` internamente. Deve estar dentro do `DashboardProvider`.
+Botão que alterna entre light e dark mode. Usa `useTheme()` internamente. Deve estar dentro do `DashboardProvider`.
 
 ---
 
@@ -621,9 +616,9 @@ function MyComponent() {
 }
 ```
 
-| Retorno | Tipo | Descricao |
+| Retorno | Tipo | Descrição |
 |---|---|---|
-| `theme` | `"light" \| "dark" \| "system"` | Preferencia do usuario |
+| `theme` | `"light" \| "dark" \| "system"` | Preferência do usuário |
 | `setTheme` | `(theme: Theme) => void` | Altera e persiste no localStorage |
 | `resolvedTheme` | `"light" \| "dark"` | Tema efetivo resolvido |
 
@@ -648,7 +643,7 @@ function MyComponent() {
 }
 ```
 
-| Retorno | Tipo | Descricao |
+| Retorno | Tipo | Descrição |
 |---|---|---|
 | `notifications` | `Notification[]` | Lista atual |
 | `addNotification` | `(n: Omit<Notification, "id">) => void` | Adiciona toast |
@@ -673,7 +668,7 @@ function MyComponent() {
 }
 ```
 
-Mostra um overlay fullscreen com spinner. Util para operacoes que bloqueiam toda a interface.
+Mostra um overlay fullscreen com spinner. Útil para operações que bloqueiam toda a interface.
 
 ---
 
@@ -695,13 +690,13 @@ Retorna o `DashboardConfig` completo (com deep merge dos defaults).
 
 ## CSS Utilities
 
-O `styles.css` contem apenas keyframes e classes de animacao — **nenhum CSS do Tailwind**. As utility classes do Tailwind sao geradas pelo seu projeto via `@source` (veja [Setup](#setup)).
+O `styles.css` contém apenas keyframes e classes de animação — **nenhum CSS do Tailwind**. As utility classes do Tailwind são geradas pelo seu projeto via `@source` (veja [Setup](#setup)).
 
 ```tsx
 import "@tree-ia/design-system/styles.css";
 ```
 
-| Classe | Descricao |
+| Classe | Descrição |
 |---|---|
 | `dashboard-animate-fade-in` | Fade in (0.3s) |
 | `dashboard-animate-fade-out` | Fade out (0.3s) |
@@ -716,11 +711,11 @@ import "@tree-ia/design-system/styles.css";
 
 ---
 
-## Configuracao Avancada
+## Configuração Avançada
 
 ### ComponentsConfig
 
-Alem de cores, voce pode configurar comportamentos padrao dos componentes:
+Além de cores, você pode configurar comportamentos padrão dos componentes:
 
 ```tsx
 const config = {
@@ -755,7 +750,7 @@ import { createConfig } from "@tree-ia/design-system";
 const config = createConfig({
   name: "MeuApp",
   colors: { primary: "#ff521d" },
-  // tudo que nao for passado usa os defaults
+  // tudo que não for passado usa os defaults
 });
 ```
 
@@ -764,7 +759,7 @@ const config = createConfig({
 ## Desenvolvimento
 
 ```bash
-# Instalar dependencias
+# Instalar dependências
 npm install
 
 # Rodar Storybook
@@ -776,19 +771,19 @@ npm run build
 # Type check
 npm run typecheck
 
-# Formatar codigo
+# Formatar código
 npm run format
 ```
 
 ### Storybook
 
-O Storybook inclui um seletor de temas na toolbar (EaiGarcom, EaiPrefeito, MeuConstrutor) para visualizar componentes em diferentes marcas.
+O Storybook inclui um seletor de temas na toolbar (EaíGarçom, EaíPrefeito, MeuConstrutor) para visualizar componentes em diferentes marcas.
 
-### Publicacao
+### Publicação
 
-A publicacao e automatica via GitHub Actions. Ao criar uma Release no GitHub:
+A publicação é automática via GitHub Actions. Ao criar uma Release no GitHub:
 
-1. Bump a versao: `npm version patch|minor|major`
+1. Bump a versão: `npm version patch|minor|major`
 2. Push com tag: `git push origin main --tags`
 3. Crie a Release no GitHub a partir da tag
 4. O workflow publica automaticamente no GitHub Packages
