@@ -60,6 +60,40 @@ export type {
 export { ThemeSwitcher } from "./components/ThemeSwitcher";
 export type { ThemeSwitcherProps } from "./components/ThemeSwitcher";
 
+export { KPICard } from "./components/KPICard";
+export type { KPICardProps, KPIValueFormat } from "./components/KPICard";
+
+export { PageLayout } from "./components/PageLayout";
+export type { PageLayoutProps } from "./components/PageLayout";
+
+export { ComparisonLineChart } from "./components/ComparisonLineChart";
+export type { ComparisonLineChartProps } from "./components/ComparisonLineChart";
+
+export { HorizontalBarChart } from "./components/HorizontalBarChart";
+export type {
+  HorizontalBarChartProps,
+  HorizontalBarChartTab,
+} from "./components/HorizontalBarChart";
+
+export { VerticalBarChart } from "./components/VerticalBarChart";
+export type { VerticalBarChartProps } from "./components/VerticalBarChart";
+
+export { ProgressBarList } from "./components/ProgressBarList";
+export type {
+  ProgressBarListProps,
+  ProgressBarListItem,
+} from "./components/ProgressBarList";
+
+export { MetricPanel } from "./components/MetricPanel";
+export type {
+  MetricPanelProps,
+  MetricPanelMetric,
+  MetricPanelChartData,
+} from "./components/MetricPanel";
+
+export { FilterBar } from "./components/FilterBar";
+export type { FilterBarProps } from "./components/FilterBar";
+
 // Providers
 export { DashboardProvider } from "./providers/DashboardProvider";
 export { ThemeProvider } from "./providers/ThemeProvider";
