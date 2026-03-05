@@ -6,5 +6,5 @@ export default defineConfig({
   dts: true,
   clean: true,
   hash: false,
-  external: ["react", "react-dom", "react/jsx-runtime"],
+  external: ["react", "react-dom", "react/jsx-runtime", "chart.js", "react-chartjs-2", "chart.js/auto"],
 });
