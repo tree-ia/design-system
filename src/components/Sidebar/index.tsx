@@ -7,7 +7,7 @@ export interface SidebarMenuItem {
   id: string;
   label: string;
   href: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>;
 }
 
 export interface SidebarUser {
@@ -177,7 +177,7 @@ export function Sidebar({
         {onToggleCollapse && (
           <button
             onClick={onToggleCollapse}
-            className="absolute top-16 -right-[20px] -translate-y-1/2 z-50 flex items-center justify-center cursor-pointer"
+            className="absolute top-16 -right-[18px] -translate-y-1/2 z-50 flex items-center justify-center cursor-pointer"
             aria-label={isCollapsed ? "Expandir sidebar" : "Recolher sidebar"}
             style={{ width: "20px", height: "193px" }}
           >
@@ -207,7 +207,7 @@ export function Sidebar({
             >
               <path
                 d="M4.5 2L8.5 6L4.5 10"
-                stroke="var(--dashboard-primary,#37a501)"
+                stroke="var(--dashboard-text-primary,#2d2d2d)"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -245,7 +245,7 @@ export function Sidebar({
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-4 py-4 space-y-2">
+          <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentPath === item.href;
@@ -269,15 +269,13 @@ export function Sidebar({
                     }}
                     title={isCollapsed ? item.label : undefined}
                   >
-                    <span
-                      className="flex-shrink-0"
+                    <Icon
+                      size={20}
                       style={{
                         marginRight: isCollapsed ? 0 : "0.75rem",
                         transition: `margin 400ms ${cubicBezier}`,
                       }}
-                    >
-                      <Icon size={20} />
-                    </span>
+                    />
                     <span
                       className="whitespace-nowrap overflow-hidden"
                       style={{
@@ -339,14 +337,14 @@ export function Sidebar({
               <button
                 onClick={onLogout}
                 className={cn(
-                  "w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer text-[var(--dashboard-text-primary,#2d2d2d)] hover:bg-[var(--dashboard-primary,#37a501)]/5",
+                  "w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium cursor-pointer text-[var(--dashboard-text-primary,#2d2d2d)] hover:bg-[var(--dashboard-primary,#37a501)]/5",
                   isCollapsed ? "justify-center" : "justify-start",
                 )}
+                style={{ transition: "background-color 200ms" }}
                 title={isCollapsed ? logoutLabel : undefined}
               >
                 <LogOut
                   size={20}
-                  className="flex-shrink-0"
                   style={{
                     marginRight: isCollapsed ? 0 : "0.75rem",
                     transition: `margin 400ms ${cubicBezier}`,
