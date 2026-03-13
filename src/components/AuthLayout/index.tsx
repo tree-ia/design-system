@@ -447,7 +447,7 @@ export function AuthLayout({
     borderRadius: cardStyle?.borderRadius ?? 16,
     boxShadow:
       cardStyle?.shadow ??
-      "0 25px 50px -12px rgb(0 0 0 / 0.25), 0 12px 24px -8px rgb(0 0 0 / 0.15)",
+      "0 0 0 1px rgb(0 0 0 / 0.08), 0 0 12px 4px rgb(0 0 0 / 0.25), 0 0 28px 10px rgb(0 0 0 / 0.20)",
     maxWidth: cardStyle?.maxWidth ?? 420,
     padding: cardStyle?.padding ?? 32,
     border: cardStyle?.border || "none",
@@ -495,7 +495,7 @@ export function AuthLayout({
 
   return (
     <div
-      className={cn("fixed inset-0 flex overflow-hidden select-none", className)}
+      className={cn("fixed inset-0 flex select-none overflow-hidden", className)}
       style={bgCss}
     >
       {/* Background left spacer for branding (hidden on mobile) */}
@@ -513,12 +513,12 @@ export function AuthLayout({
 
       {/* Background image */}
       {background?.imageElement ? (
-        background.imageElement
+        <div className="absolute inset-0 z-0">{background.imageElement}</div>
       ) : background?.image ? (
         <img
           src={background.image}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 z-0 h-full w-full object-cover"
           draggable={false}
         />
       ) : null}
@@ -526,7 +526,7 @@ export function AuthLayout({
       {/* Background overlay — bg-black/20 by default */}
       {(background?.image || background?.imageElement) && (
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 z-10"
           style={{
             backgroundColor: `rgba(0,0,0,${background?.overlayOpacity ?? 0.2})`,
           }}
@@ -587,6 +587,7 @@ export function AuthLayout({
           padding-left: 1rem;
           padding-right: 1rem;
           justify-content: center;
+          align-content: center;
         }
         @media (min-width: 1024px) {
           .auth-card-container[data-position="right"] {
@@ -605,10 +606,10 @@ export function AuthLayout({
 
       {/* Card container — z-30, flex w-full items-center */}
       <div
-        className="auth-card-container relative z-30 flex w-full items-center"
+        className="auth-card-container relative z-30 flex w-full items-center py-8"
         data-position={cardPosition}
       >
-        <div style={cardCss}>
+        <div style={{ ...cardCss, maxHeight: "calc(100vh - 64px)", overflowY: "auto" }}>
             {/* Card header: logo + title + subtitle */}
             <div className={`mb-8 ${titleAlign === "center" ? "text-center" : titleAlign === "right" ? "text-right" : "text-left"}`}>
               {/* Logo */}
