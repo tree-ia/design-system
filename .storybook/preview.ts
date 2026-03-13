@@ -39,8 +39,8 @@ const themeConfigs = {
   MeuConstrutor: {
     name: "MeuConstrutor",
     colors: {
-      primary: "#0f2200",
-      secondary: "#e8f5e9",
+      primary: "#5FB530",
+      secondary: "#faf2e0",
       background: "#fafafa",
       surface: "#FFFFFF",
       textPrimary: "#1b1b1b",
