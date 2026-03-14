@@ -29,6 +29,8 @@ export interface AuthLink {
   label: string;
   /** URL or click handler */
   href?: string;
+  /** Link target (e.g., '_blank' for new tab) */
+  target?: string;
   /** Custom click handler (takes precedence over href) */
   onClick?: () => void;
 }
@@ -482,6 +484,8 @@ export function AuthLayout({
     return (
       <a
         href={link.href}
+        target={link.target}
+        rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
         className={cn(
           "hover:opacity-80 text-sm font-semibold transition-colors",
           extraClass,
