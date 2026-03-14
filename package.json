@@ -1,6 +1,6 @@
 {
   "name": "@tree-ia/design-system",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "description": "Shared UI component library for Tree IA dashboards",
   "type": "module",
   "main": "./dist/index.mjs",
@@ -60,7 +60,8 @@
     "typescript": "^5.7.0"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "repository": {
     "type": "git",
