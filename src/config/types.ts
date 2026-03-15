@@ -5,6 +5,10 @@ export interface ThemeColors {
   surface: string;
   textPrimary: string;
   textSecondary: string;
+  sidebarBg: string;
+  sidebarBorder: string;
+  sidebarText: string;
+  sidebarActiveText: string;
   statusSuccess: string;
   statusDanger: string;
   statusWarning: string;

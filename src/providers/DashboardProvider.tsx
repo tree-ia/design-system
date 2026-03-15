@@ -28,6 +28,10 @@ function CSSVarsInjector({ config }: { config: DashboardConfig }) {
     root.style.setProperty("--dashboard-surface", colors.surface);
     root.style.setProperty("--dashboard-text-primary", colors.textPrimary);
     root.style.setProperty("--dashboard-text-secondary", colors.textSecondary);
+    root.style.setProperty("--dashboard-sidebar-bg", colors.sidebarBg);
+    root.style.setProperty("--dashboard-sidebar-border", colors.sidebarBorder);
+    root.style.setProperty("--dashboard-sidebar-text", colors.sidebarText);
+    root.style.setProperty("--dashboard-sidebar-active-text", colors.sidebarActiveText);
     root.style.setProperty("--dashboard-status-success", colors.statusSuccess);
     root.style.setProperty("--dashboard-status-danger", colors.statusDanger);
     root.style.setProperty("--dashboard-status-warning", colors.statusWarning);
@@ -41,6 +45,10 @@ function CSSVarsInjector({ config }: { config: DashboardConfig }) {
       root.style.removeProperty("--dashboard-surface");
       root.style.removeProperty("--dashboard-text-primary");
       root.style.removeProperty("--dashboard-text-secondary");
+      root.style.removeProperty("--dashboard-sidebar-bg");
+      root.style.removeProperty("--dashboard-sidebar-border");
+      root.style.removeProperty("--dashboard-sidebar-text");
+      root.style.removeProperty("--dashboard-sidebar-active-text");
       root.style.removeProperty("--dashboard-status-success");
       root.style.removeProperty("--dashboard-status-danger");
       root.style.removeProperty("--dashboard-status-warning");

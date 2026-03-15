@@ -75,13 +75,13 @@ export function Sidebar({
   return (
     <>
       {/* Mobile Header */}
-      <header className="xl:hidden fixed top-0 left-0 right-0 z-40 bg-[var(--dashboard-background,#f2f2f2)] border-b border-[var(--dashboard-text-secondary,#6b7280)]/20">
+      <header className="xl:hidden fixed top-0 left-0 right-0 z-40 bg-[var(--dashboard-sidebar-bg,#1B4D08)] border-b border-[var(--dashboard-sidebar-border,#2A6510)]">
         <div className="flex items-center justify-center px-4 h-16 relative">
           <div className="flex items-center">{logo}</div>
 
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="absolute right-4 inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors cursor-pointer bg-[var(--dashboard-primary,#37a501)]/10 text-[var(--dashboard-text-primary,#2d2d2d)] hover:bg-[var(--dashboard-primary,#37a501)]/20 h-10 w-10"
+            className="absolute right-4 inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors cursor-pointer bg-white/10 text-[var(--dashboard-sidebar-text,#FFFFFF)] hover:bg-white/20 h-10 w-10"
             aria-label="Menu"
             aria-expanded={isMobileMenuOpen}
           >
@@ -95,8 +95,8 @@ export function Sidebar({
         </div>
 
         <nav
-          className={`absolute top-16 left-0 right-0 bg-[var(--dashboard-background,#f2f2f2)] border-b border-[var(--dashboard-text-secondary,#6b7280)]/20 shadow-lg transition-all duration-200 overflow-hidden ${
-            isMobileMenuOpen ? "max-h-[500px]" : "max-h-0"
+          className={`absolute top-16 left-0 right-0 bg-[var(--dashboard-sidebar-bg,#1B4D08)] border-b border-[var(--dashboard-sidebar-border,#2A6510)] shadow-lg transition-all duration-200 ${
+            isMobileMenuOpen ? "max-h-[calc(100vh-4rem)] overflow-y-auto" : "max-h-0 overflow-hidden"
           }`}
         >
           <div className="px-4 py-2">
@@ -114,8 +114,8 @@ export function Sidebar({
                     className={cn(
                       "w-full flex items-center justify-start px-4 py-3 rounded-lg text-sm font-medium transition-colors mb-1 cursor-pointer",
                       isActive
-                        ? "bg-[var(--dashboard-primary,#37a501)]/15 text-[var(--dashboard-primary,#37a501)]"
-                        : "text-[var(--dashboard-text-primary,#2d2d2d)] hover:bg-[var(--dashboard-primary,#37a501)]/5",
+                        ? "bg-[var(--dashboard-primary,#37a501)]/25 text-[var(--dashboard-sidebar-active-text,#5DD611)]"
+                        : "text-[var(--dashboard-sidebar-text,#FFFFFF)] hover:bg-white/10",
                     )}
                   >
                     <Icon size={20} className="mr-3 flex-shrink-0" />
@@ -125,25 +125,25 @@ export function Sidebar({
               );
             })}
 
-            <div className="mt-2 pt-2 border-t border-[var(--dashboard-text-secondary,#6b7280)]/20 space-y-2">
+            <div className="mt-2 pt-2 border-t border-[var(--dashboard-sidebar-border,#2A6510)] space-y-2">
               {user && (
                 <button
                   onClick={onUserClick}
-                  className="w-full flex items-center px-4 py-3 rounded-lg bg-[var(--dashboard-text-secondary,#6b7280)]/10 hover:bg-[var(--dashboard-text-secondary,#6b7280)]/20 transition-colors cursor-pointer"
+                  className="w-full flex items-center px-4 py-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer"
                 >
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--dashboard-primary,#37a501)]/20 text-[var(--dashboard-text-primary,#2d2d2d)] flex-shrink-0">
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--dashboard-primary,#37a501)]/30 text-[var(--dashboard-sidebar-text,#FFFFFF)] flex-shrink-0">
                     <User size={16} />
                   </div>
                   <div className="ml-3 text-left">
                     {user.subtitle && (
-                      <p className="text-xs text-[var(--dashboard-text-secondary,#6b7280)] whitespace-nowrap truncate">
+                      <p className="text-xs text-[var(--dashboard-sidebar-text,#FFFFFF)]/60 whitespace-nowrap truncate">
                         {user.subtitle}
                       </p>
                     )}
-                    <p className="text-sm font-medium text-[var(--dashboard-text-primary,#2d2d2d)] whitespace-nowrap truncate">
+                    <p className="text-sm font-medium text-[var(--dashboard-sidebar-text,#FFFFFF)] whitespace-nowrap truncate">
                       {user.name}
                     </p>
-                    <p className="text-xs text-[var(--dashboard-text-secondary,#6b7280)] whitespace-nowrap truncate">
+                    <p className="text-xs text-[var(--dashboard-sidebar-text,#FFFFFF)]/60 whitespace-nowrap truncate">
                       {user.email}
                     </p>
                   </div>
@@ -153,7 +153,7 @@ export function Sidebar({
               {onLogout && (
                 <button
                   onClick={onLogout}
-                  className="w-full flex items-center justify-start px-4 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer text-[var(--dashboard-text-primary,#2d2d2d)] hover:bg-[var(--dashboard-primary,#37a501)]/5"
+                  className="w-full flex items-center justify-start px-4 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer text-[var(--dashboard-sidebar-text,#FFFFFF)] hover:bg-white/10"
                 >
                   <LogOut size={20} className="mr-3 flex-shrink-0" />
                   <span className="whitespace-nowrap">{logoutLabel}</span>
@@ -167,7 +167,7 @@ export function Sidebar({
       {/* Desktop Sidebar */}
       <aside
         className={cn(
-          "hidden xl:flex xl:flex-col xl:fixed xl:left-0 xl:top-0 xl:h-screen bg-[var(--dashboard-background,#f2f2f2)] border-r border-[var(--dashboard-text-secondary,#6b7280)]/20 overflow-visible",
+          "hidden xl:flex xl:flex-col xl:fixed xl:left-0 xl:top-0 xl:h-screen bg-[var(--dashboard-sidebar-bg,#1B4D08)] border-r border-[var(--dashboard-sidebar-border,#2A6510)] overflow-visible",
           isCollapsed ? "xl:w-[109px]" : "xl:w-[280px]",
           className,
         )}
@@ -191,7 +191,7 @@ export function Sidebar({
             >
               <path
                 d="M10.2036 118.86C14.8518 115.918 19.5 107.801 19.5 95.9116C19.5 84.0223 15.672 76.4939 10.2036 72.9634C4.73505 69.4329 2.54765 63.5488 1.72738 55.8994L1.72738 136.512C2.82108 125.921 5.55533 121.802 10.2036 118.86Z"
-                fill="var(--dashboard-background,#f2f2f2)"
+                fill="var(--dashboard-sidebar-bg,#1B4D08)"
               />
             </svg>
             <svg
@@ -207,7 +207,7 @@ export function Sidebar({
             >
               <path
                 d="M4.5 2L8.5 6L4.5 10"
-                stroke="var(--dashboard-text-primary,#2d2d2d)"
+                stroke="var(--dashboard-sidebar-text,#FFFFFF)"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -218,7 +218,7 @@ export function Sidebar({
 
         <div className="flex flex-col h-full overflow-y-auto">
           {/* Logo */}
-          <div className="flex justify-center items-center py-6 px-4 border-b border-[var(--dashboard-text-secondary,#6b7280)]/20 overflow-hidden relative">
+          <div className="flex justify-center items-center py-6 px-4 border-b border-[var(--dashboard-sidebar-border,#2A6510)] overflow-hidden relative h-[88px]">
             {collapsedLogo && (
               <div
                 className="absolute inset-0 flex items-center justify-center"
@@ -261,8 +261,8 @@ export function Sidebar({
                       "w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium cursor-pointer",
                       isCollapsed ? "justify-center" : "justify-start",
                       isActive
-                        ? "bg-[var(--dashboard-primary,#37a501)]/15 text-[var(--dashboard-primary,#37a501)]"
-                        : "text-[var(--dashboard-text-primary,#2d2d2d)] hover:bg-[var(--dashboard-primary,#37a501)]/5",
+                        ? "bg-[var(--dashboard-primary,#37a501)]/25 text-[var(--dashboard-sidebar-active-text,#5DD611)]"
+                        : "text-[var(--dashboard-sidebar-text,#FFFFFF)] hover:bg-white/10",
                     )}
                     style={{
                       transition: "background-color 200ms, color 200ms",
@@ -293,12 +293,12 @@ export function Sidebar({
           </nav>
 
           {/* Footer */}
-          <footer className="p-4 border-t border-[var(--dashboard-text-secondary,#6b7280)]/20 space-y-2">
+          <footer className="p-4 border-t border-[var(--dashboard-sidebar-border,#2A6510)] space-y-2">
             {user && (
               <button
                 onClick={onUserClick}
                 className={cn(
-                  "w-full flex items-center px-4 py-3 rounded-lg bg-[var(--dashboard-text-secondary,#6b7280)]/10 hover:bg-[var(--dashboard-text-secondary,#6b7280)]/20 transition-colors cursor-pointer",
+                  "w-full flex items-center px-4 py-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer",
                   isCollapsed ? "justify-center" : "justify-start",
                 )}
                 title={
@@ -307,7 +307,7 @@ export function Sidebar({
                     : undefined
                 }
               >
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--dashboard-primary,#37a501)]/20 text-[var(--dashboard-text-primary,#2d2d2d)] flex-shrink-0">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--dashboard-primary,#37a501)]/30 text-[var(--dashboard-sidebar-text,#FFFFFF)] flex-shrink-0">
                   <User size={16} />
                 </div>
                 <div
@@ -319,14 +319,14 @@ export function Sidebar({
                   }}
                 >
                   {user.subtitle && (
-                    <p className="text-xs text-[var(--dashboard-text-secondary,#6b7280)] whitespace-nowrap truncate">
+                    <p className="text-xs text-[var(--dashboard-sidebar-text,#FFFFFF)]/60 whitespace-nowrap truncate">
                       {user.subtitle}
                     </p>
                   )}
-                  <p className="text-sm font-medium text-[var(--dashboard-text-primary,#2d2d2d)] whitespace-nowrap truncate">
+                  <p className="text-sm font-medium text-[var(--dashboard-sidebar-text,#FFFFFF)] whitespace-nowrap truncate">
                     {user.name}
                   </p>
-                  <p className="text-xs text-[var(--dashboard-text-secondary,#6b7280)] whitespace-nowrap truncate">
+                  <p className="text-xs text-[var(--dashboard-sidebar-text,#FFFFFF)]/60 whitespace-nowrap truncate">
                     {user.email}
                   </p>
                 </div>
@@ -337,7 +337,7 @@ export function Sidebar({
               <button
                 onClick={onLogout}
                 className={cn(
-                  "w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium cursor-pointer text-[var(--dashboard-text-primary,#2d2d2d)] hover:bg-[var(--dashboard-primary,#37a501)]/5",
+                  "w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium cursor-pointer text-[var(--dashboard-sidebar-text,#FFFFFF)] hover:bg-white/10",
                   isCollapsed ? "justify-center" : "justify-start",
                 )}
                 style={{ transition: "background-color 200ms" }}
