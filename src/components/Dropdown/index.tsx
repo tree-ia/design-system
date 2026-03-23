@@ -252,7 +252,7 @@ export function Dropdown({
                 top: position.top,
                 left: position.left,
                 width: position.width,
-                zIndex: 9999,
+                zIndex: 10001,
               }}
             >
               <ul className="py-1">
