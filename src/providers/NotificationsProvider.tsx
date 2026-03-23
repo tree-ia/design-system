@@ -60,7 +60,7 @@ export function NotificationsProvider({
     >
       {children}
       {notifications.length > 0 && (
-        <div className="fixed w-full max-w-[400px] px-4 z-50 top-4 left-1/2 -translate-x-1/2 sm:top-5 sm:right-4 sm:left-auto sm:translate-x-0 flex flex-col gap-2">
+        <div className="fixed w-full max-w-[400px] px-4 z-[10002] top-4 left-1/2 -translate-x-1/2 sm:top-5 sm:right-4 sm:left-auto sm:translate-x-0 flex flex-col gap-2">
           {notifications.map((notification) => (
             <Toast
               key={notification.id}
