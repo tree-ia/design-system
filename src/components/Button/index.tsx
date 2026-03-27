@@ -24,15 +24,17 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "font-medium rounded-lg transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center";
+    "font-medium rounded-lg transition-all duration-200 ease-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--dashboard-primary,#2563EB)] active:scale-[0.97]";
 
   const variantStyles = {
-    primary: "bg-[var(--dashboard-primary,#37a501)] text-white hover:opacity-90",
+    primary:
+      "bg-[var(--dashboard-primary,#2563EB)] text-white hover:brightness-110 hover:shadow-md",
     secondary:
-      "bg-[var(--dashboard-text-secondary,#6b7280)]/20 text-[var(--dashboard-text-primary,#2d2d2d)] hover:bg-[var(--dashboard-text-secondary,#6b7280)]/30",
-    danger: "bg-[var(--dashboard-status-danger,#EF4444)] text-white hover:opacity-90",
+      "bg-[var(--dashboard-text-secondary,#64748B)]/10 text-[var(--dashboard-text-primary,#0F172A)] border border-[var(--dashboard-text-secondary,#64748B)]/20 hover:bg-[var(--dashboard-text-secondary,#64748B)]/15 hover:border-[var(--dashboard-text-secondary,#64748B)]/30",
+    danger:
+      "bg-[var(--dashboard-status-danger,#DC2626)] text-white hover:brightness-110 hover:shadow-md",
     ghost:
-      "bg-transparent hover:bg-[var(--dashboard-text-secondary,#6b7280)]/10 text-[var(--dashboard-text-primary,#2d2d2d)]",
+      "bg-transparent hover:bg-[var(--dashboard-text-secondary,#64748B)]/8 text-[var(--dashboard-text-primary,#0F172A)]",
   };
 
   const sizeStyles = {

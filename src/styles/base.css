@@ -6,6 +6,97 @@
  *   @custom-variant dark (&:where(.dark, .dark *));
  */
 
+/* ─── Typography ─── */
+
+.dashboard-text-display {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.dashboard-text-heading {
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.dashboard-text-body {
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.dashboard-text-body-dense {
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.dashboard-text-caption {
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+.dashboard-text-label {
+  font-weight: 600;
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ─── Focus Rings ─── */
+
+.dashboard-focus-ring {
+  outline: none;
+}
+
+.dashboard-focus-ring:focus-visible {
+  outline: 2px solid var(--dashboard-primary, #2563EB);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Transitions ─── */
+
+.dashboard-transition-base {
+  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.dashboard-transition-slow {
+  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* ─── Shadows ─── */
+
+.dashboard-shadow-sm {
+  box-shadow:
+    0 1px 2px 0 rgb(0 0 0 / 0.03),
+    0 1px 3px 0 rgb(0 0 0 / 0.06);
+}
+
+.dashboard-shadow-md {
+  box-shadow:
+    0 2px 4px -1px rgb(0 0 0 / 0.04),
+    0 4px 6px -1px rgb(0 0 0 / 0.08);
+}
+
+.dashboard-shadow-lg {
+  box-shadow:
+    0 4px 6px -2px rgb(0 0 0 / 0.03),
+    0 10px 15px -3px rgb(0 0 0 / 0.08);
+}
+
+.dashboard-shadow-xl {
+  box-shadow:
+    0 10px 25px -5px rgb(0 0 0 / 0.08),
+    0 20px 50px -12px rgb(0 0 0 / 0.15);
+}
+
 /* Keyframes */
 @keyframes dashboard-fade-in {
   from {
@@ -88,11 +179,19 @@
 }
 
 @keyframes dashboard-shimmer {
-  from {
+  0% {
     transform: translateX(-100%);
+    opacity: 0;
   }
-  to {
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
     transform: translateX(200%);
+    opacity: 0;
   }
 }
 
@@ -154,7 +253,7 @@
 }
 
 .dashboard-animate-shimmer {
-  animation: dashboard-shimmer 2s ease-in-out infinite;
+  animation: dashboard-shimmer 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .dashboard-animate-expand {

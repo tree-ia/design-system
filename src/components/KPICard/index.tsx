@@ -38,17 +38,17 @@ const trendConfigs = {
   up: {
     icon: "\u2191",
     color:
-      "text-[var(--dashboard-status-success,#10B981)] bg-[var(--dashboard-status-success,#10B981)]/10",
+      "text-[var(--dashboard-status-success,#059669)] bg-[var(--dashboard-status-success,#059669)]/8",
   },
   down: {
     icon: "\u2193",
     color:
-      "text-[var(--dashboard-status-danger,#EF4444)] bg-[var(--dashboard-status-danger,#EF4444)]/10",
+      "text-[var(--dashboard-status-danger,#DC2626)] bg-[var(--dashboard-status-danger,#DC2626)]/8",
   },
   stable: {
     icon: "\u2192",
     color:
-      "text-[var(--dashboard-text-secondary,#6b7280)] bg-[var(--dashboard-text-secondary,#6b7280)]/10",
+      "text-[var(--dashboard-text-secondary,#64748B)] bg-[var(--dashboard-text-secondary,#64748B)]/8",
   },
 };
 
@@ -69,17 +69,17 @@ export function KPICard({
   return (
     <div
       className={cn(
-        "h-full w-full bg-[var(--dashboard-surface,#ffffff)] rounded-lg shadow-sm p-6 border border-[var(--dashboard-text-secondary,#6b7280)]/20 hover:shadow-md transition-all duration-200 flex flex-col",
+        "h-full w-full bg-[var(--dashboard-surface,#ffffff)] rounded-xl p-6 border border-[var(--dashboard-text-secondary,#64748B)]/12 transition-all duration-200 ease-out dashboard-shadow-sm hover:dashboard-shadow-md flex flex-col",
         className,
       )}
     >
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-sm font-medium text-[var(--dashboard-text-secondary,#6b7280)] whitespace-nowrap">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--dashboard-text-secondary,#64748B)] whitespace-nowrap">
           {title}
         </h3>
         {benchmark && (
           <span
-            className="text-xs text-[var(--dashboard-text-secondary,#6b7280)]/60 ml-2 whitespace-nowrap flex-shrink-0"
+            className="text-xs text-[var(--dashboard-text-secondary,#64748B)]/50 ml-2 whitespace-nowrap flex-shrink-0"
             title="Benchmark de referência"
           >
             {benchmark}
@@ -87,18 +87,18 @@ export function KPICard({
         )}
       </div>
 
-      <div className="flex items-center gap-3 flex-1">
-        <p className="text-3xl font-bold text-[var(--dashboard-text-primary,#2d2d2d)] whitespace-nowrap">
+      <div className="flex items-end gap-3 flex-1">
+        <p className="text-3xl font-bold text-[var(--dashboard-text-primary,#0F172A)] whitespace-nowrap tracking-tight">
           {formatValue(value, format)}
         </p>
         <div
           className={cn(
-            "inline-flex items-center gap-1 px-2 py-1 rounded-md flex-shrink-0",
+            "inline-flex items-center gap-1 px-2 py-1 rounded-full flex-shrink-0 mb-1",
             trendConfig.color,
           )}
         >
-          <span className="text-lg">{trendConfig.icon}</span>
-          <span className="text-sm font-medium whitespace-nowrap">
+          <span className="text-sm">{trendConfig.icon}</span>
+          <span className="text-xs font-semibold whitespace-nowrap">
             {Math.abs(variation).toFixed(1)}%
           </span>
         </div>
@@ -111,14 +111,14 @@ function KPICardSkeleton({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "h-full bg-[var(--dashboard-surface,#ffffff)] rounded-lg shadow-sm p-6 border border-[var(--dashboard-text-secondary,#6b7280)]/20 animate-pulse flex flex-col",
+        "h-full bg-[var(--dashboard-surface,#ffffff)] rounded-xl p-6 border border-[var(--dashboard-text-secondary,#64748B)]/12 dashboard-shadow-sm animate-pulse flex flex-col",
         className,
       )}
     >
-      <div className="h-4 bg-[var(--dashboard-text-secondary,#6b7280)]/20 rounded w-2/3 mb-4" />
-      <div className="flex items-center gap-3 flex-1">
-        <div className="h-8 bg-[var(--dashboard-text-secondary,#6b7280)]/20 rounded w-1/2" />
-        <div className="h-6 bg-[var(--dashboard-text-secondary,#6b7280)]/20 rounded w-1/4" />
+      <div className="h-3 bg-[var(--dashboard-text-secondary,#64748B)]/10 rounded w-2/3 mb-4" />
+      <div className="flex items-end gap-3 flex-1">
+        <div className="h-8 bg-[var(--dashboard-text-secondary,#64748B)]/10 rounded w-1/2" />
+        <div className="h-5 bg-[var(--dashboard-text-secondary,#64748B)]/10 rounded-full w-1/4" />
       </div>
     </div>
   );

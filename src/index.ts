@@ -112,6 +112,39 @@ export type { CodeInputProps } from "./components/CodeInput";
 export { Checkbox } from "./components/Checkbox";
 export type { CheckboxProps } from "./components/Checkbox";
 
+export { DataGrid, createColumnHelper } from "./components/DataGrid";
+export type { DataGridProps, DataGridColumn } from "./components/DataGrid";
+
+export { TreeView } from "./components/TreeView";
+export type { TreeViewProps, TreeNode } from "./components/TreeView";
+
+export { Stepper } from "./components/Stepper";
+export type { StepperProps, Step } from "./components/Stepper";
+
+export { FileUpload } from "./components/FileUpload";
+export type { FileUploadProps, UploadedFile } from "./components/FileUpload";
+
+export { Tooltip } from "./components/Tooltip";
+export type { TooltipProps } from "./components/Tooltip";
+
+export { Breadcrumb } from "./components/Breadcrumb";
+export type { BreadcrumbProps, BreadcrumbItem } from "./components/Breadcrumb";
+
+export { Combobox } from "./components/Combobox";
+export type { ComboboxProps, ComboboxOption } from "./components/Combobox";
+
+export { Skeleton } from "./components/Skeleton";
+export type { SkeletonProps } from "./components/Skeleton";
+
+export { Alert } from "./components/Alert";
+export type { AlertProps } from "./components/Alert";
+
+export { EmptyState } from "./components/EmptyState";
+export type { EmptyStateProps } from "./components/EmptyState";
+
+export { StatusBadge } from "./components/StatusBadge";
+export type { StatusBadgeProps } from "./components/StatusBadge";
+
 // Providers
 export { DashboardProvider } from "./providers/DashboardProvider";
 export { ThemeProvider } from "./providers/ThemeProvider";

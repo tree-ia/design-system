@@ -49,9 +49,9 @@ export function Table<T>({
 
   return (
     <div
-      className={`overflow-x-auto bg-[var(--dashboard-surface,#ffffff)] rounded-lg shadow-sm border border-[var(--dashboard-text-secondary,#6b7280)]/20 ${className}`}
+      className={`overflow-x-auto bg-[var(--dashboard-surface,#ffffff)] rounded-xl border border-[var(--dashboard-text-secondary,#64748B)]/12 dashboard-shadow-sm ${className}`}
     >
-      <table className="min-w-full divide-y divide-[var(--dashboard-text-secondary,#6b7280)]/20">
+      <table className="min-w-full divide-y divide-[var(--dashboard-text-secondary,#64748B)]/10">
         <TableHeader columns={columns} />
         <TableBody
           columns={columns}
@@ -73,13 +73,13 @@ export function TableHeader<T>({ columns }: { columns: TableColumn<T>[] }) {
         : "text-left";
 
   return (
-    <thead className="bg-[var(--dashboard-text-secondary,#6b7280)]/5">
+    <thead className="bg-[var(--dashboard-background,#F8FAFC)] sticky top-0 z-10">
       <tr>
         {columns.map((column) => (
           <th
             key={column.key}
             scope="col"
-            className={`px-6 py-3 text-xs font-semibold text-[var(--dashboard-text-secondary,#6b7280)] uppercase tracking-wider ${alignClass(column.align)} ${
+            className={`px-6 py-3 text-[0.6875rem] font-semibold text-[var(--dashboard-text-secondary,#64748B)] uppercase tracking-wider ${alignClass(column.align)} ${
               column.width ? `w-[${column.width}]` : ""
             }`}
           >
@@ -110,19 +110,21 @@ export function TableBody<T>({
         : "text-left";
 
   return (
-    <tbody className="bg-[var(--dashboard-surface,#ffffff)] divide-y divide-[var(--dashboard-text-secondary,#6b7280)]/20">
-      {data.map((item) => (
+    <tbody className="bg-[var(--dashboard-surface,#ffffff)] divide-y divide-[var(--dashboard-text-secondary,#64748B)]/8">
+      {data.map((item, index) => (
         <tr
           key={keyExtractor(item)}
           onClick={() => onRowClick?.(item)}
-          className={`hover:bg-[var(--dashboard-text-secondary,#6b7280)]/5 transition-colors duration-150 ${
+          className={`transition-colors duration-150 ${
+            index % 2 === 1 ? "bg-[var(--dashboard-text-secondary,#64748B)]/[0.02]" : ""
+          } hover:bg-[var(--dashboard-primary,#2563EB)]/[0.04] ${
             onRowClick ? "cursor-pointer" : ""
           }`}
         >
           {columns.map((column) => (
             <td
               key={column.key}
-              className={`px-6 py-4 whitespace-nowrap text-sm ${alignClass(column.align)}`}
+              className={`px-6 py-3.5 whitespace-nowrap text-sm leading-snug ${alignClass(column.align)}`}
             >
               {column.render(item)}
             </td>
@@ -135,7 +137,7 @@ export function TableBody<T>({
 
 export function TableSkeleton() {
   return (
-    <div className="bg-[var(--dashboard-surface,#ffffff)] rounded-lg shadow-sm border border-[var(--dashboard-text-secondary,#6b7280)]/20 p-6">
+    <div className="bg-[var(--dashboard-surface,#ffffff)] rounded-xl border border-[var(--dashboard-text-secondary,#64748B)]/12 dashboard-shadow-sm p-6">
       <div className="flex items-center justify-center h-64">
         <Loading size="lg" text="Carregando dados..." />
       </div>
@@ -151,11 +153,11 @@ export function TableEmpty({
   icon?: ReactNode;
 }) {
   return (
-    <div className="bg-[var(--dashboard-surface,#ffffff)] rounded-lg shadow-sm border border-[var(--dashboard-text-secondary,#6b7280)]/20 p-12">
+    <div className="bg-[var(--dashboard-surface,#ffffff)] rounded-xl border border-[var(--dashboard-text-secondary,#64748B)]/12 dashboard-shadow-sm p-12">
       <div className="text-center">
         {icon || (
           <svg
-            className="mx-auto h-12 w-12 text-[var(--dashboard-text-secondary,#6b7280)]"
+            className="mx-auto h-12 w-12 text-[var(--dashboard-text-secondary,#64748B)]/40"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -163,12 +165,12 @@ export function TableEmpty({
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
+              strokeWidth={1.5}
               d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
             />
           </svg>
         )}
-        <p className="mt-4 text-[var(--dashboard-text-secondary,#6b7280)]">{message}</p>
+        <p className="mt-4 text-sm text-[var(--dashboard-text-secondary,#64748B)]">{message}</p>
       </div>
     </div>
   );
