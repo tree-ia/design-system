@@ -1,6 +1,6 @@
 {
   "name": "@tree-ia/design-system",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Shared UI component library for Tree IA dashboards",
   "type": "module",
   "main": "./dist/index.mjs",
