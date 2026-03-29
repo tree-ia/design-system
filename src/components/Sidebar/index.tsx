@@ -272,7 +272,7 @@ export function Sidebar({
   function renderMenuGroups(collapsed: boolean, mobile: boolean) {
     const groups = groupBySection(menuItems);
     return groups.map((group, i) => (
-      <div key={group.section || `group-${i}`}>
+      <div key={group.section || `group-${i}`} className="space-y-1">
         {group.section && renderSectionHeader(group.section, collapsed)}
         {group.items.map((item) => renderMenuItem(item, collapsed, mobile))}
       </div>
