@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, ReactNode } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import { LogOut, ChevronDown, ChevronRight, User } from "lucide-react";
 
 export interface SidebarMenuItem {
@@ -42,6 +42,12 @@ export interface SidebarProps {
   logoutLabel?: string;
   /** Extra items rendered in the footer, above the logout button */
   footerItems?: SidebarMenuItem[];
+  /** Arbitrary content rendered between the user info block and footerItems */
+  footerSlot?: ReactNode;
+  /** Initial expanded sub-menu IDs (pass from server to avoid hydration mismatch). */
+  defaultExpandedIds?: string[];
+  /** Cookie/localStorage key for persisting expanded state across reloads. */
+  persistExpandedKey?: string;
   className?: string;
 }
 
@@ -77,12 +83,50 @@ export function Sidebar({
   onLogout,
   logoutLabel = "Sair",
   footerItems,
+  footerSlot,
+  defaultExpandedIds,
+  persistExpandedKey,
   className,
 }: SidebarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(
+    () => new Set(defaultExpandedIds ?? []),
+  );
 
   const cubicBezier = "cubic-bezier(0.4, 0, 0.2, 1)";
+
+  // Auto-expand parent items whose children match the current path
+  useEffect(() => {
+    const idsToExpand: string[] = [];
+    for (const item of menuItems) {
+      if (item.children?.some((c) => currentPath === c.href)) {
+        idsToExpand.push(item.id);
+      }
+    }
+    if (footerItems) {
+      for (const item of footerItems) {
+        if (item.children?.some((c) => currentPath === c.href)) {
+          idsToExpand.push(item.id);
+        }
+      }
+    }
+    if (idsToExpand.length > 0) {
+      setExpandedIds((prev) => {
+        const next = new Set(prev);
+        for (const id of idsToExpand) next.add(id);
+        return next;
+      });
+    }
+  }, [currentPath, menuItems, footerItems]);
+
+  // Persist expanded IDs to cookie (SSR-readable) + localStorage (fallback)
+  useEffect(() => {
+    if (persistExpandedKey && typeof document !== "undefined") {
+      const json = JSON.stringify([...expandedIds]);
+      try { localStorage.setItem(persistExpandedKey, json); } catch { /* ignore */ }
+      document.cookie = `${persistExpandedKey}=${encodeURIComponent(json)}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+  }, [expandedIds, persistExpandedKey]);
 
   function toggleExpand(id: string) {
     setExpandedIds((prev) => {
@@ -140,12 +184,6 @@ export function Sidebar({
     const isChildActive = item.children?.some(
       (c) => currentPath === c.href,
     );
-
-    // Auto-expand if a child is active
-    if (isChildActive && !isExpanded) {
-      // schedule to avoid setState during render
-      setTimeout(() => setExpandedIds((p) => new Set(p).add(item.id)), 0);
-    }
 
     if (hasChildren) {
       return (
@@ -333,6 +371,8 @@ export function Sidebar({
               </button>
             )}
 
+            {footerSlot}
+
             {footerItems?.map((item) => renderMenuItem(item, false, true))}
 
             {onLogout && (
@@ -475,6 +515,8 @@ export function Sidebar({
               </div>
             </button>
           )}
+
+          {footerSlot}
 
           {footerItems?.map((item) => renderMenuItem(item, isCollapsed, false))}
 
