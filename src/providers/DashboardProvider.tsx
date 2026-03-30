@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo } from "react";
+import React, { useLayoutEffect, useMemo } from "react";
 import type { DashboardConfig } from "../config/types";
 import { createConfig } from "../config/createConfig";
 import { ConfigContext } from "../hooks/useConfig";
@@ -18,7 +18,7 @@ interface DashboardProviderProps {
 }
 
 function CSSVarsInjector({ config }: { config: DashboardConfig }) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = document.documentElement;
     const { colors } = config;
 
@@ -37,24 +37,9 @@ function CSSVarsInjector({ config }: { config: DashboardConfig }) {
     root.style.setProperty("--dashboard-status-warning", colors.statusWarning);
     root.style.setProperty("--dashboard-status-info", colors.statusInfo);
     root.style.setProperty("--dashboard-status-neutral", colors.statusNeutral);
-
-    return () => {
-      root.style.removeProperty("--dashboard-primary");
-      root.style.removeProperty("--dashboard-secondary");
-      root.style.removeProperty("--dashboard-background");
-      root.style.removeProperty("--dashboard-surface");
-      root.style.removeProperty("--dashboard-text-primary");
-      root.style.removeProperty("--dashboard-text-secondary");
-      root.style.removeProperty("--dashboard-sidebar-bg");
-      root.style.removeProperty("--dashboard-sidebar-border");
-      root.style.removeProperty("--dashboard-sidebar-text");
-      root.style.removeProperty("--dashboard-sidebar-active-text");
-      root.style.removeProperty("--dashboard-status-success");
-      root.style.removeProperty("--dashboard-status-danger");
-      root.style.removeProperty("--dashboard-status-warning");
-      root.style.removeProperty("--dashboard-status-info");
-      root.style.removeProperty("--dashboard-status-neutral");
-    };
+    // No cleanup — vars are always overwritten on re-render.
+    // Removing them mid-transition causes a flash to hardcoded fallback
+    // colors in component classes (e.g. #2A6510 in Sidebar borders).
   }, [config]);
 
   return null;

@@ -417,9 +417,17 @@ export function Sidebar({
             fill="none"
             className="absolute inset-0"
           >
+            {/* Fill shape — extended to x=0 to fully cover the aside border-r */}
             <path
-              d="M10.2036 118.86C14.8518 115.918 19.5 107.801 19.5 95.9116C19.5 84.0223 15.672 76.4939 10.2036 72.9634C4.73505 69.4329 2.54765 63.5488 1.72738 55.8994L1.72738 136.512C2.82108 125.921 5.55533 121.802 10.2036 118.86Z"
+              d="M10.2036 118.86C14.8518 115.918 19.5 107.801 19.5 95.9116C19.5 84.0223 15.672 76.4939 10.2036 72.9634C4.73505 69.4329 2.54765 63.5488 1.72738 55.8994L0 55.8994L0 136.512L1.72738 136.512C2.82108 125.921 5.55533 121.802 10.2036 118.86Z"
               fill="var(--dashboard-sidebar-bg,#1B4D08)"
+            />
+            {/* Outer curve stroke — traces only the curved portion */}
+            <path
+              d="M1.72738 55.8994C2.54765 63.5488 4.73505 69.4329 10.2036 72.9634C15.672 76.4939 19.5 84.0223 19.5 95.9116C19.5 107.801 14.8518 115.918 10.2036 118.86C5.55533 121.802 2.82108 125.921 1.72738 136.512"
+              stroke="var(--dashboard-sidebar-border,#2A6510)"
+              strokeWidth="1"
+              fill="none"
             />
           </svg>
           <svg
@@ -494,11 +502,12 @@ export function Sidebar({
                 <User size={16} />
               </div>
               <div
-                className="ml-3 overflow-hidden text-left"
+                className="overflow-hidden text-left"
                 style={{
                   width: isCollapsed ? 0 : "auto",
+                  marginLeft: isCollapsed ? 0 : "0.75rem",
                   opacity: isCollapsed ? 0 : 1,
-                  transition: `width 400ms ${cubicBezier}, opacity 400ms ${cubicBezier}`,
+                  transition: `width 400ms ${cubicBezier}, margin 400ms ${cubicBezier}, opacity 400ms ${cubicBezier}`,
                 }}
               >
                 {user.subtitle && (

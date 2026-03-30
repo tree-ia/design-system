@@ -1,36 +1,60 @@
 "use client";
 
 import React from "react";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "../../hooks/useTheme";
+import { Moon, Sun, Monitor } from "lucide-react";
+
+export type ThemeMode = "light" | "dark" | "system";
 
 export interface ThemeSwitcherProps {
+  /** Current theme mode */
+  mode: ThemeMode;
+  /** Called when the user selects a different mode */
+  onModeChange: (mode: ThemeMode) => void;
   className?: string;
 }
 
 const cn = (...classes: (string | undefined | false | null)[]) =>
   classes.filter(Boolean).join(" ");
 
-export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
-  const { resolvedTheme, setTheme } = useTheme();
+const modes: {
+  value: ThemeMode;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  label: string;
+}[] = [
+  { value: "light", icon: Sun, label: "Claro" },
+  { value: "dark", icon: Moon, label: "Escuro" },
+  { value: "system", icon: Monitor, label: "Sistema" },
+];
 
-  const toggle = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  };
-
+export function ThemeSwitcher({
+  mode,
+  onModeChange,
+  className,
+}: ThemeSwitcherProps) {
   return (
-    <button
-      type="button"
-      onClick={toggle}
+    <div
       className={cn(
-        "relative inline-flex items-center justify-center h-9 w-9 rounded-md border border-[var(--dashboard-text-secondary,#6b7280)]/30 bg-[var(--dashboard-surface,#ffffff)] shadow-sm transition-colors cursor-pointer hover:bg-[var(--dashboard-text-secondary,#6b7280)]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dashboard-primary,#37a501)] focus-visible:ring-offset-2",
+        "inline-flex items-center gap-1 rounded-lg bg-[var(--dashboard-background,#f2f2f2)] p-1",
         className,
       )}
-      aria-label="Alternar tema"
     >
-      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      <span className="sr-only">Alternar tema</span>
-    </button>
+      {modes.map(({ value, icon: Icon, label }) => (
+        <button
+          key={value}
+          type="button"
+          onClick={() => onModeChange(value)}
+          className={cn(
+            "flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
+            mode === value
+              ? "bg-[var(--dashboard-surface,#ffffff)] text-[var(--dashboard-text-primary,#2d2d2d)] shadow-sm"
+              : "text-[var(--dashboard-text-secondary,#6b7280)] hover:text-[var(--dashboard-text-primary,#2d2d2d)]",
+          )}
+          title={label}
+        >
+          <Icon size={14} />
+          <span>{label}</span>
+        </button>
+      ))}
+    </div>
   );
 }
