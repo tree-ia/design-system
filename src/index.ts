@@ -78,6 +78,12 @@ export type {
 export { VerticalBarChart } from "./components/VerticalBarChart";
 export type { VerticalBarChartProps } from "./components/VerticalBarChart";
 
+export { DoughnutChart } from "./components/DoughnutChart";
+export type {
+  DoughnutChartProps,
+  DoughnutChartItem,
+} from "./components/DoughnutChart";
+
 export { ProgressBarList } from "./components/ProgressBarList";
 export type {
   ProgressBarListProps,
