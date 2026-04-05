@@ -145,6 +145,12 @@ export type { SkeletonProps } from "./components/Skeleton";
 export { Alert } from "./components/Alert";
 export type { AlertProps } from "./components/Alert";
 
+export { Callout } from "./components/Callout";
+export type { CalloutProps } from "./components/Callout";
+
+export { CodeBlock } from "./components/CodeBlock";
+export type { CodeBlockProps } from "./components/CodeBlock";
+
 export { EmptyState } from "./components/EmptyState";
 export type { EmptyStateProps } from "./components/EmptyState";
 
