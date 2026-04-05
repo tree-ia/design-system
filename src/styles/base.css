@@ -225,11 +225,11 @@
 
 /* Animation utility classes */
 .dashboard-animate-fade-in {
-  animation: dashboard-fade-in 0.3s ease-out;
+  animation: dashboard-fade-in 0.2s ease-out;
 }
 
 .dashboard-animate-fade-out {
-  animation: dashboard-fade-out 0.3s ease-out;
+  animation: dashboard-fade-out 0.2s ease-out;
 }
 
 .dashboard-animate-slide-down {
@@ -252,7 +252,7 @@
   animation: dashboard-bounce-dot 1.4s ease-in-out infinite;
 }
 
-.dashboard-animate-shimmer {
+.dashboard-animate-shimmer::after {
   animation: dashboard-shimmer 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 

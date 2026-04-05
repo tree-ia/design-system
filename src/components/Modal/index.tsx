@@ -20,6 +20,16 @@ export interface ModalProps {
   closeOnOverlayClick?: boolean;
 }
 
+const ANIMATION_MS = 200;
+
+const sizeClasses = {
+  small: "max-w-sm",
+  medium: "max-w-md",
+  large: "max-w-lg",
+  largeXl: "max-w-4xl",
+  extraLarge: "max-w-screen-xl",
+};
+
 export function Modal({
   isOpen,
   onClose,
@@ -35,88 +45,78 @@ export function Modal({
   closeOnEscape = true,
   closeOnOverlayClick = true,
 }: ModalProps) {
-  const [isClosing, setIsClosing] = useState(false);
-  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [shouldRender, setShouldRender] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
-  const prevIsOpenRef = useRef(false);
 
-  const sizeClasses = {
-    small: "max-w-sm",
-    medium: "max-w-md",
-    large: "max-w-lg",
-    largeXl: "max-w-4xl",
-    extraLarge: "max-w-screen-xl",
-  };
+  // Show immediately when isOpen becomes true (no frame delay)
+  if (isOpen && !shouldRender) {
+    setShouldRender(true);
+  }
 
+  // Derived — no refs, no implicit state machine
+  const isClosing = shouldRender && !isOpen;
+
+  // Close animation timer: unmount after animation completes
   useEffect(() => {
-    if (isOpen && !prevIsOpenRef.current) {
-      setShouldRender(true);
-      setIsClosing(false);
-    } else if (!isOpen && prevIsOpenRef.current) {
-      setIsClosing(true);
-      const timer = setTimeout(() => {
-        setShouldRender(false);
-        setIsClosing(false);
-      }, 150);
-      return () => clearTimeout(timer);
-    }
-    prevIsOpenRef.current = isOpen;
-  }, [isOpen]);
+    if (!isClosing) return;
+    const timer = setTimeout(() => setShouldRender(false), ANIMATION_MS);
+    return () => clearTimeout(timer);
+  }, [isClosing]);
 
   const handleClose = useCallback(() => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsClosing(false);
-      onClose();
-    }, 150);
+    onClose();
   }, [onClose]);
 
+  // Scroll lock — active while rendered (including during close animation)
   useEffect(() => {
-    if (!closeOnOverlayClick) return;
+    if (!shouldRender) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [shouldRender]);
+
+  // Click outside — only when fully open (not during close)
+  useEffect(() => {
+    if (!closeOnOverlayClick || !shouldRender || !isOpen) return;
 
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node) &&
-        !target.closest("[data-modal-ignore]")
-      ) {
+
+      if (target.closest("[data-modal-ignore]")) return;
+
+      const portalSelectors = [
+        ".dashboard-dropdown-portal",
+        ".dc-combobox-portal",
+      ];
+      for (const selector of portalSelectors) {
+        const portal = document.querySelector(selector);
+        if (portal?.contains(target)) return;
+      }
+
+      if (modalRef.current && !modalRef.current.contains(target)) {
         handleClose();
       }
     };
 
-    if (shouldRender && !isClosing) {
-      document.addEventListener("mousedown", handleClickOutside);
-      document.body.style.overflow = "hidden";
-    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [shouldRender, isOpen, handleClose, closeOnOverlayClick]);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      if (!shouldRender) {
-        document.body.style.overflow = "auto";
-      }
-    };
-  }, [shouldRender, isClosing, handleClose, closeOnOverlayClick]);
-
+  // Escape key — only when fully open (not during close)
   useEffect(() => {
-    if (!closeOnEscape) return;
+    if (!closeOnEscape || !shouldRender || !isOpen) return;
 
     const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        handleClose();
-      }
+      if (event.key === "Escape") handleClose();
     };
 
-    if (shouldRender && !isClosing) {
-      document.addEventListener("keydown", handleEscKey);
-    }
+    document.addEventListener("keydown", handleEscKey);
+    return () => document.removeEventListener("keydown", handleEscKey);
+  }, [shouldRender, isOpen, handleClose, closeOnEscape]);
 
-    return () => {
-      document.removeEventListener("keydown", handleEscKey);
-    };
-  }, [shouldRender, isClosing, handleClose, closeOnEscape]);
-
-  if (!shouldRender && !isOpen) return null;
+  if (!shouldRender) return null;
 
   return (
     <div
