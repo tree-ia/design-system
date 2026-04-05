@@ -42,7 +42,7 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        "relative rounded-lg overflow-hidden border border-[var(--dashboard-text-secondary,#64748B)]/12",
+        "relative rounded-lg overflow-hidden border border-[var(--dashboard-text-secondary,#64748B)]/12 my-4",
         className,
       )}
     >
