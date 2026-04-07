@@ -39,7 +39,7 @@ export function InfoTooltip({
       <button
         type="button"
         tabIndex={0}
-        aria-label={term ? `Informacao sobre ${term}` : "Mais informacoes"}
+        aria-label={term ? `Informação sobre ${term}` : "Mais informações"}
         className={[
           "inline-flex items-center justify-center rounded-full",
           "text-[var(--dashboard-text-secondary,#6b7280)]",
