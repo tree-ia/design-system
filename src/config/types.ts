@@ -14,6 +14,8 @@ export interface ThemeColors {
   statusWarning: string;
   statusInfo: string;
   statusNeutral: string;
+  tooltipBg: string;
+  tooltipText: string;
 }
 
 export interface ComponentsConfig {

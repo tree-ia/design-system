@@ -18,6 +18,8 @@ export const defaultConfig: DashboardConfig = {
     statusWarning: "#D97706",
     statusInfo: "#2563EB",
     statusNeutral: "#64748B",
+    tooltipBg: "#1a1a1a",
+    tooltipText: "#ffffff",
   },
   components: {
     modal: {

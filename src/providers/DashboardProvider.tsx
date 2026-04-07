@@ -37,6 +37,8 @@ function CSSVarsInjector({ config }: { config: DashboardConfig }) {
     root.style.setProperty("--dashboard-status-warning", colors.statusWarning);
     root.style.setProperty("--dashboard-status-info", colors.statusInfo);
     root.style.setProperty("--dashboard-status-neutral", colors.statusNeutral);
+    root.style.setProperty("--dashboard-tooltip-bg", colors.tooltipBg);
+    root.style.setProperty("--dashboard-tooltip-text", colors.tooltipText);
     // No cleanup — vars are always overwritten on re-render.
     // Removing them mid-transition causes a flash to hardcoded fallback
     // colors in component classes (e.g. #2A6510 in Sidebar borders).
