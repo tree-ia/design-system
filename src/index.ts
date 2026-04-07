@@ -133,6 +133,9 @@ export type { FileUploadProps, UploadedFile } from "./components/FileUpload";
 export { Tooltip } from "./components/Tooltip";
 export type { TooltipProps } from "./components/Tooltip";
 
+export { InfoTooltip } from "./components/InfoTooltip";
+export type { InfoTooltipProps } from "./components/InfoTooltip";
+
 export { Breadcrumb } from "./components/Breadcrumb";
 export type { BreadcrumbProps, BreadcrumbItem } from "./components/Breadcrumb";
 
