@@ -162,12 +162,12 @@ export function Tooltip({
 
   // Arrow styles per position
   const arrowClass: Record<string, string> = {
-    top: "left-1/2 -translate-x-1/2 top-full border-t-[var(--dashboard-text-primary,#2d2d2d)] border-x-transparent border-b-transparent",
+    top: "left-1/2 -translate-x-1/2 top-full border-t-[#1a1a1a] border-x-transparent border-b-transparent",
     bottom:
-      "left-1/2 -translate-x-1/2 bottom-full border-b-[var(--dashboard-text-primary,#2d2d2d)] border-x-transparent border-t-transparent",
-    left: "top-1/2 -translate-y-1/2 left-full border-l-[var(--dashboard-text-primary,#2d2d2d)] border-y-transparent border-r-transparent",
+      "left-1/2 -translate-x-1/2 bottom-full border-b-[#1a1a1a] border-x-transparent border-t-transparent",
+    left: "top-1/2 -translate-y-1/2 left-full border-l-[#1a1a1a] border-y-transparent border-r-transparent",
     right:
-      "top-1/2 -translate-y-1/2 right-full border-r-[var(--dashboard-text-primary,#2d2d2d)] border-y-transparent border-l-transparent",
+      "top-1/2 -translate-y-1/2 right-full border-r-[#1a1a1a] border-y-transparent border-l-transparent",
   };
 
   return (
@@ -182,7 +182,7 @@ export function Tooltip({
             role="tooltip"
             className={cn(
               "fixed z-[10002] rounded-md px-3 py-2 text-xs font-medium",
-              "bg-[var(--dashboard-text-primary,#2d2d2d)] text-white",
+              "bg-[#1a1a1a] text-white",
               "shadow-lg pointer-events-none",
               positioned && "dashboard-animate-fade-in",
               className,
