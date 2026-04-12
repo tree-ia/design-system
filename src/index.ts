@@ -41,6 +41,9 @@ export type { TabsProps, Tab } from "./components/Tabs";
 export { DateRangePicker } from "./components/DateRangePicker";
 export type { DateRangePickerProps, DateRange } from "./components/DateRangePicker";
 
+export { DatePicker } from "./components/DatePicker";
+export type { DatePickerProps } from "./components/DatePicker";
+
 export { Title } from "./components/Title";
 export type { TitleProps } from "./components/Title";
 
