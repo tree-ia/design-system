@@ -2,6 +2,25 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { KPICard } from "./index";
 import React from "react";
 
+const DollarIcon = () =>
+  React.createElement(
+    "svg",
+    {
+      width: 16,
+      height: 16,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: 2,
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+    },
+    React.createElement("line", { x1: 12, y1: 1, x2: 12, y2: 23 }),
+    React.createElement("path", {
+      d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6",
+    }),
+  );
+
 const meta: Meta<typeof KPICard> = {
   title: "Components/KPICard",
   component: KPICard,
@@ -12,6 +31,7 @@ const meta: Meta<typeof KPICard> = {
       options: ["currency", "number", "percentage", "rating"],
     },
     isLoading: { control: "boolean" },
+    icon: { control: false },
   },
 };
 
@@ -66,6 +86,17 @@ export const WithBenchmark: Story = {
     trend: "up",
     format: "currency",
     benchmark: "Meta: R$ 50,00",
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    title: "Receita Total",
+    value: 12450.8,
+    variation: 12.5,
+    trend: "up",
+    format: "currency",
+    icon: React.createElement(DollarIcon),
   },
 };
 

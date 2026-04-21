@@ -11,6 +11,7 @@ export interface KPICardProps {
   trend: "up" | "down" | "stable";
   format?: KPIValueFormat;
   benchmark?: string;
+  icon?: React.ReactNode;
   isLoading?: boolean;
   className?: string;
 }
@@ -59,6 +60,7 @@ export function KPICard({
   trend,
   format = "number",
   benchmark,
+  icon,
   isLoading,
   className,
 }: KPICardProps) {
@@ -73,10 +75,20 @@ export function KPICard({
         className,
       )}
     >
-      <div className="flex justify-between items-start mb-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--dashboard-text-secondary,#64748B)] whitespace-nowrap">
-          {title}
-        </h3>
+      <div className="flex justify-between items-start mb-4 gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          {icon && (
+            <span
+              className="shrink-0 text-[var(--dashboard-text-secondary,#64748B)]"
+              aria-hidden="true"
+            >
+              {icon}
+            </span>
+          )}
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--dashboard-text-secondary,#64748B)] whitespace-nowrap truncate">
+            {title}
+          </h3>
+        </div>
         {benchmark && (
           <span
             className="text-xs text-[var(--dashboard-text-secondary,#64748B)]/50 ml-2 whitespace-nowrap flex-shrink-0"
