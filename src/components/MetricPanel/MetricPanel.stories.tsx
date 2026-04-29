@@ -43,6 +43,13 @@ export const SalesPanel: Story = {
     titleIcon: DollarSign,
     actionLabel: "Conferir pedidos",
     onActionClick: () => alert("Ver pedidos"),
+    tooltipConfig: {
+      enabled: true,
+      showButton: true,
+      buttonLabel: "Conferir pedidos",
+      onButtonClick: (dataIndex, date) =>
+        alert(`Ver pedidos de ${date} (indice ${dataIndex})`),
+    },
     metrics: [
       {
         key: "totalSales",

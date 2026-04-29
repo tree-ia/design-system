@@ -98,6 +98,7 @@ export type {
   MetricPanelProps,
   MetricPanelMetric,
   MetricPanelChartData,
+  MetricPanelTooltipConfig,
 } from "./components/MetricPanel";
 
 export { FilterBar } from "./components/FilterBar";
