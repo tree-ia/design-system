@@ -16,6 +16,8 @@ export interface SidebarMenuItem {
   section?: string;
   /** Child items — renders as expandable sub-menu */
   children?: SidebarMenuItem[];
+  /** When true, the item is rendered in a non-interactive disabled state */
+  disabled?: boolean;
 }
 
 export interface SidebarUser {
@@ -48,6 +50,8 @@ export interface SidebarProps {
   defaultExpandedIds?: string[];
   /** Cookie/localStorage key for persisting expanded state across reloads. */
   persistExpandedKey?: string;
+  /** When false, the mobile header is not rendered (use when an external app header is in place). Default: true */
+  showMobileHeader?: boolean;
   className?: string;
 }
 
@@ -86,6 +90,7 @@ export function Sidebar({
   footerSlot,
   defaultExpandedIds,
   persistExpandedKey,
+  showMobileHeader = true,
   className,
 }: SidebarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -565,7 +570,7 @@ export function Sidebar({
 
   return (
     <>
-      {mobileHeader}
+      {showMobileHeader && mobileHeader}
       {desktopSidebar}
     </>
   );
