@@ -60,6 +60,16 @@ export type {
   SidebarUser,
 } from "./components/Sidebar";
 
+export { Header } from "./components/Header";
+export type {
+  HeaderProps,
+  HeaderMenuItem,
+  HeaderMenuGroup,
+  HeaderMenuChild,
+  HeaderUser,
+  HeaderEstablishment,
+} from "./components/Header";
+
 export { ThemeSwitcher } from "./components/ThemeSwitcher";
 export type { ThemeSwitcherProps } from "./components/ThemeSwitcher";
 
