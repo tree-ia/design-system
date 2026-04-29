@@ -37,7 +37,7 @@ export function Tooltip({
   const [actualPosition, setActualPosition] = useState(position);
   const triggerRef = useRef<HTMLElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const idRef = useRef(`tooltip-${Math.random().toString(36).slice(2, 9)}`);
 
   const calculatePosition = useCallback(() => {
