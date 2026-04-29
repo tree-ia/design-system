@@ -64,6 +64,26 @@ const themeConfigs = {
       statusNeutral: "#6B7280",
     },
   },
+  DeuPraia: {
+    name: "DeuPraia",
+    colors: {
+      primary: "#00B4D8",
+      secondary: "#90E0EF",
+      background: "#F6FBFC",
+      surface: "#FFFFFF",
+      textPrimary: "#12313F",
+      textSecondary: "#5D7280",
+      sidebarBg: "#023E8A",
+      sidebarBorder: "#0353A4",
+      sidebarText: "#CAF0F8",
+      sidebarActiveText: "#FFFFFF",
+      statusSuccess: "#2A9D8F",
+      statusDanger: "#E63946",
+      statusWarning: "#F4A261",
+      statusInfo: "#00B4D8",
+      statusNeutral: "#6C757D",
+    },
+  },
 };
 
 const preview: Preview = {
