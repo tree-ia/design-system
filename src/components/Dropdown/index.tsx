@@ -21,7 +21,7 @@ export interface DropdownProps {
   className?: string;
   containerClassName?: string;
   fullWidth?: boolean;
-  size?: "small" | "medium" | "large";
+  size?: "sm" | "md" | "lg";
   error?: string;
   variant?: "default" | "underline" | "simple" | "compact";
   customDropdownHeight?: string;
@@ -40,7 +40,7 @@ export function Dropdown({
   className = "",
   containerClassName = "",
   fullWidth = false,
-  size = "medium",
+  size = "md",
   error,
   variant = "default",
   customDropdownHeight,
@@ -55,23 +55,23 @@ export function Dropdown({
   const selectedOption = options.find((option) => option.value === value);
 
   const sizeStyles = {
-    small: {
-      container: "h-8 px-2",
+    sm: {
+      container: "h-8 px-2.5",
       text: "text-xs",
       wrapper: "space-y-1",
       label: "text-sm",
       iconPadding: "pl-8",
     },
-    medium: {
-      container: "h-10 px-3",
+    md: {
+      container: "h-9 px-3",
       text: "text-sm",
       wrapper: "space-y-2",
       label: "text-base",
       iconPadding: "pl-10",
     },
-    large: {
-      container: "h-12 px-4",
-      text: "text-lg",
+    lg: {
+      container: "h-10 px-4",
+      text: "text-base",
       wrapper: "space-y-3",
       label: "text-lg",
       iconPadding: "pl-12",

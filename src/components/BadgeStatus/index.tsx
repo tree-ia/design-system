@@ -54,7 +54,7 @@ export function BadgeStatus({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full font-medium whitespace-nowrap",
+        "inline-flex w-fit items-center justify-center rounded-full font-medium whitespace-nowrap",
         sizeClasses[size],
         !useCustomColors && styles.color,
         !useCustomColors && styles.bgColor,

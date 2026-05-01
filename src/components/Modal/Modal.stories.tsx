@@ -9,7 +9,7 @@ const meta: Meta<typeof Modal> = {
   argTypes: {
     size: {
       control: "select",
-      options: ["small", "medium", "large", "largeXl", "extraLarge"],
+      options: ["sm", "md", "lg", "xl", "2xl", "3xl"],
     },
     closeOnEscape: { control: "boolean" },
     closeOnOverlayClick: { control: "boolean" },
@@ -95,7 +95,7 @@ export const DangerAction: Story = {
           showFooter: true,
           saveButtonText: "Excluir",
           saveButtonVariant: "danger",
-          size: "small",
+          size: "sm",
         },
         React.createElement(
           "p",

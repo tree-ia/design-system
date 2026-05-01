@@ -38,15 +38,15 @@ export function Button({
   };
 
   const sizeStyles = {
-    sm: "px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm",
-    md: "px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base",
-    lg: "px-4 py-2 text-base sm:px-6 sm:py-3 sm:text-lg",
+    sm: "h-8 px-2 text-xs sm:px-3 sm:text-sm",
+    md: "h-9 px-3 text-sm sm:px-4 sm:text-base",
+    lg: "h-10 px-4 text-base sm:px-6 sm:text-lg",
   };
 
   const iconOnlySizeStyles = {
-    sm: "w-7 h-7 sm:w-8 sm:h-8",
-    md: "w-9 h-9 sm:w-10 sm:h-10",
-    lg: "w-10 h-10 sm:w-12 sm:h-12",
+    sm: "h-8 w-8",
+    md: "h-9 w-9",
+    lg: "h-10 w-10",
   };
 
   const isIconOnly =

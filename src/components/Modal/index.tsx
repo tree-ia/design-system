@@ -13,7 +13,7 @@ export interface ModalProps {
   showFooter?: boolean;
   saveButtonText?: string;
   cancelButtonText?: string;
-  size?: "small" | "medium" | "large" | "extraLarge" | "largeXl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
   disableSaveButton?: boolean;
   saveButtonVariant?: "primary" | "secondary" | "danger" | "ghost";
   closeOnEscape?: boolean;
@@ -23,11 +23,12 @@ export interface ModalProps {
 const ANIMATION_MS = 200;
 
 const sizeClasses = {
-  small: "max-w-sm",
-  medium: "max-w-md",
-  large: "max-w-lg",
-  largeXl: "max-w-4xl",
-  extraLarge: "max-w-screen-xl",
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-2xl",
+  "2xl": "max-w-4xl",
+  "3xl": "max-w-screen-xl",
 };
 
 export function Modal({
@@ -39,7 +40,7 @@ export function Modal({
   showFooter = false,
   saveButtonText = "Salvar",
   cancelButtonText = "Cancelar",
-  size = "medium",
+  size = "md",
   disableSaveButton = false,
   saveButtonVariant = "primary",
   closeOnEscape = true,

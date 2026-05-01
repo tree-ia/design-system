@@ -91,7 +91,7 @@ export function Pagination({
             options={dropdownOptions}
             value={String(itemsPerPage)}
             onChange={(val) => onItemsPerPageChange(Number(val))}
-            size="small"
+            size="sm"
             variant="compact"
             fitContent
           />

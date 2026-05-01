@@ -11,6 +11,7 @@ const meta: Meta<typeof Input> = {
       control: "select",
       options: ["text", "email", "password", "number", "tel"],
     },
+    size: { control: "select", options: ["sm", "md", "lg"] },
     disabled: { control: "boolean" },
     placeholder: { control: "text" },
     label: { control: "text" },
@@ -74,4 +75,15 @@ export const Disabled: Story = {
     placeholder: "Campo desabilitado",
     disabled: true,
   },
+};
+
+export const AllSizes: Story = {
+  render: () =>
+    React.createElement(
+      "div",
+      { className: "flex flex-col gap-4" },
+      React.createElement(Input, { size: "sm", placeholder: "Small (sm)" }),
+      React.createElement(Input, { size: "md", placeholder: "Medium (md)" }),
+      React.createElement(Input, { size: "lg", placeholder: "Large (lg)" }),
+    ),
 };

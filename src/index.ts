@@ -203,3 +203,15 @@ export type {
   ThemeColors,
   ComponentsConfig,
 } from "./config/types";
+
+export {
+  componentSizes,
+  badgeSizes,
+  modalSizes,
+} from "./config/sizes";
+export type {
+  ComponentSize,
+  ModalSize,
+  SizeToken,
+  BadgeSizeToken,
+} from "./config/sizes";

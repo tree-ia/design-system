@@ -7,7 +7,7 @@ const meta: Meta<typeof Dropdown> = {
   title: "Components/Dropdown",
   component: Dropdown,
   argTypes: {
-    size: { control: "select", options: ["small", "medium", "large"] },
+    size: { control: "select", options: ["sm", "md", "lg"] },
     variant: {
       control: "select",
       options: ["default", "underline", "simple", "compact"],
