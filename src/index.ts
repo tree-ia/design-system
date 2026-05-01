@@ -174,6 +174,19 @@ export type { EmptyStateProps } from "./components/EmptyState";
 export { StatusBadge } from "./components/StatusBadge";
 export type { StatusBadgeProps } from "./components/StatusBadge";
 
+export {
+  TableOfContents,
+  TOCProvider,
+  useActiveAnchor,
+  useActiveAnchors,
+  useTOCItems,
+} from "./components/TableOfContents";
+export type {
+  TocItem,
+  TableOfContentsProps,
+  TOCProviderProps,
+} from "./components/TableOfContents";
+
 // Providers
 export { DashboardProvider } from "./providers/DashboardProvider";
 export { ThemeProvider } from "./providers/ThemeProvider";
