@@ -83,6 +83,55 @@ function arraysShallowEqual<T>(a: T[], b: T[]): boolean {
   return true;
 }
 
+function findScrollableParent(el: HTMLElement | null): HTMLElement {
+  let current = el?.parentElement;
+  while (current && current !== document.body) {
+    const style = getComputedStyle(current);
+    const overflowY = style.overflowY;
+    if (overflowY === "auto" || overflowY === "scroll" || overflowY === "overlay") {
+      // Confirm the element can actually scroll
+      if (current.scrollHeight > current.clientHeight) return current;
+    }
+    current = current.parentElement;
+  }
+  return document.documentElement;
+}
+
+function scrollAnchorIntoView(
+  anchor: HTMLElement,
+  container: HTMLElement,
+  options: { behavior?: ScrollBehavior; block?: "start" | "center" | "end" } = {},
+) {
+  const { behavior = "smooth", block = "center" } = options;
+  const containerRect = container.getBoundingClientRect();
+  const anchorRect = anchor.getBoundingClientRect();
+  const padding = 16;
+
+  const isAbove = anchorRect.top < containerRect.top + padding;
+  const isBelow = anchorRect.bottom > containerRect.bottom - padding;
+
+  if (!isAbove && !isBelow) return;
+
+  const offsetTopRelativeToContainer =
+    anchorRect.top - containerRect.top + container.scrollTop;
+
+  let targetScroll: number;
+  if (block === "center") {
+    targetScroll =
+      offsetTopRelativeToContainer - container.clientHeight / 2 + anchor.clientHeight / 2;
+  } else if (block === "end") {
+    targetScroll =
+      offsetTopRelativeToContainer - container.clientHeight + anchor.clientHeight + padding;
+  } else {
+    targetScroll = offsetTopRelativeToContainer - padding;
+  }
+
+  container.scrollTo({
+    top: Math.max(0, targetScroll),
+    behavior,
+  });
+}
+
 /* -------------------------------------------------------------------------- */
 /* Observer                                                                    */
 /* -------------------------------------------------------------------------- */
@@ -210,6 +259,9 @@ class TocObserver {
 
 const ObserverContext = createContext<TocObserver | null>(null);
 const ItemsContext = createContext<TocItem[]>([]);
+const LinksRefContext = createContext<React.MutableRefObject<
+  Map<string, HTMLAnchorElement>
+> | null>(null);
 
 function useObserver(): TocObserver {
   const observer = useContext(ObserverContext);
@@ -331,9 +383,20 @@ function TocAnchor({ item }: TocAnchorProps) {
   const id = getIdFromUrl(item.url) ?? "";
   const activeIds = useActiveAnchors();
   const isActive = id ? activeIds.includes(id) : false;
+  const linksRef = useContext(LinksRefContext);
+
+  const setRef = useCallback(
+    (node: HTMLAnchorElement | null) => {
+      if (!linksRef || !id) return;
+      if (node) linksRef.current.set(id, node);
+      else linksRef.current.delete(id);
+    },
+    [linksRef, id],
+  );
 
   return (
     <a
+      ref={setRef}
       href={item.url}
       data-active={isActive}
       onClick={(e) => handleAnchorClick(e, id)}
@@ -491,6 +554,26 @@ function ActiveChangeReporter({
   return null;
 }
 
+function ActiveScrollSync({
+  linksRef,
+}: {
+  linksRef: React.MutableRefObject<Map<string, HTMLAnchorElement>>;
+}) {
+  const activeId = useActiveAnchor();
+
+  useEffect(() => {
+    if (!activeId) return;
+    const link = linksRef.current.get(activeId);
+    if (!link) return;
+    const container = findScrollableParent(link);
+    // Don't scroll the page itself — only the inner ToC container.
+    if (container === document.documentElement) return;
+    scrollAnchorIntoView(link, container);
+  }, [activeId, linksRef]);
+
+  return null;
+}
+
 /**
  * Adapted from Fumadocs (MIT) — https://github.com/fuma-nama/fumadocs
  *
@@ -508,6 +591,8 @@ export function TableOfContents({
   className,
   onActiveChange,
 }: TableOfContentsProps): React.JSX.Element {
+  const linksRef = useRef<Map<string, HTMLAnchorElement>>(new Map());
+
   return (
     <TOCProvider
       items={items}
@@ -515,21 +600,24 @@ export function TableOfContents({
       rootMargin={rootMargin}
       threshold={threshold}
     >
-      <nav
-        aria-label={typeof title === "string" ? title : "Sumário"}
-        className={cn("text-sm", className)}
-      >
-        {title !== null && (
-          <h3 className="inline-flex items-center gap-1.5 text-sm font-medium mb-3 text-[var(--dashboard-text-primary,#2d2d2d)]">
-            <Text className="h-4 w-4" aria-hidden />
-            {title}
-          </h3>
-        )}
-        <TocList items={items} showThumb={showThumb} />
-        {onActiveChange && (
-          <ActiveChangeReporter onActiveChange={onActiveChange} />
-        )}
-      </nav>
+      <LinksRefContext.Provider value={linksRef}>
+        <nav
+          aria-label={typeof title === "string" ? title : "Sumário"}
+          className={cn("text-sm", className)}
+        >
+          {title !== null && (
+            <h3 className="inline-flex items-center gap-1.5 text-sm font-medium mb-3 text-[var(--dashboard-text-primary,#2d2d2d)]">
+              <Text className="h-4 w-4" aria-hidden />
+              {title}
+            </h3>
+          )}
+          <TocList items={items} showThumb={showThumb} />
+          {onActiveChange && (
+            <ActiveChangeReporter onActiveChange={onActiveChange} />
+          )}
+          <ActiveScrollSync linksRef={linksRef} />
+        </nav>
+      </LinksRefContext.Provider>
     </TOCProvider>
   );
 }
