@@ -105,12 +105,6 @@ function scrollAnchorIntoView(
   const { behavior = "smooth", block = "center" } = options;
   const containerRect = container.getBoundingClientRect();
   const anchorRect = anchor.getBoundingClientRect();
-  const padding = 16;
-
-  const isAbove = anchorRect.top < containerRect.top + padding;
-  const isBelow = anchorRect.bottom > containerRect.bottom - padding;
-
-  if (!isAbove && !isBelow) return;
 
   const offsetTopRelativeToContainer =
     anchorRect.top - containerRect.top + container.scrollTop;
@@ -121,9 +115,9 @@ function scrollAnchorIntoView(
       offsetTopRelativeToContainer - container.clientHeight / 2 + anchor.clientHeight / 2;
   } else if (block === "end") {
     targetScroll =
-      offsetTopRelativeToContainer - container.clientHeight + anchor.clientHeight + padding;
+      offsetTopRelativeToContainer - container.clientHeight + anchor.clientHeight;
   } else {
-    targetScroll = offsetTopRelativeToContainer - padding;
+    targetScroll = offsetTopRelativeToContainer;
   }
 
   container.scrollTo({
