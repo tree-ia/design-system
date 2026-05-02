@@ -21,7 +21,7 @@ export function Card({
 }: CardProps) {
   return (
     <div
-      className={`bg-[var(--dashboard-surface,#272c33)] rounded-xl border border-[var(--dashboard-border,#3e4451)] ${className}`}
+      className={`bg-[var(--dashboard-surface,#ffffff)] rounded-xl border border-[var(--dashboard-text-secondary,#64748B)]/12 transition-shadow duration-200 ease-out dashboard-shadow-sm hover:dashboard-shadow-md ${className}`}
     >
       <div className="p-5">
         {title && (
@@ -29,12 +29,10 @@ export function Card({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 {icon && (
-                  <div className="text-[var(--dashboard-text-secondary,#9da5b3)]">
-                    {icon}
-                  </div>
+                  <div className="text-[var(--dashboard-text-secondary,#64748B)]">{icon}</div>
                 )}
                 <h3
-                  className={`${showDivider ? "font-medium" : "text-base font-semibold"} text-[var(--dashboard-text-primary,#d7dae0)] truncate tracking-tight`}
+                  className={`${showDivider ? "font-medium" : "text-base font-semibold"} text-[var(--dashboard-text-primary,#0F172A)] truncate tracking-tight`}
                 >
                   {title}
                 </h3>
@@ -44,12 +42,12 @@ export function Card({
               )}
             </div>
             {subtitle && (
-              <p className="text-sm text-[var(--dashboard-text-secondary,#9da5b3)] mt-1">
+              <p className="text-sm text-[var(--dashboard-text-secondary,#64748B)] mt-1">
                 {subtitle}
               </p>
             )}
             {showDivider && (
-              <div className="w-full h-px bg-[var(--dashboard-border,#3e4451)] mt-5" />
+              <div className="w-full h-px bg-[var(--dashboard-text-secondary,#64748B)]/10 mt-5" />
             )}
           </div>
         )}

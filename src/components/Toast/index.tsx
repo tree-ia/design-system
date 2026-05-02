@@ -14,11 +14,11 @@ export interface ToastProps {
 
 const typeConfig = {
   success: {
-    bg: "bg-[var(--dashboard-status-success,#10b981)]",
+    bg: "bg-[var(--dashboard-status-success,#10B981)]",
     icon: CheckCircle,
   },
   error: {
-    bg: "bg-[var(--dashboard-status-danger,#ef4444)]",
+    bg: "bg-[var(--dashboard-status-danger,#EF4444)]",
     icon: XCircle,
   },
   warning: {
@@ -60,7 +60,7 @@ export function Toast({
 
   return (
     <div
-      className={`${bg} overflow-hidden rounded-xl border border-white/10 text-white ${
+      className={`${bg} text-white rounded-lg shadow-xl shadow-black/15 overflow-hidden ${
         exiting ? "dashboard-toast-exit" : "dashboard-toast-enter"
       }`}
       role="alert"

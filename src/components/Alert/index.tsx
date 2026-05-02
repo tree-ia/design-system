@@ -1,11 +1,5 @@
 import React, { ReactNode } from "react";
-import {
-  X,
-  Info,
-  CheckCircle,
-  AlertTriangle,
-  AlertOctagon,
-} from "lucide-react";
+import { X, Info, CheckCircle, AlertTriangle, AlertOctagon } from "lucide-react";
 
 export interface AlertProps {
   variant?: "info" | "success" | "warning" | "danger";
@@ -25,27 +19,27 @@ const variantConfig: Record<
   { border: string; bg: string; text: string; icon: ReactNode }
 > = {
   info: {
-    border: "border-[var(--dashboard-border,#3e4451)]",
+    border: "border-[var(--dashboard-status-info,#3b82f6)]",
     bg: "bg-[var(--dashboard-status-info,#3b82f6)]/5",
     text: "text-[var(--dashboard-status-info,#3b82f6)]",
     icon: <Info className="h-5 w-5" />,
   },
   success: {
-    border: "border-[var(--dashboard-border,#3e4451)]",
-    bg: "bg-[var(--dashboard-status-success,#10b981)]/5",
-    text: "text-[var(--dashboard-status-success,#10b981)]",
+    border: "border-[var(--dashboard-status-success,#10B981)]",
+    bg: "bg-[var(--dashboard-status-success,#10B981)]/5",
+    text: "text-[var(--dashboard-status-success,#10B981)]",
     icon: <CheckCircle className="h-5 w-5" />,
   },
   warning: {
-    border: "border-[var(--dashboard-border,#3e4451)]",
+    border: "border-[var(--dashboard-status-warning,#f59e0b)]",
     bg: "bg-[var(--dashboard-status-warning,#f59e0b)]/5",
     text: "text-[var(--dashboard-status-warning,#f59e0b)]",
     icon: <AlertTriangle className="h-5 w-5" />,
   },
   danger: {
-    border: "border-[var(--dashboard-border,#3e4451)]",
-    bg: "bg-[var(--dashboard-status-danger,#ef4444)]/5",
-    text: "text-[var(--dashboard-status-danger,#ef4444)]",
+    border: "border-[var(--dashboard-status-danger,#EF4444)]",
+    bg: "bg-[var(--dashboard-status-danger,#EF4444)]/5",
+    text: "text-[var(--dashboard-status-danger,#EF4444)]",
     icon: <AlertOctagon className="h-5 w-5" />,
   },
 };
@@ -64,7 +58,7 @@ export function Alert({
   return (
     <div
       className={cn(
-        "rounded-xl border p-4",
+        "rounded-lg border-l-4 p-4",
         config.border,
         config.bg,
         className,
@@ -81,7 +75,7 @@ export function Alert({
             <h3
               className={cn(
                 "text-sm font-semibold",
-                "text-[var(--dashboard-text-primary,#d7dae0)]",
+                "text-[var(--dashboard-text-primary,#2d2d2d)]",
               )}
             >
               {title}
@@ -90,7 +84,7 @@ export function Alert({
           {description && (
             <div
               className={cn(
-                "text-sm text-[var(--dashboard-text-secondary,#9da5b3)]",
+                "text-sm text-[var(--dashboard-text-secondary,#6b7280)]",
                 title && "mt-1",
               )}
             >
@@ -103,7 +97,7 @@ export function Alert({
         {onClose && (
           <button
             onClick={onClose}
-            className="flex-shrink-0 rounded-md p-1 text-[var(--dashboard-text-secondary,#9da5b3)] hover:bg-[var(--dashboard-text-secondary,#9da5b3)]/10 transition-colors cursor-pointer"
+            className="flex-shrink-0 rounded-md p-1 text-[var(--dashboard-text-secondary,#6b7280)] hover:bg-[var(--dashboard-text-secondary,#6b7280)]/10 transition-colors cursor-pointer"
             aria-label="Fechar alerta"
           >
             <X className="h-4 w-4" />
