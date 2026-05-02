@@ -121,7 +121,7 @@ export function Modal({
 
   return (
     <div
-      className={`fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 ${
+      className={`fixed inset-0 z-[10000] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 ${
         isClosing ? "dashboard-animate-fade-out" : "dashboard-animate-fade-in"
       }`}
       aria-modal="true"
@@ -130,17 +130,17 @@ export function Modal({
     >
       <div
         ref={modalRef}
-        className={`w-full rounded-2xl bg-[var(--dashboard-surface,#ffffff)] border border-[var(--dashboard-text-secondary,#64748B)]/10 dashboard-shadow-xl ${
+        className={`w-full rounded-2xl bg-[var(--dashboard-surface,#272c33)] border border-[var(--dashboard-border,#3e4451)] ${
           sizeClasses[size]
         } flex max-h-[90vh] flex-col transition-all duration-200 ease-out ${
           isClosing ? "scale-[0.98] opacity-0" : "scale-100 opacity-100"
         }`}
       >
-        <div className="flex h-fit items-center justify-between border-b border-[var(--dashboard-text-secondary,#64748B)]/10 px-6 py-4">
+        <div className="flex h-fit items-center justify-between border-b border-[var(--dashboard-border,#3e4451)] px-6 py-4">
           {title && (
             <h2
               id="modal-title"
-              className="text-lg font-semibold text-[var(--dashboard-text-primary,#0F172A)] tracking-tight"
+              className="text-lg font-semibold text-[var(--dashboard-text-primary,#d7dae0)] tracking-tight"
             >
               {title}
             </h2>
@@ -158,7 +158,7 @@ export function Modal({
         <div className="flex-grow overflow-y-auto p-6">{children}</div>
 
         {showFooter && (
-          <div className="flex justify-end gap-3 border-t border-[var(--dashboard-text-secondary,#6b7280)]/20 p-4">
+          <div className="flex justify-end gap-3 border-t border-[var(--dashboard-border,#3e4451)] p-4">
             <Button variant="secondary" onClick={handleClose} size="md">
               {cancelButtonText}
             </Button>

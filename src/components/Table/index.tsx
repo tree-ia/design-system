@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { Loading } from "../Loading";
 
 export interface TableColumn<T> {
   key: string;
@@ -49,9 +48,9 @@ export function Table<T>({
 
   return (
     <div
-      className={`overflow-x-auto bg-[var(--dashboard-surface,#ffffff)] rounded-xl border border-[var(--dashboard-text-secondary,#64748B)]/12 dashboard-shadow-sm ${className}`}
+      className={`overflow-x-auto bg-[var(--dashboard-surface,#272c33)] rounded-xl border border-[var(--dashboard-border,#3e4451)] ${className}`}
     >
-      <table className="min-w-full divide-y divide-[var(--dashboard-text-secondary,#64748B)]/10">
+      <table className="min-w-full divide-y divide-[var(--dashboard-border,#3e4451)]">
         <TableHeader columns={columns} />
         <TableBody
           columns={columns}
@@ -73,13 +72,13 @@ export function TableHeader<T>({ columns }: { columns: TableColumn<T>[] }) {
         : "text-left";
 
   return (
-    <thead className="bg-[var(--dashboard-background,#F8FAFC)] sticky top-0 z-10">
+    <thead className="bg-[var(--dashboard-surface,#272c33)] sticky top-0 z-10">
       <tr>
         {columns.map((column) => (
           <th
             key={column.key}
             scope="col"
-            className={`px-6 py-3 text-[0.6875rem] font-semibold text-[var(--dashboard-text-secondary,#64748B)] uppercase tracking-wider ${alignClass(column.align)} ${
+            className={`px-6 py-3 text-xs font-semibold text-[var(--dashboard-text-secondary,#9da5b3)] uppercase tracking-wider ${alignClass(column.align)} ${
               column.width ? `w-[${column.width}]` : ""
             }`}
           >
@@ -110,14 +109,16 @@ export function TableBody<T>({
         : "text-left";
 
   return (
-    <tbody className="bg-[var(--dashboard-surface,#ffffff)] divide-y divide-[var(--dashboard-text-secondary,#64748B)]/8">
+    <tbody className="bg-[var(--dashboard-surface,#272c33)] divide-y divide-[var(--dashboard-border,#3e4451)]/50">
       {data.map((item, index) => (
         <tr
           key={keyExtractor(item)}
           onClick={() => onRowClick?.(item)}
           className={`transition-colors duration-150 ${
-            index % 2 === 1 ? "bg-[var(--dashboard-text-secondary,#64748B)]/[0.02]" : ""
-          } hover:bg-[var(--dashboard-primary,#2563EB)]/[0.04] ${
+            index % 2 === 1
+              ? "bg-[var(--dashboard-text-secondary,#9da5b3)]/[0.02]"
+              : ""
+          } hover:bg-[var(--dashboard-text-secondary,#9da5b3)]/[0.02] ${
             onRowClick ? "cursor-pointer" : ""
           }`}
         >
@@ -137,9 +138,15 @@ export function TableBody<T>({
 
 export function TableSkeleton() {
   return (
-    <div className="bg-[var(--dashboard-surface,#ffffff)] rounded-xl border border-[var(--dashboard-text-secondary,#64748B)]/12 dashboard-shadow-sm p-6">
-      <div className="flex items-center justify-center h-64">
-        <Loading size="lg" text="Carregando dados..." />
+    <div className="bg-[var(--dashboard-surface,#272c33)] rounded-xl border border-[var(--dashboard-border,#3e4451)] p-6">
+      <div className="space-y-3">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div key={index} className="flex gap-4">
+            <div className="h-4 flex-1 rounded bg-[var(--dashboard-border,#3e4451)]/70" />
+            <div className="h-4 w-28 rounded bg-[var(--dashboard-border,#3e4451)]/70" />
+            <div className="h-4 w-20 rounded bg-[var(--dashboard-border,#3e4451)]/70" />
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -153,11 +160,11 @@ export function TableEmpty({
   icon?: ReactNode;
 }) {
   return (
-    <div className="bg-[var(--dashboard-surface,#ffffff)] rounded-xl border border-[var(--dashboard-text-secondary,#64748B)]/12 dashboard-shadow-sm p-12">
+    <div className="bg-[var(--dashboard-surface,#272c33)] rounded-xl border border-[var(--dashboard-border,#3e4451)] p-12">
       <div className="text-center">
         {icon || (
           <svg
-            className="mx-auto h-12 w-12 text-[var(--dashboard-text-secondary,#64748B)]/40"
+            className="mx-auto h-12 w-12 text-[var(--dashboard-text-secondary,#9da5b3)]/40"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -170,7 +177,9 @@ export function TableEmpty({
             />
           </svg>
         )}
-        <p className="mt-4 text-sm text-[var(--dashboard-text-secondary,#64748B)]">{message}</p>
+        <p className="mt-4 text-sm text-[var(--dashboard-text-secondary,#9da5b3)]">
+          {message}
+        </p>
       </div>
     </div>
   );

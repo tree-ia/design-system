@@ -2,7 +2,10 @@
 
 import React, { ReactNode } from "react";
 
-export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
+export interface InputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "size"
+> {
   label?: string;
   error?: string;
   children?: ReactNode;
@@ -13,21 +16,35 @@ const cn = (...classes: (string | undefined | false | null)[]) =>
   classes.filter(Boolean).join(" ");
 
 const sizeStyles = {
-  sm: "h-8 px-2.5 text-xs",
-  md: "h-9 px-3 text-sm",
-  lg: "h-10 px-4 text-base",
+  sm: "h-8 px-2.5 text-sm",
+  md: "h-10 px-3 text-sm",
+  lg: "h-12 px-4 text-base",
 };
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type = "text", label, error, children, id, size = "md", ...props }, ref) => {
-    const inputId = id || (label ? `input-${label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
+  (
+    {
+      className,
+      type = "text",
+      label,
+      error,
+      children,
+      id,
+      size = "md",
+      ...props
+    },
+    ref,
+  ) => {
+    const inputId =
+      id ||
+      (label ? `input-${label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
 
     return (
       <div className="w-full">
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-[var(--dashboard-text-primary,#2d2d2d)] mb-1"
+            className="block text-sm font-medium text-[var(--dashboard-text-primary,#d7dae0)] mb-1"
           >
             {label}
           </label>
@@ -37,9 +54,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             type={type}
             id={inputId}
             className={cn(
-              "flex w-full rounded-md border border-[var(--dashboard-text-secondary,#6b7280)]/30 bg-[var(--dashboard-surface,#ffffff)] text-[var(--dashboard-text-primary,#2d2d2d)] shadow-sm transition-colors duration-200 focus:border-[var(--dashboard-primary,#37a501)] placeholder:text-[var(--dashboard-text-secondary,#6b7280)] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+              "flex w-full rounded-md border border-[var(--dashboard-border,#3e4451)] bg-[var(--dashboard-surface,#272c33)] text-[var(--dashboard-text-primary,#d7dae0)] transition-colors duration-200 focus:border-[var(--dashboard-primary,#e74410)] placeholder:text-[var(--dashboard-text-secondary,#9da5b3)] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
               sizeStyles[size],
-              error ? "border-[var(--dashboard-status-danger,#EF4444)] focus:border-[var(--dashboard-status-danger,#EF4444)]" : undefined,
+              error
+                ? "border-[var(--dashboard-status-danger,#ef4444)] focus:border-[var(--dashboard-status-danger,#ef4444)]"
+                : undefined,
               children ? "pr-10" : undefined,
               className,
             )}
@@ -51,7 +70,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {error && (
-          <p className="text-[var(--dashboard-status-danger,#EF4444)] text-xs mt-1">{error}</p>
+          <p className="text-[var(--dashboard-status-danger,#ef4444)] text-xs mt-1">
+            {error}
+          </p>
         )}
       </div>
     );

@@ -25,7 +25,8 @@ export function Loading({
   variant = "spinner",
   fullscreen = false,
 }: LoadingProps) {
-  const variantClass = variant === "border" ? "dashboard-spinner-border" : "dashboard-spinner";
+  const variantClass =
+    variant === "border" ? "dashboard-spinner-border" : "dashboard-spinner";
 
   const spinnerStyle = color ? { borderTopColor: color } : undefined;
 
@@ -39,8 +40,10 @@ export function Loading({
       />
       {text && (
         <p
-          className="text-sm font-medium animate-pulse"
-          style={{ color: textColor || color || "var(--dashboard-primary)" }}
+          className="text-sm font-medium"
+          style={{
+            color: textColor || color || "var(--dashboard-primary,#e74410)",
+          }}
         >
           {text}
         </p>

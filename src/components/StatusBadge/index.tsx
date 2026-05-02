@@ -13,11 +13,11 @@ const cn = (...classes: (string | undefined | false | null)[]) =>
   classes.filter(Boolean).join(" ");
 
 const defaultColorMap: Record<string, string> = {
-  ACTIVE: "var(--dashboard-status-success,#10B981)",
-  APPROVED: "var(--dashboard-status-success,#10B981)",
-  COMPLETED: "var(--dashboard-status-success,#10B981)",
-  DELIVERED: "var(--dashboard-status-success,#10B981)",
-  SUCCESS: "var(--dashboard-status-success,#10B981)",
+  ACTIVE: "var(--dashboard-status-success,#10b981)",
+  APPROVED: "var(--dashboard-status-success,#10b981)",
+  COMPLETED: "var(--dashboard-status-success,#10b981)",
+  DELIVERED: "var(--dashboard-status-success,#10b981)",
+  SUCCESS: "var(--dashboard-status-success,#10b981)",
   PENDING: "var(--dashboard-status-warning,#f59e0b)",
   IN_REVIEW: "var(--dashboard-status-warning,#f59e0b)",
   AWAITING: "var(--dashboard-status-warning,#f59e0b)",
@@ -26,17 +26,17 @@ const defaultColorMap: Record<string, string> = {
   IN_PROGRESS: "var(--dashboard-status-info,#3b82f6)",
   SENT: "var(--dashboard-status-info,#3b82f6)",
   QUOTED: "var(--dashboard-status-info,#3b82f6)",
-  CANCELLED: "var(--dashboard-status-danger,#EF4444)",
-  REJECTED: "var(--dashboard-status-danger,#EF4444)",
-  EXPIRED: "var(--dashboard-status-danger,#EF4444)",
-  ERROR: "var(--dashboard-status-danger,#EF4444)",
-  INACTIVE: "var(--dashboard-text-secondary,#6b7280)",
-  ARCHIVED: "var(--dashboard-text-secondary,#6b7280)",
+  CANCELLED: "var(--dashboard-status-danger,#ef4444)",
+  REJECTED: "var(--dashboard-status-danger,#ef4444)",
+  EXPIRED: "var(--dashboard-status-danger,#ef4444)",
+  ERROR: "var(--dashboard-status-danger,#ef4444)",
+  INACTIVE: "var(--dashboard-status-neutral,#64748b)",
+  ARCHIVED: "var(--dashboard-status-neutral,#64748b)",
 };
 
 const sizeClasses: Record<string, string> = {
   sm: "px-2 py-0.5 text-xs",
-  md: "px-2.5 py-1 text-sm",
+  md: "px-3 py-1 text-xs",
   lg: "px-3 py-1 text-sm",
 };
 
@@ -47,9 +47,7 @@ const dotSizeClasses: Record<string, string> = {
 };
 
 function formatLabel(status: string): string {
-  return status
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+  return status.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 export function StatusBadge({
@@ -57,18 +55,19 @@ export function StatusBadge({
   colorMap,
   size = "md",
   label,
-  dot = true,
+  dot = false,
   className,
 }: StatusBadgeProps) {
   const merged = { ...defaultColorMap, ...colorMap };
   const normalizedStatus = status.toUpperCase().replace(/[\s-]/g, "_");
-  const color = merged[normalizedStatus] || "var(--dashboard-text-secondary,#6b7280)";
+  const color =
+    merged[normalizedStatus] || "var(--dashboard-status-neutral,#64748b)";
   const displayLabel = label || formatLabel(status);
 
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full font-medium whitespace-nowrap",
+        "inline-flex items-center gap-1.5 rounded-md font-medium whitespace-nowrap",
         sizeClasses[size],
         className,
       )}

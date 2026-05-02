@@ -30,9 +30,14 @@ export function FormField({
     <div className={className}>
       <label
         htmlFor={name}
-        className="block text-sm font-medium text-[var(--dashboard-text-primary,#2d2d2d)] mb-1"
+        className="block text-sm font-medium text-[var(--dashboard-text-primary,#d7dae0)] mb-1"
       >
-        {label} {required && <span className="text-[var(--dashboard-status-danger,#EF4444)]">*</span>}
+        {label}{" "}
+        {required && (
+          <span className="text-[var(--dashboard-status-danger,#ef4444)]">
+            *
+          </span>
+        )}
       </label>
       <Input
         type={type}
@@ -42,9 +47,17 @@ export function FormField({
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
         placeholder={placeholder}
-        className={error ? "border-[var(--dashboard-status-danger,#EF4444)] focus:border-[var(--dashboard-status-danger,#EF4444)]" : ""}
+        className={
+          error
+            ? "border-[var(--dashboard-status-danger,#ef4444)] focus:border-[var(--dashboard-status-danger,#ef4444)]"
+            : ""
+        }
       />
-      {error && <p className="text-[var(--dashboard-status-danger,#EF4444)] text-xs mt-1">{error}</p>}
+      {error && (
+        <p className="text-[var(--dashboard-status-danger,#ef4444)] text-xs mt-1">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

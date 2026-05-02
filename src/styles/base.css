@@ -52,7 +52,7 @@
 }
 
 .dashboard-focus-ring:focus-visible {
-  outline: 2px solid var(--dashboard-primary, #2563EB);
+  outline: 2px solid var(--dashboard-primary, #2563eb);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -60,13 +60,15 @@
 /* ─── Transitions ─── */
 
 .dashboard-transition-base {
-  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  transition-property:
+    color, background-color, border-color, opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
 
 .dashboard-transition-slow {
-  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  transition-property:
+    color, background-color, border-color, opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
 }
@@ -74,9 +76,7 @@
 /* ─── Shadows ─── */
 
 .dashboard-shadow-sm {
-  box-shadow:
-    0 1px 2px 0 rgb(0 0 0 / 0.03),
-    0 1px 3px 0 rgb(0 0 0 / 0.06);
+  box-shadow: none;
 }
 
 .dashboard-header-shadow {
@@ -84,21 +84,15 @@
 }
 
 .dashboard-shadow-md {
-  box-shadow:
-    0 2px 4px -1px rgb(0 0 0 / 0.04),
-    0 4px 6px -1px rgb(0 0 0 / 0.08);
+  box-shadow: none;
 }
 
 .dashboard-shadow-lg {
-  box-shadow:
-    0 4px 6px -2px rgb(0 0 0 / 0.03),
-    0 10px 15px -3px rgb(0 0 0 / 0.08);
+  box-shadow: none;
 }
 
 .dashboard-shadow-xl {
-  box-shadow:
-    0 10px 25px -5px rgb(0 0 0 / 0.08),
-    0 20px 50px -12px rgb(0 0 0 / 0.15);
+  box-shadow: none;
 }
 
 /* Keyframes */

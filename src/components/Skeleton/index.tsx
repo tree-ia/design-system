@@ -29,13 +29,14 @@ export function Skeleton({
   const variantStyles: Record<string, string> = {
     text: "h-4 rounded",
     circle: "rounded-full",
-    rectangle: "rounded-lg",
-    card: "rounded-lg",
+    rectangle: "rounded-md",
+    card: "rounded-xl",
   };
 
   const style: React.CSSProperties = {};
   if (width) style.width = typeof width === "number" ? `${width}px` : width;
-  if (height) style.height = typeof height === "number" ? `${height}px` : height;
+  if (height)
+    style.height = typeof height === "number" ? `${height}px` : height;
 
   if (variant === "circle" && !height) {
     style.height = style.width || "40px";
@@ -65,7 +66,12 @@ export function Skeleton({
 
   return (
     <div
-      className={cn(baseStyles, shimmerStyles, variantStyles[variant], className)}
+      className={cn(
+        baseStyles,
+        shimmerStyles,
+        variantStyles[variant],
+        className,
+      )}
       style={style}
     />
   );

@@ -19,7 +19,13 @@ export interface TabsProps {
 const cn = (...classes: (string | undefined | false | null)[]) =>
   classes.filter(Boolean).join(" ");
 
-export function Tabs({ tabs, activeTab, onChange, variant = "underline", className }: TabsProps) {
+export function Tabs({
+  tabs,
+  activeTab,
+  onChange,
+  variant = "underline",
+  className,
+}: TabsProps) {
   if (variant === "pill") {
     return (
       <div className={cn("flex flex-wrap gap-2", className)} role="tablist">
@@ -61,7 +67,12 @@ export function Tabs({ tabs, activeTab, onChange, variant = "underline", classNa
   }
 
   return (
-    <div className={cn("border-b border-[var(--dashboard-text-secondary,#6b7280)]/20", className)}>
+    <div
+      className={cn(
+        "border-b border-[var(--dashboard-text-secondary,#6b7280)]/20",
+        className,
+      )}
+    >
       <nav className="flex gap-6" aria-label="Tabs">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -73,8 +84,8 @@ export function Tabs({ tabs, activeTab, onChange, variant = "underline", classNa
               className={cn(
                 "relative pb-3 px-1 text-sm font-medium transition-colors border-b-2 flex items-center gap-2 cursor-pointer",
                 isActive
-                  ? "text-[var(--dashboard-primary,#37a501)] border-[var(--dashboard-primary,#37a501)]"
-                  : "text-[var(--dashboard-text-secondary,#6b7280)] hover:text-[var(--dashboard-text-primary,#2d2d2d)] border-transparent",
+                  ? "text-[var(--dashboard-text-primary,#d7dae0)] border-[var(--dashboard-primary,#e74410)]"
+                  : "text-[var(--dashboard-text-secondary,#9da5b3)] hover:text-[var(--dashboard-text-primary,#d7dae0)] border-transparent",
               )}
               role="tab"
               aria-selected={isActive}
@@ -86,8 +97,8 @@ export function Tabs({ tabs, activeTab, onChange, variant = "underline", classNa
                   className={cn(
                     "ml-1 text-xs rounded-full px-1.5 py-0.5",
                     isActive
-                      ? "bg-[var(--dashboard-primary,#37a501)]/10 text-[var(--dashboard-primary,#37a501)]"
-                      : "bg-[var(--dashboard-text-secondary,#6b7280)]/10 text-[var(--dashboard-text-secondary,#6b7280)]",
+                      ? "bg-[var(--dashboard-primary,#e74410)]/10 text-[var(--dashboard-primary,#e74410)]"
+                      : "bg-[var(--dashboard-text-secondary,#9da5b3)]/10 text-[var(--dashboard-text-secondary,#9da5b3)]",
                   )}
                 >
                   {tab.count}
