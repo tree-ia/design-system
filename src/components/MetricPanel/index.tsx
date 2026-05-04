@@ -544,8 +544,8 @@ export function MetricPanel({
     >
       {/* Header */}
       <div className="flex items-center justify-between p-4 md:p-6 pb-3 md:pb-4 border-b border-[var(--dashboard-text-secondary,#6b7280)]/10">
-        <h2 className="flex items-center gap-2 text-lg md:text-xl font-bold text-[var(--dashboard-text-primary,#2d2d2d)]">
-          <TitleIcon className="w-5 h-5 md:w-6 md:h-6" />
+        <h2 className="flex items-center gap-2 text-base md:text-lg font-bold text-[var(--dashboard-text-primary,#2d2d2d)]">
+          <TitleIcon className="w-5 h-5" />
           {title}
         </h2>
         {onActionClick && actionLabel && (
