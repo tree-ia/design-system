@@ -71,10 +71,74 @@ export function KPICard({
   return (
     <div
       className={cn(
-        "h-full w-full bg-[var(--dashboard-surface,#ffffff)] rounded-xl p-6 border border-[var(--dashboard-text-secondary,#64748B)]/12 transition-all duration-200 ease-out dashboard-shadow-sm hover:dashboard-shadow-md flex flex-col",
+        "dashboard-kpi-card h-full w-full min-w-0 bg-[var(--dashboard-surface,#ffffff)] rounded-xl p-4 md:p-5 border border-[var(--dashboard-text-secondary,#64748B)]/12 transition-all duration-200 ease-out dashboard-shadow-sm hover:dashboard-shadow-md flex flex-col",
         className,
       )}
     >
+      <style>{`
+        .dashboard-kpi-card {
+          container-type: inline-size;
+        }
+
+        @container (max-width: 13.5rem) {
+          .dashboard-kpi-card__content {
+            gap: 0.45rem;
+          }
+
+          .dashboard-kpi-card__value {
+            font-size: 1.55rem;
+            line-height: 1;
+          }
+
+          .dashboard-kpi-card__trend {
+            padding-inline: 0.5rem;
+            gap: 0.2rem;
+          }
+
+          .dashboard-kpi-card__trend-value {
+            font-size: 0.75rem;
+            line-height: 1rem;
+          }
+        }
+
+        @container (max-width: 11.5rem) {
+          .dashboard-kpi-card__value {
+            font-size: 1.4rem;
+          }
+
+          .dashboard-kpi-card__trend {
+            padding-inline: 0.4rem;
+            padding-block: 0.2rem;
+          }
+
+          .dashboard-kpi-card__trend-value {
+            font-size: 0.7rem;
+          }
+        }
+
+        @container (max-width: 9.75rem) {
+          .dashboard-kpi-card__content {
+            gap: 0.35rem;
+          }
+
+          .dashboard-kpi-card__value {
+            font-size: 1.25rem;
+          }
+
+          .dashboard-kpi-card__trend {
+            padding-inline: 0.32rem;
+          }
+
+          .dashboard-kpi-card__trend-icon {
+            font-size: 0.9rem;
+          }
+
+          .dashboard-kpi-card__trend-value {
+            font-size: 0.625rem;
+            line-height: 0.875rem;
+          }
+        }
+      `}</style>
       <div className="flex justify-between items-start mb-4 gap-2">
         <div className="flex items-center gap-2 min-w-0">
           {icon && (
@@ -85,7 +149,7 @@ export function KPICard({
               {icon}
             </span>
           )}
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--dashboard-text-secondary,#64748B)] whitespace-nowrap truncate">
+          <h3 className="min-w-0 truncate text-xs font-semibold uppercase tracking-wider text-[var(--dashboard-text-secondary,#64748B)]">
             {title}
           </h3>
         </div>
@@ -99,18 +163,18 @@ export function KPICard({
         )}
       </div>
 
-      <div className="flex items-end gap-3 flex-1">
-        <p className="text-3xl font-bold text-[var(--dashboard-text-primary,#0F172A)] whitespace-nowrap tracking-tight">
+      <div className="dashboard-kpi-card__content flex min-w-0 items-end gap-3 flex-1">
+        <p className="dashboard-kpi-card__value min-w-0 text-3xl font-bold text-[var(--dashboard-text-primary,#0F172A)] whitespace-nowrap tracking-tight">
           {formatValue(value, format)}
         </p>
         <div
           className={cn(
-            "inline-flex items-center gap-1 px-2 py-1 rounded-full flex-shrink-0 mb-1",
+            "dashboard-kpi-card__trend inline-flex items-center gap-1 px-2 py-1 rounded-full flex-shrink-0 mb-1",
             trendConfig.color,
           )}
         >
-          <span className="text-sm">{trendConfig.icon}</span>
-          <span className="text-xs font-semibold whitespace-nowrap">
+          <span className="dashboard-kpi-card__trend-icon text-sm leading-none">{trendConfig.icon}</span>
+          <span className="dashboard-kpi-card__trend-value text-xs font-semibold whitespace-nowrap">
             {Math.abs(variation).toFixed(1)}%
           </span>
         </div>
@@ -123,7 +187,7 @@ function KPICardSkeleton({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "h-full bg-[var(--dashboard-surface,#ffffff)] rounded-xl p-6 border border-[var(--dashboard-text-secondary,#64748B)]/12 dashboard-shadow-sm animate-pulse flex flex-col",
+        "h-full bg-[var(--dashboard-surface,#ffffff)] rounded-xl p-4 md:p-5 border border-[var(--dashboard-text-secondary,#64748B)]/12 dashboard-shadow-sm animate-pulse flex flex-col",
         className,
       )}
     >
