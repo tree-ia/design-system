@@ -187,6 +187,69 @@ export type {
   TOCProviderProps,
 } from "./components/TableOfContents";
 
+export {
+  SocialIcon,
+  WhatsappIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  GithubIcon,
+  YoutubeIcon,
+  socialIconNames,
+  socialIconPaths,
+} from "./components/SocialIcon";
+export type {
+  SocialIconName,
+  SocialIconProps,
+  SocialIconShortcutProps,
+} from "./components/SocialIcon";
+
+export {
+  ConversationAvatar,
+  ConversationLayout,
+  ConversationPanel,
+  ConversationList,
+  ConversationListItem,
+  ConversationPreviewCard,
+  ConversationSearch,
+  ConversationSupportActions,
+  ConversationSupportBadge,
+  ConversationThread,
+  ConversationThreadHeader,
+  ConversationEventSeparator,
+  ConversationMediaPreview,
+  ConversationMessageBubble,
+  ConversationUnreadMarker,
+  ConversationComposer,
+  conversationMessageIcons,
+} from "./components/ConversationPanel";
+export type {
+  ConversationAvatarProps,
+  ConversationLayoutProps,
+  ConversationPanelProps,
+  ConversationListProps,
+  ConversationListItemProps,
+  ConversationPreviewCardProps,
+  ConversationSearchProps,
+  ConversationSupportActionsProps,
+  ConversationSupportBadgeProps,
+  ConversationThreadProps,
+  ConversationThreadHeaderProps,
+  ConversationEventSeparatorProps,
+  ConversationMediaPreviewProps,
+  ConversationMessageBubbleProps,
+  ConversationUnreadMarkerProps,
+  ConversationComposerProps,
+  ConversationParticipant,
+  ConversationListItemData,
+  ConversationMessageData,
+  ConversationMessageMedia,
+  ConversationMessageDirection,
+  ConversationMessageKind,
+  ConversationPreviewVariant,
+  ConversationSupportStatus,
+  ConversationStats,
+} from "./components/ConversationPanel";
+
 // Providers
 export { DashboardProvider } from "./providers/DashboardProvider";
 export { ThemeProvider } from "./providers/ThemeProvider";
