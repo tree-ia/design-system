@@ -62,6 +62,8 @@ export interface HeaderProps {
   logoutLabel?: string;
   /** Label do botao de menu mobile */
   menuLabel?: string;
+  /** Abre dropdowns de navegacao no hover em layouts desktop. Default: true */
+  openDropdownOnHover?: boolean;
   /** Offset lateral no desktop quando existe sidebar fixa */
   desktopOffsetLeft?: number | string;
   className?: string;
@@ -124,6 +126,7 @@ export function Header({
   onLogout,
   logoutLabel = "Sair",
   menuLabel = "Menu",
+  openDropdownOnHover = true,
   desktopOffsetLeft = 0,
   className,
 }: HeaderProps) {
@@ -133,10 +136,26 @@ export function Header({
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const hoverCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useOnClickOutside(dropdownRef, () => setOpenDropdownId(null));
   useOnClickOutside(userMenuRef, () => setIsUserMenuOpen(false));
 
+  useEffect(() => {
+    return () => {
+      if (hoverCloseTimeoutRef.current) {
+        clearTimeout(hoverCloseTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const clearHoverCloseTimeout = () => {
+    if (!hoverCloseTimeoutRef.current) return;
+    clearTimeout(hoverCloseTimeoutRef.current);
+    hoverCloseTimeoutRef.current = null;
+  };
+
   const closeMenus = () => {
+    clearHoverCloseTimeout();
     setIsMobileMenuOpen(false);
     setIsUserMenuOpen(false);
     setOpenDropdownId(null);
@@ -261,12 +280,31 @@ export function Header({
     }
 
     return (
-      <div key={group.id} className="relative" ref={isOpen ? dropdownRef : undefined}>
+      <div
+        key={group.id}
+        className="relative"
+        ref={isOpen ? dropdownRef : undefined}
+        onMouseEnter={() => {
+          if (!openDropdownOnHover) return;
+          clearHoverCloseTimeout();
+          setOpenDropdownId(group.id);
+        }}
+        onMouseLeave={() => {
+          if (!openDropdownOnHover) return;
+          hoverCloseTimeoutRef.current = setTimeout(() => {
+            setOpenDropdownId((current) => (current === group.id ? null : current));
+            hoverCloseTimeoutRef.current = null;
+          }, 120);
+        }}
+      >
         <button
           type="button"
-          onClick={() => setOpenDropdownId((prev) => (prev === group.id ? null : group.id))}
+          onClick={() => {
+            clearHoverCloseTimeout();
+            setOpenDropdownId((prev) => (prev === group.id ? null : group.id));
+          }}
           className={cn(
-            "flex items-center gap-1.5 rounded-lg h-10 px-3 text-sm font-medium transition-colors",
+            "flex h-10 items-center gap-1.5 rounded-lg px-3 text-sm font-medium transition-colors",
             groupActive
               ? "bg-[var(--dashboard-primary,#37a501)]/12 text-[var(--dashboard-primary,#37a501)]"
               : "text-[var(--dashboard-text-secondary,#6b7280)] hover:bg-[var(--dashboard-primary,#37a501)]/8 hover:text-[var(--dashboard-text-primary,#2d2d2d)]"
@@ -361,7 +399,7 @@ export function Header({
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed left-[var(--dashboard-page-gutter,0px)] right-[var(--dashboard-page-gutter,0px)] top-2 z-30 h-5 bg-[var(--dashboard-background,#f2f2f2)] transition-[left,right] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] xl:left-[calc(var(--dashboard-header-offset-left,0px)+var(--dashboard-page-gutter,0px))]"
+        className="pointer-events-none fixed left-[var(--dashboard-page-gutter,0px)] right-[var(--dashboard-page-gutter,0px)] top-2 z-30 h-5 bg-[var(--dashboard-background,#f2f2f2)] transition-[left,right] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] min-[800px]:left-[calc(var(--dashboard-header-offset-left,0px)+var(--dashboard-page-gutter,0px))]"
         style={
           {
             "--dashboard-header-offset-left": desktopOffset,
@@ -370,7 +408,7 @@ export function Header({
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed left-[var(--dashboard-page-gutter,0px)] top-2 z-30 h-14 w-5 bg-[var(--dashboard-background,#f2f2f2)] transition-[left] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] xl:left-[calc(var(--dashboard-header-offset-left,0px)+var(--dashboard-page-gutter,0px))]"
+        className="pointer-events-none fixed left-[var(--dashboard-page-gutter,0px)] top-2 z-30 h-14 w-5 bg-[var(--dashboard-background,#f2f2f2)] transition-[left] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] min-[800px]:left-[calc(var(--dashboard-header-offset-left,0px)+var(--dashboard-page-gutter,0px))]"
         style={
           {
             "--dashboard-header-offset-left": desktopOffset,
@@ -383,7 +421,7 @@ export function Header({
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed left-[var(--dashboard-page-gutter,0px)] right-[var(--dashboard-page-gutter,0px)] top-2 z-30 h-20 rounded-2xl bg-[var(--dashboard-background,#f2f2f2)] transition-[left,right] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] xl:left-[calc(var(--dashboard-header-offset-left,0px)+var(--dashboard-page-gutter,0px))]"
+        className="pointer-events-none fixed left-[var(--dashboard-page-gutter,0px)] right-[var(--dashboard-page-gutter,0px)] top-2 z-30 h-20 rounded-2xl bg-[var(--dashboard-background,#f2f2f2)] transition-[left,right] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] min-[800px]:left-[calc(var(--dashboard-header-offset-left,0px)+var(--dashboard-page-gutter,0px))]"
         style={
           {
             "--dashboard-header-offset-left": desktopOffset,
@@ -393,7 +431,7 @@ export function Header({
 
       <header
         className={cn(
-          "fixed left-[var(--dashboard-page-gutter,0px)] right-[var(--dashboard-page-gutter,0px)] top-2 z-40 rounded-2xl border border-[var(--dashboard-text-secondary,#6b7280)]/15 bg-[var(--dashboard-surface,#ffffff)] text-[var(--dashboard-text-primary,#2d2d2d)] shadow-sm transition-[left,right] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] xl:left-[calc(var(--dashboard-header-offset-left,0px)+var(--dashboard-page-gutter,0px))]",
+          "fixed left-[var(--dashboard-page-gutter,0px)] right-[var(--dashboard-page-gutter,0px)] top-2 z-40 rounded-2xl border border-[var(--dashboard-text-secondary,#6b7280)]/15 bg-[var(--dashboard-surface,#ffffff)] text-[var(--dashboard-text-primary,#2d2d2d)] dashboard-header-shadow transition-[left,right] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] min-[800px]:left-[calc(var(--dashboard-header-offset-left,0px)+var(--dashboard-page-gutter,0px))]",
           className,
         )}
         style={
@@ -402,33 +440,34 @@ export function Header({
           } as React.CSSProperties
         }
       >
-      <div className="flex h-20 items-center gap-4 px-4 sm:px-5 xl:grid xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
-        <div className="flex min-w-0 flex-1 items-center gap-4 lg:flex-none xl:col-start-1 xl:justify-self-start">
+      <div className="flex h-20 items-center gap-4 px-4 sm:px-5 min-[800px]:grid min-[800px]:grid-cols-[minmax(7rem,1fr)_auto_minmax(3rem,1fr)] min-[800px]:gap-3 min-[1000px]:grid-cols-[minmax(8rem,1fr)_auto_minmax(10rem,1fr)] min-[1120px]:gap-4">
+        <div className="flex min-w-0 flex-1 items-center gap-4 lg:flex-none min-[800px]:col-start-1 min-[800px]:justify-self-start">
           <div className="flex min-w-0 items-center">{logo}</div>
         </div>
 
         <nav
-          className="hidden min-w-0 items-center justify-center gap-1 xl:col-start-2 xl:flex"
+          className="hidden min-w-0 items-center justify-center gap-1 min-[800px]:col-start-2 min-[800px]:flex"
           aria-label="Navegacao principal"
         >
           {menuItems.map((item) => renderNavItem(item))}
         </nav>
 
-        <div className="hidden items-center gap-3 xl:col-start-3 xl:flex xl:justify-self-end">
+        <div className="hidden items-center gap-3 min-[800px]:col-start-3 min-[800px]:flex min-[800px]:justify-self-end">
           {actions}
 
           {user && (
-            <div className="relative w-[260px]" ref={userMenuRef}>
+            <div className="relative w-11 min-[1000px]:w-[220px] min-[1120px]:w-[260px]" ref={userMenuRef}>
               <button
                 type="button"
                 onClick={() => setIsUserMenuOpen((open) => !open)}
-                className="flex h-11 w-full items-center gap-3 rounded-lg bg-[var(--dashboard-background,#f2f2f2)] px-3 text-left transition-colors hover:bg-[var(--dashboard-primary,#37a501)]/8"
+                className="flex h-11 w-full items-center justify-center gap-3 rounded-lg bg-[var(--dashboard-background,#f2f2f2)] px-0 text-left transition-colors hover:bg-[var(--dashboard-primary,#37a501)]/8 min-[1000px]:justify-start min-[1000px]:px-3"
                 aria-expanded={isUserMenuOpen}
+                aria-label={user.name}
               >
                 <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[var(--dashboard-primary,#37a501)]/12 text-[var(--dashboard-primary,#37a501)]">
                   <User size={16} />
                 </div>
-                <div className="min-w-0 flex-1">
+                <div className="hidden min-w-0 flex-1 min-[1000px]:block">
                   {user.subtitle && (
                     <p className="truncate text-[11px] leading-4 text-[var(--dashboard-text-secondary,#6b7280)]">
                       {user.subtitle}
@@ -441,14 +480,14 @@ export function Header({
                 <ChevronDown
                   size={16}
                   className={cn(
-                    "ml-auto flex-shrink-0 transition-transform",
+                    "ml-auto hidden flex-shrink-0 transition-transform min-[1000px]:block",
                     isUserMenuOpen && "rotate-180",
                   )}
                 />
               </button>
 
               {isUserMenuOpen && (
-                <div className="absolute right-0 top-[calc(100%+0.5rem)] w-full rounded-lg border border-[var(--dashboard-text-secondary,#6b7280)]/20 bg-[var(--dashboard-surface,#ffffff)] p-2 text-[var(--dashboard-text-primary,#2d2d2d)] shadow-xl">
+                <div className="absolute right-0 top-[calc(100%+0.5rem)] w-[260px] rounded-lg border border-[var(--dashboard-text-secondary,#6b7280)]/20 bg-[var(--dashboard-surface,#ffffff)] p-2 text-[var(--dashboard-text-primary,#2d2d2d)] shadow-xl min-[1000px]:w-full">
                   <button
                     type="button"
                     onClick={() => {
@@ -549,7 +588,7 @@ export function Header({
         <button
           type="button"
           onClick={() => setIsMobileMenuOpen((open) => !open)}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--dashboard-primary,#37a501)]/10 text-[var(--dashboard-primary,#37a501)] transition-colors hover:bg-[var(--dashboard-primary,#37a501)]/15 xl:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--dashboard-primary,#37a501)]/10 text-[var(--dashboard-primary,#37a501)] transition-colors hover:bg-[var(--dashboard-primary,#37a501)]/15 min-[800px]:hidden"
           aria-label={menuLabel}
           aria-expanded={isMobileMenuOpen}
         >
@@ -559,7 +598,7 @@ export function Header({
 
       <div
         className={cn(
-          "xl:hidden overflow-hidden border-t border-[var(--dashboard-text-secondary,#6b7280)]/20 bg-[var(--dashboard-surface,#ffffff)] shadow-lg transition-[max-height] duration-200",
+          "overflow-hidden border-t border-[var(--dashboard-text-secondary,#6b7280)]/20 bg-[var(--dashboard-surface,#ffffff)] shadow-lg transition-[max-height] duration-200 min-[800px]:hidden",
           isMobileMenuOpen ? "max-h-[calc(100vh-4rem)]" : "max-h-0",
         )}
       >
