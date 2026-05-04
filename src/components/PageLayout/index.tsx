@@ -3,6 +3,8 @@
 import React, { ReactNode } from "react";
 
 export interface PageLayoutProps {
+  /** Texto curto acima do titulo principal */
+  eyebrow?: string;
   /** Titulo principal da pagina */
   title: string;
   /** Descricao opcional da pagina (aparece abaixo do titulo) */
@@ -15,6 +17,10 @@ export interface PageLayoutProps {
   children: ReactNode;
   /** Se true, aplica padding no conteudo. Default: true */
   contentPadding?: boolean;
+  /** Classes extras aplicadas no wrapper do conteudo */
+  contentClassName?: string;
+  /** Faz o conteudo ocupar a altura util da viewport, com scroll interno no filho */
+  contentFillViewport?: boolean;
   /** Componente de sidebar a ser renderizado */
   sidebar?: ReactNode;
   /** Se a sidebar esta recolhida */
@@ -30,12 +36,15 @@ const cn = (...classes: (string | undefined | false | null)[]) =>
   classes.filter(Boolean).join(" ");
 
 export function PageLayout({
+  eyebrow,
   title,
   description,
   headerActions,
   appHeader,
   children,
   contentPadding = true,
+  contentClassName,
+  contentFillViewport = false,
   sidebar,
   sidebarCollapsed = false,
   sidebarWidth = 280,
@@ -64,7 +73,11 @@ export function PageLayout({
       {appHeader}
       {sidebar}
       <main
-        className={mainTopPadding}
+        className={cn(
+          mainTopPadding,
+          "box-border flex flex-col",
+          contentFillViewport ? "h-dvh overflow-hidden" : "min-h-dvh",
+        )}
         style={{
           marginLeft,
           transition: "margin-left 400ms cubic-bezier(0.4, 0, 0.2, 1)",
@@ -82,16 +95,21 @@ export function PageLayout({
         <div
           className={cn(
             layoutContainer,
-            "-mt-10 rounded-b-2xl border-b border-[var(--dashboard-text-secondary,#6b7280)]/20 bg-[var(--dashboard-surface,#ffffff)] px-7 pb-7 pt-16 sm:px-10 lg:px-12",
+            "mt-4 box-border px-6 py-5 sm:px-8 lg:px-10",
           )}
         >
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="min-w-0">
-              <h1 className="text-2xl font-bold text-[var(--dashboard-text-primary,#2d2d2d)] sm:text-3xl">
+              {eyebrow && (
+                <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--dashboard-text-secondary,#6b7280)]">
+                  {eyebrow}
+                </p>
+              )}
+              <h1 className="text-2xl font-semibold leading-tight tracking-tight text-[var(--dashboard-text-primary,#2d2d2d)] sm:text-3xl">
                 {title}
               </h1>
               {description && (
-                <p className="mt-2 text-sm font-medium text-[var(--dashboard-text-secondary,#6b7280)] sm:text-base">
+                <p className="mt-2 text-sm font-medium text-[var(--dashboard-text-secondary,#6b7280)]">
                   {description}
                 </p>
               )}
@@ -106,7 +124,15 @@ export function PageLayout({
         </div>
 
         {/* Conteudo principal */}
-        <div className={contentPadding ? cn(layoutContainer, "py-6") : ""}>{children}</div>
+        <div
+          className={
+            contentPadding
+              ? cn(layoutContainer, "min-h-0 flex-1 pb-6 pt-5", contentClassName)
+              : cn("min-h-0 flex-1", contentClassName)
+          }
+        >
+          {children}
+        </div>
       </main>
     </div>
   );
