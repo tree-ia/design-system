@@ -37,6 +37,12 @@ const meta: Meta<typeof WhatsAppMockup> = {
       control: "select",
       options: ["business", "personal"],
     },
+    theme: {
+      control: "select",
+      options: ["dark", "light"],
+    },
+    headerBackgroundColor: { control: "color" },
+    profileAvatarBackgroundColor: { control: "color" },
     showComposer: { control: "boolean" },
     showHeaderActions: { control: "boolean" },
     showWallpaper: { control: "boolean" },
@@ -50,6 +56,7 @@ export const Business: Story = {
   args: {
     contactName: "Meu Construtor",
     profileType: "business",
+    theme: "dark",
     messages,
     statusTime: "14:32",
   },
@@ -59,6 +66,7 @@ export const PersonalProfile: Story = {
   args: {
     contactName: "Henrik Marinho",
     profileType: "personal",
+    theme: "light",
     messages: [
       {
         direction: "incoming",
@@ -97,7 +105,10 @@ export const CustomMessageContent: Story = {
             ),
             React.createElement(
               "div",
-              { className: "rounded-md bg-[#008069]/10 px-2 py-1 text-[#008069]" },
+              {
+                className:
+                  "rounded-md bg-[#008069]/10 px-2 py-1 text-[#008069]",
+              },
               "Pedido #PD-0142 enviado para 5 fornecedores.",
             ),
           ),

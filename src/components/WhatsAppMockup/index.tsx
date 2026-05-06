@@ -2,7 +2,6 @@
 
 import React, { useId } from "react";
 import {
-  Battery,
   Camera,
   Check,
   CheckCheck,
@@ -12,7 +11,6 @@ import {
   Paperclip,
   Phone as PhoneIcon,
   Play,
-  Signal,
   Smile,
   Video,
   Wifi,
@@ -22,6 +20,7 @@ import { IPhoneMockup, type IPhoneMockupProps } from "../IPhoneMockup";
 export type WhatsAppProfileType = "business" | "personal";
 export type WhatsAppMessageDirection = "incoming" | "outgoing";
 export type WhatsAppMessageType = "text" | "audio" | "custom";
+export type WhatsAppMockupTheme = "dark" | "light";
 
 export interface WhatsAppMockupMessage {
   id?: string;
@@ -36,17 +35,17 @@ export interface WhatsAppMockupMessage {
   children?: React.ReactNode;
   className?: string;
   contentClassName?: string;
+  style?: React.CSSProperties;
 }
 
-export interface WhatsAppMockupProps
-  extends Pick<
-    IPhoneMockupProps,
-    | "frameColor"
-    | "statusbarColor"
-    | "containerStyle"
-    | "frameOnly"
-    | "hideStatusBar"
-  > {
+export interface WhatsAppMockupProps extends Pick<
+  IPhoneMockupProps,
+  | "frameColor"
+  | "statusbarColor"
+  | "containerStyle"
+  | "frameOnly"
+  | "hideStatusBar"
+> {
   screenWidth?: IPhoneMockupProps["screenWidth"];
   contactName: string;
   profilePhoto?: string;
@@ -54,6 +53,9 @@ export interface WhatsAppMockupProps
   profileAvatar?: React.ReactNode;
   profileType?: WhatsAppProfileType;
   contactSubtitle?: string | null;
+  theme?: WhatsAppMockupTheme;
+  headerBackgroundColor?: React.CSSProperties["backgroundColor"];
+  profileAvatarBackgroundColor?: React.CSSProperties["backgroundColor"];
   messages?: readonly WhatsAppMockupMessage[];
   statusTime?: string;
   dateLabel?: string | false;
@@ -75,6 +77,75 @@ const DEFAULT_WAVEFORM = [
   17,
 ] as const;
 
+const WHATSAPP_PALETTES = {
+  dark: {
+    frame: "#0a0d12",
+    statusbar: "#111b21",
+    statusText: "#e9edef",
+    screen: "#0b141a",
+    header: "#111b21",
+    headerText: "#e9edef",
+    mutedText: "#aebac1",
+    subtleText: "#8696a0",
+    action: "#00a884",
+    wallpaperStroke: "#e9edef",
+    wallpaperOpacity: 0.045,
+    dateBg: "#182229",
+    dateText: "#aebac1",
+    noticeBg: "#182229",
+    noticeText: "#d0b66b",
+    incoming: "#202c33",
+    incomingText: "#e9edef",
+    outgoing: "#005c4b",
+    outgoingText: "#e9edef",
+    outgoingMeta: "#c7d4cf",
+    read: "#53bdeb",
+    avatarBg: "#60b531",
+    composer: "#111b21",
+    composerInput: "#202c33",
+    composerText: "#8696a0",
+    micBg: "#00a884",
+    micIcon: "#07130f",
+    audioWave: "#9ad8ca",
+    audioButtonBg: "#00a884",
+    shadow: "rgba(0, 0, 0, 0.22)",
+  },
+  light: {
+    frame: "#0a0d12",
+    statusbar: "#f7f5f0",
+    statusText: "#111b21",
+    screen: "#efe7db",
+    header: "#f7f5f0",
+    headerText: "#111b21",
+    mutedText: "#667781",
+    subtleText: "#667781",
+    action: "#008069",
+    wallpaperStroke: "#7d6f59",
+    wallpaperOpacity: 0.075,
+    dateBg: "rgba(255, 255, 255, 0.88)",
+    dateText: "#6b6255",
+    noticeBg: "#fff7d6",
+    noticeText: "#7a6420",
+    incoming: "#ffffff",
+    incomingText: "#111b21",
+    outgoing: "#d9fdd3",
+    outgoingText: "#111b13",
+    outgoingMeta: "#66756b",
+    read: "#53bdeb",
+    avatarBg: "#60b531",
+    composer: "#f7f5f0",
+    composerInput: "#ffffff",
+    composerText: "#667781",
+    micBg: "#00a884",
+    micIcon: "#ffffff",
+    audioWave: "#177866",
+    audioButtonBg: "#00a884",
+    shadow: "rgba(15, 23, 42, 0.11)",
+  },
+} as const;
+
+type WhatsAppPalette = (typeof WHATSAPP_PALETTES)[WhatsAppMockupTheme];
+
 const cn = (...classes: (string | undefined | false | null)[]) =>
   classes.filter(Boolean).join(" ");
 
@@ -85,6 +156,9 @@ export function WhatsAppMockup({
   profileAvatar,
   profileType = "business",
   contactSubtitle,
+  theme = "dark",
+  headerBackgroundColor,
+  profileAvatarBackgroundColor,
   messages = [],
   statusTime = "14:32",
   dateLabel = "Hoje",
@@ -95,8 +169,8 @@ export function WhatsAppMockup({
   showHeaderActions = true,
   showWallpaper = true,
   screenWidth = 266,
-  frameColor = "#0a0d12",
-  statusbarColor = "#111b21",
+  frameColor,
+  statusbarColor,
   containerStyle,
   frameOnly,
   hideStatusBar,
@@ -106,6 +180,9 @@ export function WhatsAppMockup({
   messagesClassName,
   "aria-label": ariaLabel,
 }: WhatsAppMockupProps) {
+  const palette = WHATSAPP_PALETTES[theme];
+  const resolvedFrameColor = frameColor ?? palette.frame;
+  const resolvedStatusbarColor = statusbarColor ?? palette.statusbar;
   const subtitle =
     contactSubtitle === undefined
       ? profileType === "business"
@@ -124,8 +201,8 @@ export function WhatsAppMockup({
       <IPhoneMockup
         screenWidth={screenWidth}
         screenType="island"
-        frameColor={frameColor}
-        statusbarColor={statusbarColor}
+        frameColor={resolvedFrameColor}
+        statusbarColor={resolvedStatusbarColor}
         hideNavBar
         frameOnly={frameOnly}
         hideStatusBar={hideStatusBar}
@@ -133,12 +210,14 @@ export function WhatsAppMockup({
         className={phoneClassName}
       >
         <div
-          className={cn(
-            "flex h-full w-full flex-col bg-[#efe7db] text-[#111b21] dark:bg-[#0b141a] dark:text-white/90",
-            screenClassName,
-          )}
+          className={cn("flex h-full w-full flex-col", screenClassName)}
+          style={{ backgroundColor: palette.screen, color: palette.headerText }}
         >
-          <StatusBar time={statusTime} screenWidth={screenWidth} />
+          <StatusBar
+            time={statusTime}
+            screenWidth={screenWidth}
+            palette={palette}
+          />
           <WhatsAppHeader
             contactName={contactName}
             subtitle={subtitle}
@@ -146,6 +225,11 @@ export function WhatsAppMockup({
             profilePhotoAlt={profilePhotoAlt}
             profileAvatar={profileAvatar}
             showActions={showHeaderActions}
+            backgroundColor={headerBackgroundColor ?? palette.header}
+            avatarBackgroundColor={
+              profileAvatarBackgroundColor ?? palette.avatarBg
+            }
+            palette={palette}
           />
 
           <div
@@ -154,16 +238,28 @@ export function WhatsAppMockup({
               messagesClassName,
             )}
           >
-            {showWallpaper ? <WhatsAppWallpaper /> : null}
+            {showWallpaper ? <WhatsAppWallpaper palette={palette} /> : null}
 
             {dateLabel ? (
-              <div className="relative z-10 mx-auto rounded-full bg-white/82 px-2.5 py-0.5 text-[9px] font-semibold uppercase text-[#6b6255] shadow-[0_1px_2px_rgba(15,23,42,0.08)] dark:bg-[#1f2c33] dark:text-white/58">
+              <div
+                className="relative z-10 mx-auto rounded-full px-2.5 py-0.5 text-[9px] font-semibold uppercase shadow-[0_1px_2px_rgba(15,23,42,0.08)]"
+                style={{
+                  backgroundColor: palette.dateBg,
+                  color: palette.dateText,
+                }}
+              >
                 {dateLabel}
               </div>
             ) : null}
 
             {encryptionNotice ? (
-              <div className="relative z-10 mx-auto max-w-[92%] rounded-md bg-[#fff7d6] px-2.5 py-1.5 text-center text-[9px] leading-snug text-[#7a6420] shadow-[0_1px_2px_rgba(15,23,42,0.06)] dark:bg-[#182229] dark:text-[#d0b66b]">
+              <div
+                className="relative z-10 mx-auto max-w-[92%] rounded-md px-2.5 py-1.5 text-center text-[9px] leading-snug shadow-[0_1px_2px_rgba(15,23,42,0.06)]"
+                style={{
+                  backgroundColor: palette.noticeBg,
+                  color: palette.noticeText,
+                }}
+              >
                 {encryptionNotice}
               </div>
             ) : null}
@@ -172,15 +268,19 @@ export function WhatsAppMockup({
               <WhatsAppMessageBubble
                 key={message.id ?? `${message.time}-${index}`}
                 message={message}
+                palette={palette}
               />
             ))}
           </div>
 
-          {showComposer ? (
-            composer ?? (
-              <WhatsAppComposer composerPlaceholder={composerPlaceholder} />
-            )
-          ) : null}
+          {showComposer
+            ? (composer ?? (
+                <WhatsAppComposer
+                  composerPlaceholder={composerPlaceholder}
+                  palette={palette}
+                />
+              ))
+            : null}
         </div>
       </IPhoneMockup>
     </div>
@@ -190,22 +290,62 @@ export function WhatsAppMockup({
 interface StatusBarProps {
   time: string;
   screenWidth: number;
+  palette: WhatsAppPalette;
 }
 
-function StatusBar({ time, screenWidth }: StatusBarProps) {
+function StatusBar({ time, screenWidth, palette }: StatusBarProps) {
   return (
     <div
       aria-hidden
-      className="absolute left-0 right-0 top-0 z-50 flex items-center justify-between px-6 text-[11px] font-semibold tracking-tight text-[#111b21] dark:text-white/88"
+      className="absolute left-0 right-0 top-0 z-50 flex items-center justify-between px-6 text-[11px] font-semibold tracking-tight"
       style={{ height: `${Math.floor((screenWidth * 59) / 390)}px` }}
     >
-      <span className="tabular-nums">{time}</span>
-      <div className="flex items-center gap-1">
-        <Signal className="h-3 w-3" strokeWidth={2.4} aria-hidden />
+      <span className="tabular-nums" style={{ color: palette.statusText }}>
+        {time}
+      </span>
+      <div
+        className="flex items-center gap-1"
+        style={{ color: palette.statusText }}
+      >
+        <IosSignal color={palette.statusText} />
         <Wifi className="h-3 w-3" strokeWidth={2.4} aria-hidden />
-        <Battery className="h-3.5 w-3.5" strokeWidth={2.4} aria-hidden />
+        <IosBattery color={palette.statusText} />
       </div>
     </div>
+  );
+}
+
+function IosSignal({ color }: { color: string }) {
+  return (
+    <span className="flex h-3 w-3 items-end gap-[1px]" aria-hidden>
+      {[4, 6, 8, 10].map((height) => (
+        <span
+          key={height}
+          className="w-[2px] rounded-sm"
+          style={{ height, backgroundColor: color }}
+        />
+      ))}
+    </span>
+  );
+}
+
+function IosBattery({ color }: { color: string }) {
+  return (
+    <span className="flex items-center gap-[1px]" aria-hidden>
+      <span
+        className="relative h-[8px] w-[16px] rounded-[2px] border"
+        style={{ borderColor: color }}
+      >
+        <span
+          className="absolute bottom-[1px] left-[1px] top-[1px] w-[10px] rounded-[1px]"
+          style={{ backgroundColor: color }}
+        />
+      </span>
+      <span
+        className="h-[4px] w-[1.5px] rounded-r"
+        style={{ backgroundColor: color }}
+      />
+    </span>
   );
 }
 
@@ -216,6 +356,9 @@ interface WhatsAppHeaderProps {
   profilePhotoAlt?: string;
   profileAvatar?: React.ReactNode;
   showActions: boolean;
+  backgroundColor: React.CSSProperties["backgroundColor"];
+  avatarBackgroundColor: React.CSSProperties["backgroundColor"];
+  palette: WhatsAppPalette;
 }
 
 function WhatsAppHeader({
@@ -225,13 +368,20 @@ function WhatsAppHeader({
   profilePhotoAlt,
   profileAvatar,
   showActions,
+  backgroundColor,
+  avatarBackgroundColor,
+  palette,
 }: WhatsAppHeaderProps) {
   return (
-    <div className="relative bg-[#f7f5f0] text-[#111b21] shadow-[0_1px_0_rgba(17,27,33,0.08)] dark:bg-[#111b21] dark:text-white/90">
+    <div
+      className="relative shadow-[0_1px_0_rgba(17,27,33,0.08)]"
+      style={{ backgroundColor, color: palette.headerText }}
+    >
       <div className="flex items-center gap-2 px-2.5 pb-2 pt-2">
         <ChevronLeft
-          className="h-5 w-5 shrink-0 text-[#008069] dark:text-[#00a884]"
+          className="h-5 w-5 shrink-0"
           strokeWidth={2.4}
+          style={{ color: palette.action }}
           aria-hidden
         />
         <ProfileAvatar
@@ -239,13 +389,17 @@ function WhatsAppHeader({
           profilePhoto={profilePhoto}
           profilePhotoAlt={profilePhotoAlt}
           profileAvatar={profileAvatar}
+          backgroundColor={avatarBackgroundColor}
         />
         <div className="min-w-0 flex-1">
           <p className="truncate text-[13px] font-semibold leading-tight">
             {contactName}
           </p>
           {subtitle ? (
-            <p className="truncate text-[10px] leading-tight text-[#667781] dark:text-white/52">
+            <p
+              className="truncate text-[10px] leading-tight"
+              style={{ color: palette.mutedText }}
+            >
               {subtitle}
             </p>
           ) : null}
@@ -253,18 +407,21 @@ function WhatsAppHeader({
         {showActions ? (
           <>
             <Video
-              className="h-4 w-4 shrink-0 text-[#008069] dark:text-[#00a884]"
+              className="h-4 w-4 shrink-0"
               strokeWidth={2.2}
+              style={{ color: palette.action }}
               aria-hidden
             />
             <PhoneIcon
-              className="h-3.5 w-3.5 shrink-0 text-[#008069] dark:text-[#00a884]"
+              className="h-3.5 w-3.5 shrink-0"
               strokeWidth={2.2}
+              style={{ color: palette.action }}
               aria-hidden
             />
             <MoreVertical
-              className="h-4 w-4 shrink-0 text-[#008069] dark:text-[#00a884]"
+              className="h-4 w-4 shrink-0"
               strokeWidth={2.2}
+              style={{ color: palette.action }}
               aria-hidden
             />
           </>
@@ -279,6 +436,7 @@ interface ProfileAvatarProps {
   profilePhoto?: string;
   profilePhotoAlt?: string;
   profileAvatar?: React.ReactNode;
+  backgroundColor: React.CSSProperties["backgroundColor"];
 }
 
 function ProfileAvatar({
@@ -286,10 +444,14 @@ function ProfileAvatar({
   profilePhoto,
   profilePhotoAlt,
   profileAvatar,
+  backgroundColor,
 }: ProfileAvatarProps) {
   if (profileAvatar) {
     return (
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#60b531]">
+      <div
+        className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full"
+        style={{ backgroundColor }}
+      >
         {profileAvatar}
       </div>
     );
@@ -300,13 +462,17 @@ function ProfileAvatar({
       <img
         src={profilePhoto}
         alt={profilePhotoAlt ?? contactName}
-        className="h-8 w-8 shrink-0 rounded-full bg-[#60b531] object-cover"
+        className="h-8 w-8 shrink-0 rounded-full object-cover"
+        style={{ backgroundColor }}
       />
     );
   }
 
   return (
-    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#60b531] text-[11px] font-bold uppercase text-white">
+    <div
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[11px] font-bold uppercase text-white"
+      style={{ backgroundColor }}
+    >
       {getInitials(contactName)}
     </div>
   );
@@ -321,36 +487,41 @@ function getInitials(name: string) {
 
 interface WhatsAppMessageBubbleProps {
   message: WhatsAppMockupMessage;
+  palette: WhatsAppPalette;
 }
 
-function WhatsAppMessageBubble({ message }: WhatsAppMessageBubbleProps) {
+function WhatsAppMessageBubble({
+  message,
+  palette,
+}: WhatsAppMessageBubbleProps) {
   const direction = message.direction ?? "outgoing";
   const type = message.type ?? "text";
   const isOutgoing = direction === "outgoing";
+  const bubbleColor = isOutgoing ? palette.outgoing : palette.incoming;
 
   return (
     <div
       className={cn(
         "relative z-10 max-w-[86%] rounded-[14px] px-2.5 py-2 shadow-[0_1px_1.5px_rgba(15,23,42,0.11)]",
-        isOutgoing
-          ? "ml-auto rounded-tr-[4px] bg-[#d9fdd3] text-[#111b13] dark:bg-[#005c4b] dark:text-white/92"
-          : "mr-auto rounded-tl-[4px] bg-white text-[#111b21] dark:bg-[#202c33] dark:text-white/92",
+        isOutgoing ? "ml-auto rounded-tr-[4px]" : "mr-auto rounded-tl-[4px]",
         message.className,
       )}
+      style={{
+        backgroundColor: bubbleColor,
+        color: isOutgoing ? palette.outgoingText : palette.incomingText,
+        boxShadow: `0 1px 1.5px ${palette.shadow}`,
+        ...message.style,
+      }}
     >
       <BubbleTail
         side={isOutgoing ? "out" : "in"}
-        className={
-          isOutgoing
-            ? "fill-[#d9fdd3] dark:fill-[#005c4b]"
-            : "fill-white dark:fill-[#202c33]"
-        }
+        color={message.style?.backgroundColor?.toString() ?? bubbleColor}
       />
 
       <div className={message.contentClassName}>
         {message.children ??
           (type === "audio" ? (
-            <AudioMessage message={message} />
+            <AudioMessage message={message} palette={palette} />
           ) : type === "custom" ? null : (
             <p className="max-w-[31ch] text-[10.5px] leading-snug">
               {message.text}
@@ -363,6 +534,7 @@ function WhatsAppMessageBubble({ message }: WhatsAppMessageBubbleProps) {
           time={message.time}
           direction={direction}
           read={message.read}
+          palette={palette}
         />
       )}
     </div>
@@ -371,15 +543,22 @@ function WhatsAppMessageBubble({ message }: WhatsAppMessageBubbleProps) {
 
 interface AudioMessageProps {
   message: WhatsAppMockupMessage;
+  palette: WhatsAppPalette;
 }
 
-function AudioMessage({ message }: AudioMessageProps) {
+function AudioMessage({ message, palette }: AudioMessageProps) {
   const waveform = message.waveform ?? DEFAULT_WAVEFORM;
 
   return (
     <>
       <div className="flex items-center gap-2">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#00a884] text-white">
+        <span
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+          style={{
+            backgroundColor: palette.audioButtonBg,
+            color: palette.micIcon,
+          }}
+        >
           <Play
             className="ml-0.5 h-3.5 w-3.5 fill-current"
             strokeWidth={2.2}
@@ -390,22 +569,30 @@ function AudioMessage({ message }: AudioMessageProps) {
           {waveform.map((height, index) => (
             <span
               key={`${height}-${index}`}
-              className="origin-center rounded-full bg-[#177866]/75 dark:bg-[#bcebdc]/80"
+              className="origin-center rounded-full"
               style={{
+                backgroundColor: palette.audioWave,
                 height: Math.max(8, Math.round(height * 0.78)),
+                opacity: 0.76,
                 width: 2,
               }}
             />
           ))}
         </div>
         {message.duration ? (
-          <span className="text-[10px] font-medium text-[#53665c] dark:text-white/68">
+          <span
+            className="text-[10px] font-medium"
+            style={{ color: palette.outgoingMeta }}
+          >
             {message.duration}
           </span>
         ) : null}
       </div>
       {message.text ? (
-        <p className="mt-1.5 max-w-[29ch] text-[9.5px] leading-snug text-[#53665c] dark:text-white/68">
+        <p
+          className="mt-1.5 max-w-[29ch] text-[9.5px] leading-snug"
+          style={{ color: palette.outgoingMeta }}
+        >
           {message.text}
         </p>
       ) : null}
@@ -417,21 +604,26 @@ interface MessageMetaProps {
   time: string;
   direction: WhatsAppMessageDirection;
   read?: boolean;
+  palette: WhatsAppPalette;
 }
 
-function MessageMeta({ time, direction, read }: MessageMetaProps) {
+function MessageMeta({ time, direction, read, palette }: MessageMetaProps) {
   const isOutgoing = direction === "outgoing";
 
   return (
-    <div className="mt-1 flex items-center justify-end gap-1 text-[9px] text-[#66756b] dark:text-white/58">
+    <div
+      className="mt-1 flex items-center justify-end gap-1 text-[9px]"
+      style={{ color: isOutgoing ? palette.outgoingMeta : palette.subtleText }}
+    >
       <span>{time}</span>
       {isOutgoing ? (
         read === undefined ? (
           <Check className="h-3 w-3" strokeWidth={2.5} aria-hidden />
         ) : (
           <CheckCheck
-            className={cn("h-3 w-3", read ? "text-[#53bdeb]" : undefined)}
+            className="h-3 w-3"
             strokeWidth={2.5}
+            style={{ color: read ? palette.read : undefined }}
             aria-hidden
           />
         )
@@ -442,10 +634,10 @@ function MessageMeta({ time, direction, read }: MessageMetaProps) {
 
 interface BubbleTailProps {
   side: "in" | "out";
-  className: string;
+  color: string;
 }
 
-function BubbleTail({ side, className }: BubbleTailProps) {
+function BubbleTail({ side, color }: BubbleTailProps) {
   const path =
     side === "out"
       ? "M0 0H14C10 1.8 7.4 4.7 6.4 8.3L5.3 12C4.2 7 2.4 2.9 0 0Z"
@@ -457,8 +649,8 @@ function BubbleTail({ side, className }: BubbleTailProps) {
       className={cn(
         "pointer-events-none absolute top-0 h-3.5 w-3.5",
         side === "out" ? "-right-[7px]" : "-left-[7px]",
-        className,
       )}
+      style={{ fill: color }}
       viewBox="0 0 14 12"
     >
       <path d={path} />
@@ -466,34 +658,36 @@ function BubbleTail({ side, className }: BubbleTailProps) {
   );
 }
 
-function WhatsAppWallpaper() {
+function WhatsAppWallpaper({ palette }: { palette: WhatsAppPalette }) {
   const patternId = useId().replace(/:/g, "");
 
   return (
     <svg
       aria-hidden
-      className="pointer-events-none absolute inset-0 h-full w-full text-[#7d6f59]/16 dark:text-white/7"
+      className="pointer-events-none absolute inset-0 h-full w-full"
     >
       <defs>
         <pattern
           id={patternId}
-          width="76"
-          height="76"
+          width="46"
+          height="46"
           patternUnits="userSpaceOnUse"
         >
           <path
-            d="M12 18h18m-9-9v18M49 12c7 0 12 5 12 11 0 8-8 11-12 16-4-5-12-8-12-16 0-6 5-11 12-11Zm-22 42c6 0 10 4 10 9s-4 9-10 9-10-4-10-9 4-9 10-9Zm27 43 10-10m-10 0 10 10"
-            stroke="currentColor"
-            strokeWidth="1.2"
+            d="M8 11h12m-6-6v12M31 7c4 0 7 3 7 7 0 5-5 7-7 10-2-3-7-5-7-10 0-4 3-7 7-7Zm-14 25c4 0 6 2 6 5s-2 5-6 5-6-2-6-5 2-5 6-5Zm19 10 6-6m-6 0 6 6"
+            stroke={palette.wallpaperStroke}
+            strokeWidth="1"
             fill="none"
+            opacity={palette.wallpaperOpacity}
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
-            d="M58 53c5 0 8 3 8 7s-3 7-8 7h-9v-7c0-4 4-7 9-7Z"
-            stroke="currentColor"
-            strokeWidth="1.2"
+            d="M34 29c3 0 5 2 5 4s-2 4-5 4h-6v-4c0-2 3-4 6-4Z"
+            stroke={palette.wallpaperStroke}
+            strokeWidth="1"
             fill="none"
+            opacity={palette.wallpaperOpacity}
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -506,12 +700,25 @@ function WhatsAppWallpaper() {
 
 interface WhatsAppComposerProps {
   composerPlaceholder: string;
+  palette: WhatsAppPalette;
 }
 
-function WhatsAppComposer({ composerPlaceholder }: WhatsAppComposerProps) {
+function WhatsAppComposer({
+  composerPlaceholder,
+  palette,
+}: WhatsAppComposerProps) {
   return (
-    <div className="flex items-center gap-1.5 bg-[#f7f5f0] px-2 pb-[22px] pt-2 dark:bg-[#111b21]">
-      <div className="flex min-w-0 flex-1 items-center gap-1.5 rounded-full bg-white px-2.5 py-1.5 text-[#667781] shadow-[0_1px_1px_rgba(15,23,42,0.06)] dark:bg-[#202c33] dark:text-white/52">
+    <div
+      className="flex items-center gap-1.5 px-2 pb-[22px] pt-2"
+      style={{ backgroundColor: palette.composer }}
+    >
+      <div
+        className="flex min-w-0 flex-1 items-center gap-1.5 rounded-full px-2.5 py-1.5 shadow-[0_1px_1px_rgba(15,23,42,0.06)]"
+        style={{
+          backgroundColor: palette.composerInput,
+          color: palette.composerText,
+        }}
+      >
         <Smile className="h-3.5 w-3.5 shrink-0" strokeWidth={2} aria-hidden />
         <span className="flex-1 truncate text-[10px]">
           {composerPlaceholder}
@@ -523,7 +730,10 @@ function WhatsAppComposer({ composerPlaceholder }: WhatsAppComposerProps) {
         />
         <Camera className="h-3.5 w-3.5 shrink-0" strokeWidth={2} aria-hidden />
       </div>
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#00a884] text-white">
+      <span
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+        style={{ backgroundColor: palette.micBg, color: palette.micIcon }}
+      >
         <Mic className="h-3.5 w-3.5" strokeWidth={2.2} aria-hidden />
       </span>
     </div>
