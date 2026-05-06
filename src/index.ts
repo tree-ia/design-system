@@ -174,6 +174,18 @@ export type { EmptyStateProps } from "./components/EmptyState";
 export { StatusBadge } from "./components/StatusBadge";
 export type { StatusBadgeProps } from "./components/StatusBadge";
 
+export { IPhoneMockup } from "./components/IPhoneMockup";
+export type { IPhoneMockupProps } from "./components/IPhoneMockup";
+
+export { WhatsAppMockup } from "./components/WhatsAppMockup";
+export type {
+  WhatsAppMockupProps,
+  WhatsAppMockupMessage,
+  WhatsAppMessageDirection,
+  WhatsAppMessageType,
+  WhatsAppProfileType,
+} from "./components/WhatsAppMockup";
+
 export {
   TableOfContents,
   TOCProvider,
