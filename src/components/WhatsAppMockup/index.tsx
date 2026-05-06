@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId } from "react";
+import React, { useEffect, useId, useState } from "react";
 import {
   Camera,
   Check,
@@ -76,6 +76,8 @@ const DEFAULT_WAVEFORM = [
   10, 18, 27, 14, 31, 23, 38, 17, 29, 21, 12, 25, 15, 32, 19, 11, 23, 15, 29,
   17,
 ] as const;
+
+const FALLBACK_STATUS_TIME = "14:32";
 
 const WHATSAPP_PALETTES = {
   dark: {
@@ -160,7 +162,7 @@ export function WhatsAppMockup({
   headerBackgroundColor,
   profileAvatarBackgroundColor,
   messages = [],
-  statusTime = "14:32",
+  statusTime,
   dateLabel = "Hoje",
   encryptionNotice = "Mensagens e ligações são protegidas com criptografia de ponta a ponta.",
   composerPlaceholder = "Mensagem",
@@ -181,6 +183,7 @@ export function WhatsAppMockup({
   "aria-label": ariaLabel,
 }: WhatsAppMockupProps) {
   const palette = WHATSAPP_PALETTES[theme];
+  const resolvedStatusTime = useResolvedStatusTime(statusTime);
   const resolvedFrameColor = frameColor ?? palette.frame;
   const resolvedStatusbarColor = statusbarColor ?? palette.statusbar;
   const subtitle =
@@ -214,7 +217,7 @@ export function WhatsAppMockup({
           style={{ backgroundColor: palette.screen, color: palette.headerText }}
         >
           <StatusBar
-            time={statusTime}
+            time={resolvedStatusTime}
             screenWidth={screenWidth}
             palette={palette}
           />
@@ -291,6 +294,47 @@ interface StatusBarProps {
   time: string;
   screenWidth: number;
   palette: WhatsAppPalette;
+}
+
+function useResolvedStatusTime(statusTime?: string) {
+  const [currentTime, setCurrentTime] = useState(FALLBACK_STATUS_TIME);
+
+  useEffect(() => {
+    if (statusTime) {
+      return;
+    }
+
+    const updateCurrentTime = () => {
+      setCurrentTime(formatStatusTime(new Date()));
+    };
+
+    updateCurrentTime();
+
+    let interval: number | undefined;
+    const now = new Date();
+    const nextMinuteDelay =
+      (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+    const timeout = window.setTimeout(() => {
+      updateCurrentTime();
+      interval = window.setInterval(updateCurrentTime, 60_000);
+    }, nextMinuteDelay);
+
+    return () => {
+      window.clearTimeout(timeout);
+      if (interval !== undefined) {
+        window.clearInterval(interval);
+      }
+    };
+  }, [statusTime]);
+
+  return statusTime ?? currentTime;
+}
+
+function formatStatusTime(date: Date) {
+  return `${date.getHours().toString().padStart(2, "0")}:${date
+    .getMinutes()
+    .toString()
+    .padStart(2, "0")}`;
 }
 
 function StatusBar({ time, screenWidth, palette }: StatusBarProps) {
