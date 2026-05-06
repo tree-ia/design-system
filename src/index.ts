@@ -181,6 +181,7 @@ export { WhatsAppMockup } from "./components/WhatsAppMockup";
 export type {
   WhatsAppMockupProps,
   WhatsAppMockupMessage,
+  WhatsAppMockupTheme,
   WhatsAppMessageDirection,
   WhatsAppMessageType,
   WhatsAppProfileType,
