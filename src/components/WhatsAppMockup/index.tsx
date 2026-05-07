@@ -110,6 +110,11 @@ const WHATSAPP_PALETTES = {
     micIcon: "#07130f",
     audioWave: "#9ad8ca",
     audioButtonBg: "#00a884",
+    audioPlayIcon: "#aebac1",
+    audioWavePlayed: "#25d366",
+    audioWaveMuted: "#3b4a52",
+    audioAvatarBg: "#12b2ca",
+    audioMicBadgeBg: "#25d366",
     shadow: "rgba(0, 0, 0, 0.22)",
   },
   light: {
@@ -142,6 +147,11 @@ const WHATSAPP_PALETTES = {
     micIcon: "#ffffff",
     audioWave: "#177866",
     audioButtonBg: "#00a884",
+    audioPlayIcon: "#54656f",
+    audioWavePlayed: "#25d366",
+    audioWaveMuted: "#a4b0b6",
+    audioAvatarBg: "#12b2ca",
+    audioMicBadgeBg: "#25d366",
     shadow: "rgba(15, 23, 42, 0.11)",
   },
 } as const;
@@ -541,13 +551,34 @@ function WhatsAppMessageBubble({
   const direction = message.direction ?? "outgoing";
   const type = message.type ?? "text";
   const isOutgoing = direction === "outgoing";
+  const isCustom = type === "custom";
+  const isAudio = type === "audio";
   const bubbleColor = isOutgoing ? palette.outgoing : palette.incoming;
+
+  // Custom bubbles render their own container — no background, padding,
+  // tail, shadow, or auto meta from the design-system. Author owns the visual.
+  if (isCustom) {
+    return (
+      <div
+        className={cn(
+          "relative z-10 max-w-[86%]",
+          isOutgoing ? "ml-auto" : "mr-auto",
+          message.className,
+        )}
+        style={message.style}
+      >
+        <div className={message.contentClassName}>{message.children}</div>
+      </div>
+    );
+  }
 
   return (
     <div
       className={cn(
         "relative z-10 max-w-[86%] rounded-[14px] px-2.5 py-2 shadow-[0_1px_1.5px_rgba(15,23,42,0.11)]",
         isOutgoing ? "ml-auto rounded-tr-[4px]" : "mr-auto rounded-tl-[4px]",
+        // Audio bubbles host an absolute meta row at the bottom — reserve space.
+        isAudio && "min-w-[210px] pb-[18px]",
         message.className,
       )}
       style={{
@@ -562,18 +593,30 @@ function WhatsAppMessageBubble({
         color={message.style?.backgroundColor?.toString() ?? bubbleColor}
       />
 
-      <div className={message.contentClassName}>
+      <div
+        className={cn(
+          // text size & leading set on the container so children (JSX) inherits
+          "text-[10.5px] leading-snug",
+          message.contentClassName,
+        )}
+      >
         {message.children ??
-          (type === "audio" ? (
+          (isAudio ? (
             <AudioMessage message={message} palette={palette} />
-          ) : type === "custom" ? null : (
-            <p className="max-w-[31ch] text-[10.5px] leading-snug">
-              {message.text}
-            </p>
+          ) : (
+            <p className="max-w-[31ch]">{message.text}</p>
           ))}
       </div>
 
-      {message.hideMeta ? null : (
+      {message.hideMeta ? null : isAudio ? (
+        <AudioMeta
+          duration={message.duration}
+          time={message.time}
+          direction={direction}
+          read={message.read}
+          palette={palette}
+        />
+      ) : (
         <MessageMeta
           time={message.time}
           direction={direction}
@@ -592,55 +635,99 @@ interface AudioMessageProps {
 
 function AudioMessage({ message, palette }: AudioMessageProps) {
   const waveform = message.waveform ?? DEFAULT_WAVEFORM;
+  // First ~25% of the waveform is rendered as "played" (highlighted color).
+  const playedThreshold = Math.max(1, Math.round(waveform.length * 0.22));
 
   return (
-    <>
-      <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2">
+      {/* Avatar circular com badge de microfone */}
+      <div className="relative shrink-0" aria-hidden>
         <span
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-          style={{
-            backgroundColor: palette.audioButtonBg,
-            color: palette.micIcon,
-          }}
+          className="flex h-8 w-8 items-center justify-center rounded-full text-[11px] font-bold uppercase text-white"
+          style={{ backgroundColor: palette.audioAvatarBg }}
         >
-          <Play
-            className="ml-0.5 h-3.5 w-3.5 fill-current"
-            strokeWidth={2.2}
+          V
+        </span>
+        <span
+          className="absolute -bottom-0.5 -right-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full"
+          style={{ backgroundColor: palette.audioMicBadgeBg }}
+        >
+          <Mic
+            className="h-2 w-2 text-white"
+            strokeWidth={2.4}
             aria-hidden
           />
         </span>
-        <div className="flex h-7 flex-1 items-center gap-[2px]" aria-hidden>
-          {waveform.map((height, index) => (
-            <span
-              key={`${height}-${index}`}
-              className="origin-center rounded-full"
-              style={{
-                backgroundColor: palette.audioWave,
-                height: Math.max(8, Math.round(height * 0.78)),
-                opacity: 0.76,
-                width: 2,
-              }}
-            />
-          ))}
-        </div>
-        {message.duration ? (
-          <span
-            className="text-[10px] font-medium"
-            style={{ color: palette.outgoingMeta }}
-          >
-            {message.duration}
-          </span>
-        ) : null}
       </div>
-      {message.text ? (
-        <p
-          className="mt-1.5 max-w-[29ch] text-[9.5px] leading-snug"
-          style={{ color: palette.outgoingMeta }}
-        >
-          {message.text}
-        </p>
-      ) : null}
-    </>
+
+      {/* Botão play (sem círculo) */}
+      <Play
+        className="h-4 w-4 shrink-0 fill-current"
+        strokeWidth={0}
+        style={{ color: palette.audioPlayIcon }}
+        aria-hidden
+      />
+
+      {/* Waveform: barras tocadas em destaque + restantes em cinza */}
+      <div className="flex h-5 flex-1 items-center gap-[1.5px]" aria-hidden>
+        {waveform.map((height, index) => (
+          <span
+            key={`${height}-${index}`}
+            className="flex-1 rounded-[2px]"
+            style={{
+              backgroundColor:
+                index < playedThreshold
+                  ? palette.audioWavePlayed
+                  : palette.audioWaveMuted,
+              height: Math.max(4, Math.round(height * 0.5)),
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+interface AudioMetaProps {
+  duration?: string;
+  time: string;
+  direction: WhatsAppMessageDirection;
+  read?: boolean;
+  palette: WhatsAppPalette;
+}
+
+function AudioMeta({
+  duration,
+  time,
+  direction,
+  read,
+  palette,
+}: AudioMetaProps) {
+  const isOutgoing = direction === "outgoing";
+  const metaColor = isOutgoing ? palette.outgoingMeta : palette.subtleText;
+
+  return (
+    <div
+      className="pointer-events-none absolute bottom-[5px] left-[44px] right-2.5 flex items-center justify-between text-[9px] font-medium leading-none tabular-nums"
+      style={{ color: metaColor }}
+    >
+      <span>{duration}</span>
+      <span className="inline-flex items-center gap-[3px] whitespace-nowrap">
+        <span>{time}</span>
+        {isOutgoing ? (
+          read === undefined ? (
+            <Check className="h-3 w-3" strokeWidth={2.5} aria-hidden />
+          ) : (
+            <CheckCheck
+              className="h-3 w-3"
+              strokeWidth={2.5}
+              style={{ color: read ? palette.read : undefined }}
+              aria-hidden
+            />
+          )
+        ) : null}
+      </span>
+    </div>
   );
 }
 
