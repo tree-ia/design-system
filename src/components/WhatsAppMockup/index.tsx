@@ -205,10 +205,7 @@ export function WhatsAppMockup({
 
   return (
     <div
-      className={cn(
-        "rounded-[2.65rem] shadow-[0_34px_74px_-34px_rgba(15,23,42,0.58)] dark:shadow-[0_34px_86px_-34px_rgba(10,13,18,0.82)]",
-        className,
-      )}
+      className={cn("inline-block", className)}
       aria-label={ariaLabel ?? `Conversa no WhatsApp com ${contactName}`}
     >
       <IPhoneMockup
