@@ -10,6 +10,14 @@ export interface ToastProps {
   duration?: number;
   onClose: () => void;
   showProgress?: boolean;
+  action?: {
+    label: string;
+    onClick?: () => void;
+    href?: string;
+    target?: string;
+    rel?: string;
+    closeOnClick?: boolean;
+  };
 }
 
 const typeConfig = {
@@ -38,6 +46,7 @@ export function Toast({
   duration = 4000,
   onClose,
   showProgress = true,
+  action,
 }: ToastProps) {
   const [exiting, setExiting] = useState(false);
 
@@ -57,6 +66,24 @@ export function Toast({
   }, [duration, handleClose]);
 
   const { bg, icon: Icon } = typeConfig[type];
+  const actionRel =
+    action?.rel ?? (action?.target === "_blank" ? "noopener noreferrer" : undefined);
+
+  const actionClassName =
+    "mt-2 inline-flex h-7 items-center rounded-md border border-white/35 bg-white/15 px-2.5 text-xs font-semibold text-white transition-colors hover:bg-white/25 focus:outline-none focus:ring-2 focus:ring-white/70 focus:ring-offset-2 focus:ring-offset-transparent";
+
+  const handleActionClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+      action?.onClick?.();
+      if (!action?.href) {
+        event.preventDefault();
+      }
+      if (action?.closeOnClick !== false) {
+        handleClose();
+      }
+    },
+    [action, handleClose],
+  );
 
   return (
     <div
@@ -70,6 +97,22 @@ export function Toast({
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-sm">{title}</p>
           {subtitle && <p className="text-xs opacity-90 mt-0.5">{subtitle}</p>}
+          {action &&
+            (action.href ? (
+              <a
+                href={action.href}
+                target={action.target}
+                rel={actionRel}
+                className={actionClassName}
+                onClick={handleActionClick}
+              >
+                {action.label}
+              </a>
+            ) : (
+              <button type="button" className={actionClassName} onClick={handleActionClick}>
+                {action.label}
+              </button>
+            ))}
         </div>
         <button
           onClick={handleClose}

@@ -67,7 +67,9 @@ export function NotificationsProvider({
               title={notification.title}
               subtitle={notification.subtitle}
               type={notification.type}
-              duration={duration}
+              duration={notification.duration ?? duration}
+              showProgress={notification.showProgress}
+              action={notification.action}
               onClose={() => removeNotification(notification.id)}
             />
           ))}

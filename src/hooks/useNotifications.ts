@@ -5,8 +5,18 @@ import { useContext, createContext } from "react";
 export interface Notification {
   id: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   type: "success" | "error" | "warning" | "info";
+  duration?: number;
+  showProgress?: boolean;
+  action?: {
+    label: string;
+    onClick?: () => void;
+    href?: string;
+    target?: string;
+    rel?: string;
+    closeOnClick?: boolean;
+  };
 }
 
 export interface NotificationsContextType {

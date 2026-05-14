@@ -448,6 +448,7 @@ import { Toast } from "@tree-ia/design-system";
   subtitle="As alterações foram aplicadas"
   type="success"
   duration={4000}
+  action={{ label: "Ver", href: "/registro" }}
   onClose={() => {}}
 />
 ```
@@ -459,6 +460,7 @@ import { Toast } from "@tree-ia/design-system";
 | `subtitle` | `string` | - | Subtítulo |
 | `duration` | `number` | `4000` | Duração em ms (0 = sem auto-close) |
 | `showProgress` | `boolean` | `true` | Barra de progresso |
+| `action` | `{ label: string; href?: string; onClick?: () => void; target?: string; rel?: string; closeOnClick?: boolean }` | - | Ação opcional |
 | `onClose` | `() => void` | obrigatório | Callback de fechamento |
 
 Geralmente não se usa `Toast` diretamente — use `useNotifications()`.
@@ -638,6 +640,10 @@ function MyComponent() {
       title: "Salvo!",
       subtitle: "Registro atualizado com sucesso",
       type: "success",
+      action: {
+        label: "Ver detalhes",
+        href: "/detalhes",
+      },
     });
   };
 }
@@ -649,6 +655,8 @@ function MyComponent() {
 | `addNotification` | `(n: Omit<Notification, "id">) => void` | Adiciona toast |
 | `removeNotification` | `(id: string) => void` | Remove por ID |
 | `clearNotifications` | `() => void` | Remove todos |
+
+Campos opcionais aceitos por `addNotification`: `duration`, `showProgress` e `action`. A ação pode usar `href` ou `onClick`, fecha o toast por padrão e aceita `closeOnClick: false` quando necessário.
 
 ---
 

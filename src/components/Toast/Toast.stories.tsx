@@ -81,6 +81,20 @@ export const WithProgress: Story = {
   },
 };
 
+export const WithAction: Story = {
+  args: {
+    title: "Nova notificação",
+    subtitle: "Há uma pendência financeira aguardando revisão.",
+    type: "warning",
+    duration: 0,
+    action: {
+      label: "Ver pendência",
+      href: "/notifications",
+    },
+    onClose: () => {},
+  },
+};
+
 export const Interactive: Story = {
   render: () => {
     const [toasts, setToasts] = useState<
