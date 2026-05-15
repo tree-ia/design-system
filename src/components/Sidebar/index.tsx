@@ -100,21 +100,30 @@ export function Sidebar({
 
   const cubicBezier = "cubic-bezier(0.4, 0, 0.2, 1)";
 
-  // Auto-expand parent items whose children match the current path
+  // Auto-expand any ancestor of an item whose href matches the current path.
+  // Recursive — supports nesting at arbitrary depth.
   useEffect(() => {
-    const idsToExpand: string[] = [];
-    for (const item of menuItems) {
-      if (item.children?.some((c) => currentPath === c.href)) {
-        idsToExpand.push(item.id);
-      }
-    }
-    if (footerItems) {
-      for (const item of footerItems) {
-        if (item.children?.some((c) => currentPath === c.href)) {
-          idsToExpand.push(item.id);
+    function collectAncestorsOfActive(
+      items: SidebarMenuItem[],
+      acc: string[],
+    ): boolean {
+      let hasActive = false;
+      for (const item of items) {
+        const selfActive = currentPath === item.href;
+        let childActive = false;
+        if (item.children && item.children.length > 0) {
+          childActive = collectAncestorsOfActive(item.children, acc);
+          if (childActive) acc.push(item.id);
         }
+        if (selfActive || childActive) hasActive = true;
       }
+      return hasActive;
     }
+
+    const idsToExpand: string[] = [];
+    collectAncestorsOfActive(menuItems, idsToExpand);
+    if (footerItems) collectAncestorsOfActive(footerItems, idsToExpand);
+
     if (idsToExpand.length > 0) {
       setExpandedIds((prev) => {
         const next = new Set(prev);
@@ -144,8 +153,34 @@ export function Sidebar({
 
   function isItemActive(item: SidebarMenuItem): boolean {
     if (currentPath === item.href) return true;
-    if (item.children?.some((c) => currentPath === c.href)) return true;
+    return hasActiveDescendant(item);
+  }
+
+  /** True if the item or any nested descendant matches `currentPath`. */
+  function hasActiveDescendant(item: SidebarMenuItem): boolean {
+    if (!item.children) return false;
+    for (const child of item.children) {
+      if (currentPath === child.href) return true;
+      if (hasActiveDescendant(child)) return true;
+    }
     return false;
+  }
+
+  /**
+   * Counts how many descendant nodes are currently visible in the tree —
+   * i.e. all direct children, plus all descendants of expanded children
+   * (recurse only inside expanded branches). Used to size the `maxHeight`
+   * animation container so it fits the full expanded subtree.
+   */
+  function countVisibleDescendants(item: SidebarMenuItem): number {
+    if (!item.children || item.children.length === 0) return 0;
+    let count = item.children.length;
+    for (const child of item.children) {
+      if (expandedIds.has(child.id)) {
+        count += countVisibleDescendants(child);
+      }
+    }
+    return count;
   }
 
   /** Group items by section — items before any section go into a null group */
@@ -174,6 +209,76 @@ export function Sidebar({
       <div className="mb-1 mt-5 px-4 text-[11px] font-bold uppercase tracking-wider text-[var(--dashboard-sidebar-text,#403f52)]/80">
         {section}
       </div>
+    );
+  }
+
+  /**
+   * Renders a nested child item (inside an expanded parent). Recursive —
+   * if the child itself has `children`, renders as expandable and recurses.
+   * Styling is the "child" variant (smaller icon, smaller text, indented)
+   * regardless of depth, to keep visual consistency across levels.
+   */
+  function renderChildItem(item: SidebarMenuItem): React.ReactNode {
+    const ChildIcon = item.icon;
+    const childActive = currentPath === item.href;
+    const hasChildren = item.children && item.children.length > 0;
+    const isExpanded = expandedIds.has(item.id);
+    const isChildActive = hasActiveDescendant(item);
+
+    if (hasChildren) {
+      return (
+        <div key={item.id}>
+          <button
+            onClick={() => toggleExpand(item.id)}
+            className={cn(
+              "w-full flex items-center pl-4 pr-4 py-2 rounded-r-lg text-[13px] cursor-pointer",
+              childActive || isChildActive
+                ? "text-[var(--dashboard-sidebar-active-text,#ff521d)] font-semibold"
+                : "text-[var(--dashboard-sidebar-text,#403f52)] hover:text-[var(--dashboard-sidebar-active-text,#ff521d)]",
+            )}
+            style={{ transition: "background-color 200ms, color 200ms" }}
+          >
+            <ChildIcon size={15} className="mr-2 flex-shrink-0" />
+            <span className="whitespace-nowrap flex-1 text-left">
+              {item.label}
+            </span>
+            <ChevronRight
+              size={12}
+              className={cn(
+                "ml-auto flex-shrink-0 transition-transform duration-200",
+                isExpanded ? "rotate-90" : "",
+              )}
+            />
+          </button>
+          <div
+            className="overflow-hidden transition-all duration-200 ml-7 border-l-2 border-[var(--dashboard-sidebar-border,#e0dfe3)]"
+            style={{
+              maxHeight: isExpanded
+                ? `${countVisibleDescendants(item) * 40}px`
+                : "0",
+            }}
+          >
+            {item.children!.map((grandchild) => renderChildItem(grandchild))}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <LinkComponent key={item.id} href={item.href} className="block">
+        <div
+          className={cn(
+            "w-full flex items-center pl-4 pr-4 py-2 rounded-r-lg text-[13px] cursor-pointer",
+            childActive
+              ? "text-[var(--dashboard-sidebar-active-text,#ff521d)] font-semibold border-l-2 border-[var(--dashboard-primary,#ff521d)] -ml-[2px]"
+              : "text-[var(--dashboard-sidebar-text,#403f52)] hover:text-[var(--dashboard-sidebar-active-text,#ff521d)]",
+          )}
+          style={{ transition: "background-color 200ms, color 200ms" }}
+        >
+          <ChildIcon size={15} className="mr-2 flex-shrink-0" />
+          <span className="whitespace-nowrap">{item.label}</span>
+        </div>
+      </LinkComponent>
     );
   }
 
@@ -228,43 +333,17 @@ export function Sidebar({
               </>
             )}
           </button>
-          {/* Children */}
+          {/* Children — recursive: supports arbitrary nesting depth */}
           {(!collapsed || mobile) && (
             <div
               className="overflow-hidden transition-all duration-200 ml-7 border-l-2 border-[var(--dashboard-sidebar-border,#e0dfe3)]"
               style={{
-                maxHeight: isExpanded ? `${item.children!.length * 40}px` : "0",
+                maxHeight: isExpanded
+                  ? `${countVisibleDescendants(item) * 40}px`
+                  : "0",
               }}
             >
-              {item.children!.map((child) => {
-                const ChildIcon = child.icon;
-                const childActive = currentPath === child.href;
-                return (
-                  <LinkComponent
-                    key={child.id}
-                    href={child.href}
-                    className="block"
-                  >
-                    <div
-                      className={cn(
-                        "w-full flex items-center pl-4 pr-4 py-2 rounded-r-lg text-[13px] cursor-pointer",
-                        childActive
-                          ? "text-[var(--dashboard-sidebar-active-text,#ff521d)] font-semibold border-l-2 border-[var(--dashboard-primary,#ff521d)] -ml-[2px]"
-                          : "text-[var(--dashboard-sidebar-text,#403f52)] hover:text-[var(--dashboard-sidebar-active-text,#ff521d)]",
-                      )}
-                      style={{
-                        transition: "background-color 200ms, color 200ms",
-                      }}
-                    >
-                      <ChildIcon
-                        size={15}
-                        className="mr-2 flex-shrink-0"
-                      />
-                      <span className="whitespace-nowrap">{child.label}</span>
-                    </div>
-                  </LinkComponent>
-                );
-              })}
+              {item.children!.map((child) => renderChildItem(child))}
             </div>
           )}
         </div>
